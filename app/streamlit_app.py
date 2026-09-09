@@ -805,15 +805,31 @@ with tab_taxonomy:
     st.markdown('<div class="subtitle">Formally grounded in empirical data analysis of 106,860 @AppleSupport conversations.</div>', unsafe_allow_html=True)
 
     st.subheader("Defined Intent Categories (10 Intents)")
-    for intent in default_taxonomy.intents:
-        with st.expander(f"🏷️ {intent.name}: {intent.description}"):
-            st.markdown(f"**Default Action:** `{intent.default_action}` | **Risk Level:** `{intent.risk_level}`")
-            st.markdown(f"**Escalation Threshold:** `{intent.escalation_threshold}`")
-            st.markdown("**Representative Keywords / Phrases:**")
-            st.write(", ".join(f"`{kw}`" for kw in intent.keywords[:15]))
-            st.markdown("**Canonical Exemplars:**")
-            for ex in intent.exemplars[:4]:
-                st.markdown(f"- *\"{ex}\"*")
+    for intent_key in default_taxonomy.get_intent_names():
+        info = default_taxonomy.get_intent_info(intent_key)
+        display_name = info.get("name", intent_key)
+        desc = info.get("description", "")
+        with st.expander(f"🏷️ {intent_key} — {display_name}"):
+            st.markdown(f"**Description:** {desc}")
+            
+            c_pos, c_neg = st.columns(2)
+            with c_pos:
+                st.markdown("**Canonical Exemplars (Positive):**")
+                for ex in info.get("positive_examples", []):
+                    st.markdown(f"- *\"{ex}\"*")
+                if info.get("inclusion_rules"):
+                    st.markdown("**Inclusion Boundary:**")
+                    for rule in info.get("inclusion_rules", []):
+                        st.markdown(f"• `{rule}`")
+            with c_neg:
+                if info.get("negative_examples"):
+                    st.markdown("**Boundary Examples (Negative):**")
+                    for neg in info.get("negative_examples", []):
+                        st.markdown(f"- *\"{neg}\"*")
+                if info.get("exclusion_rules"):
+                    st.markdown("**Exclusion Boundary:**")
+                    for rule in info.get("exclusion_rules", []):
+                        st.markdown(f"• `{rule}`")
 
     st.markdown("---")
     st.subheader("🛡️ Safety Gating Rules")
