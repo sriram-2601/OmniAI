@@ -29,92 +29,225 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Custom CSS for modern, sleek aesthetic
-st.markdown("""
-<style>
-    .main-title {
-        font-size: 2.2rem;
-        font-weight: 700;
-        color: #1E293B;
-        margin-bottom: 0.2rem;
-    }
-    .subtitle {
-        font-size: 1.05rem;
-        color: #64748B;
-        margin-bottom: 1.5rem;
-    }
-    .decision-badge-auto {
-        background: linear-gradient(135deg, #10B981, #059669);
-        color: white;
-        padding: 0.5rem 1.2rem;
-        border-radius: 9999px;
-        font-weight: 700;
-        font-size: 1.1rem;
-        display: inline-block;
-        box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
-    }
-    .decision-badge-esc {
-        background: linear-gradient(135deg, #EF4444, #DC2626);
-        color: white;
-        padding: 0.5rem 1.2rem;
-        border-radius: 9999px;
-        font-weight: 700;
-        font-size: 1.1rem;
-        display: inline-block;
-        box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
-    }
-    .metric-card {
-        background-color: #F8FAFC;
-        border: 1px solid #E2E8F0;
-        border-radius: 12px;
-        padding: 1.2rem;
-        text-align: center;
-    }
-    .metric-val {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #0F172A;
-    }
-    .metric-lbl {
-        font-size: 0.85rem;
-        color: #64748B;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-top: 0.2rem;
-    }
-    .reply-box {
-        background-color: #F0FDF4;
-        border: 1px solid #BBF7D0;
-        border-radius: 10px;
-        padding: 1.2rem;
-        font-size: 1.05rem;
-        line-height: 1.5;
-        color: #166534;
-        margin: 1rem 0;
-    }
-    .reply-box-esc {
-        background-color: #FEF2F2;
-        border: 1px solid #FECACA;
-        border-radius: 10px;
-        padding: 1.2rem;
-        font-size: 1.05rem;
-        line-height: 1.5;
-        color: #991B1B;
-        margin: 1rem 0;
-    }
-    .precedent-card {
-        background-color: #FFFFFF;
-        border-left: 4px solid #3B82F6;
-        border-top: 1px solid #E2E8F0;
-        border-right: 1px solid #E2E8F0;
-        border-bottom: 1px solid #E2E8F0;
-        border-radius: 6px;
-        padding: 0.9rem;
-        margin-bottom: 0.8rem;
-    }
-</style>
-""", unsafe_allow_html=True)
+# Sidebar - Header & Theme Toggle
+st.sidebar.title("🍎 @AppleSupport AI")
+st.sidebar.markdown("**Enterprise Support & Safety Pipeline**")
+st.sidebar.markdown("---")
 
+# Theme Toggle Button
+dark_mode = st.sidebar.toggle("🌙 Dark Mode", value=False, help="Toggle between Dark and Light mode themes")
+
+if dark_mode:
+    st.markdown("""
+    <style>
+        .stApp {
+            background-color: #0F172A !important;
+            color: #F8FAFC !important;
+        }
+        [data-testid="stSidebar"] {
+            background-color: #0B1120 !important;
+            border-right: 1px solid #1E293B !important;
+        }
+        [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label {
+            color: #E2E8F0 !important;
+        }
+        .main-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #F8FAFC !important;
+            margin-bottom: 0.2rem;
+        }
+        .subtitle {
+            font-size: 1.05rem;
+            color: #94A3B8 !important;
+            margin-bottom: 1.5rem;
+        }
+        .decision-badge-auto {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white !important;
+            padding: 0.5rem 1.2rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+        }
+        .decision-badge-esc {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white !important;
+            padding: 0.5rem 1.2rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+        }
+        .metric-card {
+            background-color: #1E293B !important;
+            border: 1px solid #334155 !important;
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+        .metric-val {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #38BDF8 !important;
+        }
+        .metric-lbl {
+            font-size: 0.85rem;
+            color: #94A3B8 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.2rem;
+        }
+        .reply-box {
+            background-color: #064E3B !important;
+            border: 1px solid #059669 !important;
+            border-radius: 10px;
+            padding: 1.2rem;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: #D1FAE5 !important;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .reply-box-esc {
+            background-color: #450A0A !important;
+            border: 1px solid #DC2626 !important;
+            border-radius: 10px;
+            padding: 1.2rem;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: #FEE2E2 !important;
+            margin: 1rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .precedent-card {
+            background-color: #1E293B !important;
+            border-left: 4px solid #38BDF8 !important;
+            border-top: 1px solid #334155 !important;
+            border-right: 1px solid #334155 !important;
+            border-bottom: 1px solid #334155 !important;
+            border-radius: 6px;
+            padding: 0.9rem;
+            margin-bottom: 0.8rem;
+            color: #E2E8F0 !important;
+        }
+        .stTextArea textarea, .stTextInput input {
+            background-color: #1E293B !important;
+            color: #F8FAFC !important;
+            border-color: #334155 !important;
+        }
+        div[data-baseweb="select"] > div {
+            background-color: #1E293B !important;
+            border-color: #334155 !important;
+            color: #F8FAFC !important;
+        }
+        div[data-testid="stExpander"] {
+            background-color: #1E293B !important;
+            border: 1px solid #334155 !important;
+            border-radius: 8px;
+        }
+        div[data-testid="stExpander"] summary {
+            color: #F8FAFC !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+    <style>
+        .stApp {
+            background-color: #FFFFFF;
+            color: #0F172A;
+        }
+        [data-testid="stSidebar"] {
+            background-color: #F8FAFC;
+            border-right: 1px solid #E2E8F0;
+        }
+        .main-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1E293B;
+            margin-bottom: 0.2rem;
+        }
+        .subtitle {
+            font-size: 1.05rem;
+            color: #64748B;
+            margin-bottom: 1.5rem;
+        }
+        .decision-badge-auto {
+            background: linear-gradient(135deg, #10B981, #059669);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: inline-block;
+            box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
+        }
+        .decision-badge-esc {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: inline-block;
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
+        }
+        .metric-card {
+            background-color: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .metric-val {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0F172A;
+        }
+        .metric-lbl {
+            font-size: 0.85rem;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 0.2rem;
+        }
+        .reply-box {
+            background-color: #F0FDF4;
+            border: 1px solid #BBF7D0;
+            border-radius: 10px;
+            padding: 1.2rem;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: #166534;
+            margin: 1rem 0;
+        }
+        .reply-box-esc {
+            background-color: #FEF2F2;
+            border: 1px solid #FECACA;
+            border-radius: 10px;
+            padding: 1.2rem;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: #991B1B;
+            margin: 1rem 0;
+        }
+        .precedent-card {
+            background-color: #FFFFFF;
+            border-left: 4px solid #3B82F6;
+            border-top: 1px solid #E2E8F0;
+            border-right: 1px solid #E2E8F0;
+            border-bottom: 1px solid #E2E8F0;
+            border-radius: 6px;
+            padding: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+    </style>
+    """, unsafe_allow_html=True)
 
 @st.cache_data
 def load_benchmark_metrics():
@@ -151,9 +284,6 @@ golden_set = load_golden_set()
 failures = load_failures()
 
 # Sidebar Navigation
-st.sidebar.title("🍎 @AppleSupport AI")
-st.sidebar.markdown("**Enterprise Support & Safety Pipeline**")
-st.sidebar.markdown("---")
 page = st.sidebar.radio(
     "Navigation",
     ["Live Support Console", "Evaluation & Benchmarks", "Failure Mode Inspector", "Taxonomy & Governance"],
@@ -161,7 +291,7 @@ page = st.sidebar.radio(
 
 st.sidebar.markdown("---")
 st.sidebar.caption("System Status: **Active (CPU-Optimized)**")
-st.sidebar.caption("Precedent Index: **5,000 Verified Cases**")
+st.sidebar.caption("Precedent Index: **5,030 Verified Cases**")
 st.sidebar.caption("Model: **all-MiniLM-L6-v2 + FAISS**")
 
 # ==============================================================================
