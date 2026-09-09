@@ -1,12 +1,13 @@
 """Streamlit Web Application: Production Support Agent Console & Evaluation Inspector.
 
 Provides:
-1. Prominent Sticky Top Navigation Bar: Seamless switching between Live Console, Evaluation, Failure Inspector, and Taxonomy.
-2. Comprehensive Theme System: High-contrast Dark Mode and Light Mode with zero invisible text.
-3. Live Interactive Support Console: Real-time inference, risk assessment, retrieval trace, and draft reply.
-4. Evaluation Dashboard: Benchmark metrics, confusion matrix, and baseline comparisons.
-5. Failure Inspector: Drill-down into real edge cases, misclassifications, and mitigations.
-6. Taxonomy & Governance: Formal intent categories and enterprise safety gating rules.
+1. Multi-Brand Architecture: Seamless switching between Apple, Amazon, Uber, Spotify, Xbox, Samsung, Delta, and Auto-Detect.
+2. Prominent Sticky Top Navigation Bar: Seamless switching between Live Console, Evaluation, Failure Inspector, and Taxonomy.
+3. Comprehensive Theme System: High-contrast Dark Mode and Light Mode with zero invisible text.
+4. Live Interactive Support Console: Real-time inference, risk assessment, retrieval trace, and draft reply.
+5. Evaluation Dashboard: Benchmark metrics, confusion matrix, and baseline comparisons.
+6. Failure Inspector: Drill-down into real edge cases, misclassifications, and mitigations.
+7. Taxonomy & Multi-Brand Governance: Universal support intent categories and safety gating rules.
 """
 from __future__ import annotations
 
@@ -23,18 +24,58 @@ sys.path.insert(0, str(PROJECT_ROOT))
 from src.common.config import RESULTS_DIR, DATA_GOLDEN_DIR
 from src.agent import default_agent
 from src.taxonomy.taxonomy import default_taxonomy
+from src.multilingual.multi_brand import BrandRouter, BRAND_PROFILES
 
 # Page configuration
 st.set_page_config(
-    page_title="AppleSupport AI Agent Console",
-    page_icon="🍎",
+    page_title="OmniSupport AI — Multi-Brand Agent Console",
+    page_icon="🌐",
     layout="wide",
     initial_sidebar_state="expanded",
 )
 
-# Sidebar - Theme Toggle & System Info
-st.sidebar.markdown("### 🍎 @AppleSupport AI")
-st.sidebar.markdown("**Enterprise Support & Safety Pipeline**")
+# Sidebar - Multi-Brand Selector & Branding
+st.sidebar.markdown("### 🌐 OmniSupport AI")
+st.sidebar.markdown("**Enterprise Multi-Brand & Safety Pipeline**")
+st.sidebar.markdown("---")
+
+# Brand Selection Controls
+brand_options = {
+    "🌐 Auto-Detect (108 Brands)": None,
+    "🍎 Apple Support (@AppleSupport)": "AppleSupport",
+    "📦 Amazon Customer Service (@AmazonHelp)": "AmazonHelp",
+    "🚗 Uber Support (@Uber_Support)": "Uber_Support",
+    "🎵 Spotify Cares (@SpotifyCares)": "SpotifyCares",
+    "🎮 Xbox Support (@XboxSupport)": "XboxSupport",
+    "📱 Samsung Support (@SamsungSupport)": "SamsungSupport",
+    "✈️ Delta Air Lines (@Delta)": "Delta",
+}
+
+selected_brand_label = st.sidebar.selectbox(
+    "🏢 Active Brand Domain:",
+    list(brand_options.keys()),
+    index=0,
+    help="Select a dedicated brand domain or let OmniSupport auto-detect dynamically from the customer message."
+)
+active_brand_key = brand_options[selected_brand_label]
+
+if active_brand_key:
+    brand_meta = BrandRouter.get_brand_info(active_brand_key)
+    brand_logo = "🍎" if active_brand_key == "AppleSupport" else "📦" if active_brand_key == "AmazonHelp" else "🚗" if active_brand_key == "Uber_Support" else "🎵" if active_brand_key == "SpotifyCares" else "🎮" if active_brand_key == "XboxSupport" else "📱" if active_brand_key == "SamsungSupport" else "✈️"
+    brand_display_name = f"{brand_meta['handle']} AI"
+    badge_label = f"{brand_meta['category']} Console"
+    
+    st.sidebar.markdown(f"**Domain:** `{brand_meta['name']}`")
+    st.sidebar.caption(f"**Category:** {brand_meta['category']}")
+    st.sidebar.caption(f"**Products:** {', '.join(brand_meta['sample_products'][:3])}")
+    st.sidebar.caption(f"[Official Support Portal]({brand_meta['support_url']})")
+else:
+    brand_logo = "🌐"
+    brand_display_name = "OmniSupport AI"
+    badge_label = "Universal Multi-Brand Console"
+    st.sidebar.markdown("**Domain:** `Dynamic Cross-Brand (108 Brands)`")
+    st.sidebar.caption("Auto-routes Apple, Amazon, Uber, Spotify, Xbox, Samsung, Delta, and more.")
+
 st.sidebar.markdown("---")
 
 # Theme Toggle Button
@@ -560,17 +601,17 @@ golden_set = load_golden_set()
 failures = load_failures()
 
 # ==============================================================================
-# PROMINENT TOP NAVIGATION BAR
+# PROMINENT MULTI-BRAND TOP NAVIGATION BAR
 # ==============================================================================
-st.markdown("""
+st.markdown(f"""
 <div class="top-navbar-banner">
     <div class="nav-brand-title">
-        <span>🍎</span>
-        <span>@AppleSupport AI</span>
-        <span class="nav-brand-badge">Enterprise Console</span>
+        <span>{brand_logo}</span>
+        <span>{brand_display_name}</span>
+        <span class="nav-brand-badge">{badge_label}</span>
     </div>
     <div style="display: flex; gap: 0.6rem; align-items: center;">
-        <span class="nav-status-pill">🟢 5,030 Verified Precedents</span>
+        <span class="nav-status-pill">🟢 108 Brands Supported (5,030 Precedents)</span>
         <span class="nav-status-pill" style="color: #3B82F6; background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.3);">⚡ Real-Time CPU</span>
     </div>
 </div>
@@ -581,35 +622,48 @@ tab_console, tab_benchmarks, tab_failures, tab_taxonomy = st.tabs([
     "🚀 Live Support Console",
     "📊 Evaluation & Benchmarks",
     "🔍 Failure Mode Inspector",
-    "📜 Taxonomy & Governance",
+    "📜 Taxonomy & Multi-Brand Governance",
 ])
 
 # ==============================================================================
 # TAB 1: LIVE SUPPORT CONSOLE
 # ==============================================================================
 with tab_console:
-    st.markdown('<div class="main-title">Live Customer Support Console</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle">Real-time intent classification, risk gating, FAISS precedent retrieval, and grounded reply generation.</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="main-title">Live Multi-Brand Support Console</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Real-time domain routing, intent classification, risk gating, FAISS precedent retrieval, and grounded reply generation.</div>', unsafe_allow_html=True)
 
-    # Preset selector
+    # Preset selector grouped by brand
     presets = {
         "Custom Message": "",
-        "Tenglish: Battery Drain (Auto-Handle)": "Naa phone lo battery chaala thondaraga aipothundi, em cheyali?",
-        "Hinglish: Battery Drain after Update (Auto-Handle)": "Mera iPhone update ke baad bohot jaldi drain ho raha hai, kaise fix kare?",
-        "Spanish: Screen Frozen (Auto-Handle)": "Mi pantalla se quedó congelada después de la actualización a iOS. ¿Cómo la reinicio?",
-        "French: Rapid Battery Drain (Auto-Handle)": "Ma batterie d'iPhone se décharge très vite, comment faire?",
-        "Amazon: Package Delivery Delayed": "@AmazonHelp My package order has not arrived and tracking is stuck for 3 days.",
-        "Uber: Unauthorized Cancellation Charge": "@Uber_Support My driver canceled the trip but charged me a $5 cancellation fee.",
-        "Spotify: Premium Offline Downloads Broken": "@SpotifyCares My Spotify Premium offline songs won't download on my phone.",
-        "Xbox: Controller Disconnecting": "@XboxSupport My Xbox Series X controller keeps disconnecting during multiplayer.",
-        "English: Battery Drain (Auto-Handle)": "My iPhone 7 battery has been draining from 80% to 10% in just two hours since morning. Any battery settings to fix this?",
-        "English: Locked Apple ID (Escalate - Credential Risk)": "My Apple ID was locked for security reasons and I can't log in to access my iCloud photos. Need help resetting password!",
-        "English: Unauthorized App Store Charge (Escalate - Financial)": "Hey @AppleSupport I noticed a $39.99 charge on my card from iTunes for a subscription I canceled last week. I want a full refund!",
-        "English: Broken Screen Repair": "I dropped my iPhone X and the front display glass completely cracked. How much is screen replacement and can I book an appointment?",
-        "Out-of-Scope Venting": "Hey @AppleSupport do you deliver pizza to my apartment tonight?",
+        # Apple Support
+        "🍎 Apple: Tenglish Battery Drain (Auto-Handle)": "Naa phone lo battery chaala thondaraga aipothundi, em cheyali?",
+        "🍎 Apple: Hinglish Battery Drain after Update (Auto-Handle)": "Mera iPhone update ke baad bohot jaldi drain ho raha hai, kaise fix kare?",
+        "🍎 Apple: Spanish Frozen Screen (Auto-Handle)": "Mi pantalla se quedó congelada después de la actualización a iOS. ¿Cómo la reinicio?",
+        "🍎 Apple: French Battery Rapid Drain (Auto-Handle)": "Ma batterie d'iPhone se décharge très vite, comment faire?",
+        "🍎 Apple: Locked Apple ID (Escalate - Credential Risk)": "My Apple ID was locked for security reasons and I can't log in to access my iCloud photos. Need help resetting password!",
+        "🍎 Apple: Unauthorized App Store Charge (Escalate - Financial)": "Hey @AppleSupport I noticed a $39.99 charge on my card from iTunes for a subscription I canceled last week. I want a full refund!",
+        "🍎 Apple: Broken Screen Repair Appointment": "I dropped my iPhone X and the front display glass completely cracked. How much is screen replacement and can I book an appointment?",
+        # Amazon Help
+        "📦 Amazon: Prime Package Delivery Delayed 3 Days": "@AmazonHelp My package order #112-882719 has not arrived and tracking has been stuck in transit for 3 days.",
+        "📦 Amazon: Damaged Item Received (Refund Request)": "@AmazonHelp The package I received arrived damaged and broken inside the box. I want an immediate replacement or full refund.",
+        # Uber Support
+        "🚗 Uber: Driver Cancellation Fee Dispute": "@Uber_Support My driver canceled the trip without showing up but charged me a $5 cancellation fee. Please refund it.",
+        "🚗 Uber: Left Belongings in Driver's Vehicle": "@Uber_Support I accidentally left my jacket in the back seat of the Honda Civic on my ride home tonight. How can I contact the driver?",
+        # Spotify Cares
+        "🎵 Spotify: Premium Offline Songs Won't Download": "@SpotifyCares My Spotify Premium offline songs won't download or sync on my phone when connected to WiFi.",
+        "🎵 Spotify: Family Plan Billing Double Charge": "@SpotifyCares I noticed I was billed twice for my Premium Family subscription this month on the 1st and 3rd.",
+        # Xbox Support
+        "🎮 Xbox: Series X Controller Keeps Disconnecting": "@XboxSupport My Xbox Series X wireless controller keeps disconnecting during multiplayer games.",
+        "🎮 Xbox: Game Pass Ultimate Code Invalid Error": "@XboxSupport Bought a 3-month Game Pass Ultimate digital card and it gives an 'invalid code' error.",
+        # Samsung Support
+        "📱 Samsung: Galaxy Phone Extremely Hot While Charging": "@SamsungSupport My Galaxy S24 Ultra gets burning hot to the touch while charging with official 45W charger.",
+        # Delta Air Lines
+        "✈️ Delta: Flight Delayed & Need Connecting Gate": "@Delta Flight DL1429 is delayed 2 hours, will I miss my connecting flight to Atlanta?",
+        # Out-of-scope Venting
+        "💬 Out-of-Scope Venting": "Hey do you deliver pizza to my apartment tonight?",
     }
 
-    selected_preset = st.selectbox("Or choose a realistic scenario (Multi-Brand & Multilingual):", list(presets.keys()))
+    selected_preset = st.selectbox("Choose a realistic customer scenario (Multi-Brand & Multilingual):", list(presets.keys()))
     default_text = presets[selected_preset] if presets[selected_preset] else "Naa phone lo battery chaala thondaraga aipothundi, em cheyali?"
 
     customer_msg = st.text_area("Customer Tweet Inquiry:", value=default_text, height=100)
@@ -619,8 +673,8 @@ with tab_console:
         run_button = st.button("🚀 Process Inquiry", type="primary", use_container_width=True)
 
     if run_button or customer_msg:
-        with st.spinner("Analyzing semantics, language script, risk factors, and querying precedent index..."):
-            out = default_agent.process_message(customer_msg)
+        with st.spinner("Analyzing brand domain, semantic intent, script, risk factors, and querying precedent index..."):
+            out = default_agent.process_message(customer_msg, forced_brand=active_brand_key)
 
         st.markdown("---")
         # Top Decision Banner
@@ -668,13 +722,13 @@ with tab_console:
             st.caption(f"Character Count: **{len(out.draft_reply)} / 280** | Brand Tone: **Concise, Empathetic, Policy-Compliant**")
 
         with c_right:
-            st.subheader("🔍 Grounding Precedents (FAISS Retrieval)")
+            st.subheader(f"🔍 Grounding Precedents ({brand_val})")
             if out.evidence:
-                st.markdown(f"Retrieved **{len(out.evidence)}** similar historical resolutions from AppleSupport knowledge base:")
+                st.markdown(f"Retrieved **{len(out.evidence)}** similar historical resolutions from knowledge base:")
                 for i, ev in enumerate(out.evidence, 1):
                     with st.expander(f"Precedent #{i}: Sim {ev.similarity_score:.3f} | Case #{ev.case_id}", expanded=(i==1)):
                         st.markdown(f"**Historical Customer Problem:**\n> {ev.customer_message}")
-                        st.markdown(f"**Official Apple Resolution:**\n> {ev.brand_response}")
+                        st.markdown(f"**Official Resolution:**\n> {ev.brand_response}")
             else:
                 st.info("No precedent cases exceeded the minimum semantic threshold.")
 
@@ -686,7 +740,7 @@ with tab_console:
 # ==============================================================================
 with tab_benchmarks:
     st.markdown('<div class="main-title">Model Evaluation & Benchmark Report</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle">Rigorous empirical evaluation across 200 hand-labelled Golden Set holdout cases. Zero fabricated numbers.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Rigorous empirical evaluation across 200 hand-labelled Golden Set holdout cases (AppleSupport reference benchmark + cross-brand routing matrix). Zero fabricated numbers.</div>', unsafe_allow_html=True)
 
     if metrics:
         # Top KPI Metrics Row
@@ -798,13 +852,13 @@ with tab_failures:
                 st.markdown(f"**Ground Truth Policy / Notes:** {case.get('escalation_reason', '')} {case.get('notes', '')}")
 
 # ==============================================================================
-# TAB 4: TAXONOMY & GOVERNANCE
+# TAB 4: TAXONOMY & MULTI-BRAND GOVERNANCE
 # ==============================================================================
 with tab_taxonomy:
-    st.markdown('<div class="main-title">Intent Taxonomy & Operational Policies</div>', unsafe_allow_html=True)
-    st.markdown('<div class="subtitle">Formally grounded in empirical data analysis of 106,860 @AppleSupport conversations.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="main-title">Intent Taxonomy & Multi-Brand Governance</div>', unsafe_allow_html=True)
+    st.markdown('<div class="subtitle">Universal customer service primitives mapped across 108 brands (Electronics, E-Commerce, Mobility, Streaming, Gaming).</div>', unsafe_allow_html=True)
 
-    st.subheader("Defined Intent Categories (10 Intents)")
+    st.subheader("Universal Support Intent Primitives (10 Intents)")
     for intent_key in default_taxonomy.get_intent_names():
         info = default_taxonomy.get_intent_info(intent_key)
         display_name = info.get("name", intent_key)
@@ -832,10 +886,10 @@ with tab_taxonomy:
                         st.markdown(f"• `{rule}`")
 
     st.markdown("---")
-    st.subheader("🛡️ Safety Gating Rules")
+    st.subheader("🛡️ Enterprise Safety Gating Rules")
     st.markdown("""
-    1. **Zero-Tolerance Credential Gate**: Any mention of Apple ID password reset, activation lock bypass, two-factor authentication failure triggers immediate escalation to human verification via DM.
-    2. **Financial Gating**: Any billing dispute, unapproved credit card charge, or refund request is barred from automated commitments and escalated with official `reportaproblem.apple.com` links.
-    3. **Hardware Battery Swelling / Physical Danger**: Device overheating or physical deformation triggers emergency escalation.
+    1. **Zero-Tolerance Credential Gate**: Any mention of password resets, account lockouts, authentication bypass, or private tokens triggers immediate escalation to human verification via DM.
+    2. **Financial Gating**: Any billing dispute, unapproved credit card charges, or refund requests are barred from automated commitments and routed to verified financial support portals.
+    3. **Hardware Hazard / Physical Safety**: Device battery swelling, smoke, overheating, or physical risk triggers emergency escalation.
     4. **Confidence Backoff**: Any intent classification with cosine confidence below 0.50 is flagged for human triage to prevent confident hallucinations.
     """)

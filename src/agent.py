@@ -50,13 +50,17 @@ class SupportAgent:
         exclude_case_id: Optional[str] = None,
         top_k_retrieve: int = 15,
         top_k_rerank: int = 3,
+        forced_brand: Optional[str] = None,
     ) -> AgentOutput:
         """Execute end-to-end support pipeline on an incoming customer message."""
         start_time = time.perf_counter()
         req_id = f"req_{uuid.uuid4().hex[:8]}"
 
         # Step 0: Brand & Multilingual Language Detection
-        brand_info = BrandRouter.detect_brand(customer_message)
+        if forced_brand and forced_brand in BrandRouter.get_all_brands():
+            brand_info = BrandRouter.get_brand_info(forced_brand)
+        else:
+            brand_info = BrandRouter.detect_brand(customer_message)
         normalized_query, lang_label = MultilingualProcessor.normalize_to_semantic_inquiry(customer_message)
 
         # Step 1: Intent Classification (using normalized semantic query)

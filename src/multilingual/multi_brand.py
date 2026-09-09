@@ -58,6 +58,14 @@ BRAND_PROFILES: Dict[str, Dict[str, Any]] = {
         "support_url": "https://www.samsung.com/support",
         "keywords": ["samsung", "galaxy", "z fold", "one ui", "smart tv", "bixby", "exynos", "snapdragon"],
     },
+    "Delta": {
+        "name": "Delta Air Lines",
+        "handle": "@Delta",
+        "category": "Aviation & Commercial Travel",
+        "sample_products": ["Flight Bookings", "SkyMiles", "Baggage Tracking", "Boarding Passes", "Flight Status"],
+        "support_url": "https://www.delta.com/needhelp",
+        "keywords": ["delta", "flight", "boarding", "skymiles", "baggage", "gate", "terminal", "rebook", "airport"],
+    },
 }
 
 
@@ -85,3 +93,15 @@ class BrandRouter:
             return {"brand_key": best_brand, **BRAND_PROFILES[best_brand]}
 
         return {"brand_key": default_brand, **BRAND_PROFILES[default_brand]}
+
+    @classmethod
+    def get_all_brands(cls) -> Dict[str, Dict[str, Any]]:
+        """Return all supported brand profiles."""
+        return BRAND_PROFILES.copy()
+
+    @classmethod
+    def get_brand_info(cls, brand_key: str) -> Dict[str, Any]:
+        """Return metadata for a specific brand profile."""
+        if brand_key in BRAND_PROFILES:
+            return {"brand_key": brand_key, **BRAND_PROFILES[brand_key]}
+        return {"brand_key": "AppleSupport", **BRAND_PROFILES["AppleSupport"]}
