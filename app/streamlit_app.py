@@ -37,6 +37,9 @@ st.set_page_config(
 # Sidebar - Multi-Brand Selector & Branding
 st.sidebar.markdown("### 🌐 OmniSupport AI")
 st.sidebar.markdown("**Enterprise Multi-Brand & Safety Pipeline**")
+
+# Theme Toggle Button - Pinned at the top for instant accessibility
+dark_mode = st.sidebar.toggle("🌙 Dark Mode", value=True, help="Toggle between Dark and Light mode themes")
 st.sidebar.markdown("---")
 
 # Brand Selection Controls
@@ -77,11 +80,6 @@ else:
     st.sidebar.caption("Auto-routes Apple, Amazon, Uber, Spotify, Xbox, Samsung, Delta, and more.")
 
 st.sidebar.markdown("---")
-
-# Theme Toggle Button
-dark_mode = st.sidebar.toggle("🌙 Dark Mode", value=False, help="Toggle between Dark and Light mode themes")
-
-st.sidebar.markdown("---")
 st.sidebar.markdown("### ⚙️ System Status")
 st.sidebar.markdown("• **Pipeline:** Active (CPU-Optimized)")
 st.sidebar.markdown("• **Precedent Index:** 5,030 Cases (FAISS)")
@@ -112,6 +110,16 @@ if dark_mode:
             color: #F8FAFC !important;
         }
         
+        /* Inline Code Blocks */
+        code {
+            background-color: #1E293B !important;
+            color: #38BDF8 !important;
+            border: 1px solid #334155 !important;
+            padding: 0.15rem 0.45rem !important;
+            border-radius: 6px !important;
+            font-size: 0.88em !important;
+        }
+        
         /* Sidebar */
         [data-testid="stSidebar"] {
             background-color: #070D18 !important;
@@ -122,6 +130,17 @@ if dark_mode:
         }
         [data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
             color: #FFFFFF !important;
+        }
+        [data-testid="stSidebar"] p, [data-testid="stSidebar"] span, [data-testid="stSidebar"] label {
+            color: #CBD5E1 !important;
+        }
+        [data-testid="stSidebar"] small, [data-testid="stSidebar"] caption {
+            color: #94A3B8 !important;
+        }
+        [data-testid="stSidebar"] code {
+            background-color: #1E293B !important;
+            color: #38BDF8 !important;
+            border: 1px solid #334155 !important;
         }
         
         /* Top Navigation Bar Branding Banner */
@@ -237,7 +256,30 @@ if dark_mode:
             box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
         }
         
-        /* Metric Cards */
+        /* Streamlit Native Metric Overrides */
+        div[data-testid="stMetric"] {
+            background-color: #1E293B !important;
+            border: 1px solid #334155 !important;
+            border-radius: 10px !important;
+            padding: 0.9rem 1.1rem !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
+        }
+        div[data-testid="stMetric"] label,
+        div[data-testid="stMetricLabel"] *,
+        div[data-testid="stMetricLabel"] {
+            color: #94A3B8 !important;
+            font-size: 0.85rem !important;
+            font-weight: 600 !important;
+        }
+        div[data-testid="stMetric"] [data-testid="stMetricValue"] *,
+        div[data-testid="stMetricValue"] *,
+        div[data-testid="stMetricValue"] {
+            color: #38BDF8 !important;
+            font-size: 1.65rem !important;
+            font-weight: 700 !important;
+        }
+        
+        /* Custom Metric Cards */
         .metric-card {
             background-color: #1E293B !important;
             border: 1px solid #334155 !important;
@@ -298,20 +340,66 @@ if dark_mode:
         }
         div[data-baseweb="select"] * {
             color: #F8FAFC !important;
+            background-color: transparent !important;
+        }
+        div[data-baseweb="popover"] ul {
+            background-color: #1E293B !important;
+            border: 1px solid #334155 !important;
+        }
+        div[data-baseweb="popover"] li {
+            color: #F8FAFC !important;
+            background-color: #1E293B !important;
+        }
+        div[data-baseweb="popover"] li:hover {
+            background-color: #243044 !important;
         }
         
-        /* Expanders */
+        /* Expanders - Solid dark header with NO white background */
         div[data-testid="stExpander"] {
             background-color: #1E293B !important;
             border: 1px solid #334155 !important;
-            border-radius: 8px;
+            border-radius: 10px !important;
+            overflow: hidden !important;
+            margin-bottom: 0.8rem !important;
+        }
+        div[data-testid="stExpander"] details {
+            background-color: #1E293B !important;
         }
         div[data-testid="stExpander"] summary {
+            background-color: #1E293B !important;
             color: #F8FAFC !important;
-            font-weight: 600;
+            font-weight: 600 !important;
+            padding: 0.75rem 1rem !important;
+            border: none !important;
         }
-        div[data-testid="stExpander"] summary:hover {
+        div[data-testid="stExpander"] summary * {
+            background-color: transparent !important;
+            color: #F8FAFC !important;
+        }
+        div[data-testid="stExpander"] summary:hover,
+        div[data-testid="stExpander"] details[open] > summary {
+            background-color: #243044 !important;
             color: #38BDF8 !important;
+        }
+        div[data-testid="stExpander"] summary:hover *,
+        div[data-testid="stExpander"] details[open] > summary * {
+            color: #38BDF8 !important;
+        }
+        div[data-testid="stExpander"] [data-testid="stExpanderDetails"] {
+            background-color: #0F172A !important;
+            border-top: 1px solid #334155 !important;
+            padding: 1rem 1.2rem !important;
+        }
+        div[data-testid="stExpander"] [data-testid="stExpanderDetails"] * {
+            color: #E2E8F0 !important;
+        }
+        blockquote {
+            color: #CBD5E1 !important;
+            border-left: 3px solid #38BDF8 !important;
+            background: rgba(56, 189, 248, 0.08) !important;
+            padding: 0.6rem 0.9rem !important;
+            border-radius: 0 6px 6px 0 !important;
+            margin: 0.5rem 0 !important;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -342,6 +430,16 @@ else:
             color: #475569 !important;
         }
         
+        /* Inline Code Blocks */
+        code {
+            background-color: #F1F5F9 !important;
+            color: #0F172A !important;
+            border: 1px solid #CBD5E1 !important;
+            padding: 0.15rem 0.45rem !important;
+            border-radius: 6px !important;
+            font-size: 0.88em !important;
+        }
+        
         /* Sidebar - High contrast, 100% visible text */
         [data-testid="stSidebar"] {
             background-color: #FFFFFF !important;
@@ -363,6 +461,11 @@ else:
         }
         [data-testid="stSidebar"] small, [data-testid="stSidebar"] caption {
             color: #64748B !important;
+        }
+        [data-testid="stSidebar"] code {
+            background-color: #F1F5F9 !important;
+            color: #0F172A !important;
+            border: 1px solid #CBD5E1 !important;
         }
         
         /* Top Navigation Bar Branding Banner */
@@ -478,7 +581,30 @@ else:
             box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2);
         }
         
-        /* Metric Cards */
+        /* Streamlit Native Metric Overrides */
+        div[data-testid="stMetric"] {
+            background-color: #FFFFFF !important;
+            border: 1px solid #E2E8F0 !important;
+            border-radius: 10px !important;
+            padding: 0.9rem 1.1rem !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+        }
+        div[data-testid="stMetric"] label,
+        div[data-testid="stMetricLabel"] *,
+        div[data-testid="stMetricLabel"] {
+            color: #64748B !important;
+            font-size: 0.85rem !important;
+            font-weight: 600 !important;
+        }
+        div[data-testid="stMetric"] [data-testid="stMetricValue"] *,
+        div[data-testid="stMetricValue"] *,
+        div[data-testid="stMetricValue"] {
+            color: #2563EB !important;
+            font-size: 1.65rem !important;
+            font-weight: 700 !important;
+        }
+        
+        /* Custom Metric Cards */
         .metric-card {
             background-color: #FFFFFF !important;
             border: 1px solid #E2E8F0 !important;
@@ -539,28 +665,67 @@ else:
         }
         div[data-baseweb="select"] * {
             color: #0F172A !important;
+            background-color: transparent !important;
+        }
+        div[data-baseweb="popover"] ul {
+            background-color: #FFFFFF !important;
+            border: 1px solid #CBD5E1 !important;
+        }
+        div[data-baseweb="popover"] li {
+            color: #0F172A !important;
+            background-color: #FFFFFF !important;
+        }
+        div[data-baseweb="popover"] li:hover {
+            background-color: #F1F5F9 !important;
         }
         
         /* Expanders */
         div[data-testid="stExpander"] {
             background-color: #FFFFFF !important;
             border: 1px solid #E2E8F0 !important;
-            border-radius: 8px;
+            border-radius: 10px !important;
+            overflow: hidden !important;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            margin-bottom: 0.8rem !important;
+        }
+        div[data-testid="stExpander"] details {
+            background-color: #FFFFFF !important;
         }
         div[data-testid="stExpander"] summary {
+            background-color: #F8FAFC !important;
             color: #0F172A !important;
-            font-weight: 600;
+            font-weight: 600 !important;
+            padding: 0.75rem 1rem !important;
+            border: none !important;
         }
-        div[data-testid="stExpander"] summary:hover {
+        div[data-testid="stExpander"] summary * {
+            background-color: transparent !important;
+            color: #0F172A !important;
+        }
+        div[data-testid="stExpander"] summary:hover,
+        div[data-testid="stExpander"] details[open] > summary {
+            background-color: #EFF6FF !important;
             color: #2563EB !important;
         }
-        div[data-testid="stExpander"] * {
+        div[data-testid="stExpander"] summary:hover *,
+        div[data-testid="stExpander"] details[open] > summary * {
+            color: #2563EB !important;
+        }
+        div[data-testid="stExpander"] [data-testid="stExpanderDetails"] {
+            background-color: #FFFFFF !important;
+            border-top: 1px solid #E2E8F0 !important;
+            padding: 1rem 1.2rem !important;
+        }
+        div[data-testid="stExpander"] [data-testid="stExpanderDetails"] * {
             color: #0F172A !important;
         }
-        div[data-testid="stExpander"] blockquote {
+        blockquote {
             color: #334155 !important;
-            border-left: 3px solid #CBD5E1 !important;
+            border-left: 3px solid #2563EB !important;
+            background: #F8FAFC !important;
+            padding: 0.6rem 0.9rem !important;
+            border-radius: 0 6px 6px 0 !important;
+            margin: 0.5rem 0 !important;
         }
     </style>
     """, unsafe_allow_html=True)
