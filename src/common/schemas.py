@@ -91,6 +91,8 @@ class AgentOutput(BaseModel):
     """Complete trace of the agent's decision and generation."""
     request_id: str
     customer_message: str
+    brand: str = "AppleSupport"
+    language: str = "English"
     intent: IntentPrediction
     risk: RiskAssessment
     evidence: List[EvidenceItem] = Field(default_factory=list)

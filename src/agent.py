@@ -19,6 +19,8 @@ from src.retrieval.rerank import CaseReranker
 from src.retrieval.evidence import EvidenceValidator
 from src.routing.router import default_router, OperationalRouter
 from src.generation.generator import default_generator, ReplyGenerator
+from src.multilingual.normalizer import MultilingualProcessor
+from src.multilingual.multi_brand import BrandRouter
 
 
 class SupportAgent:
@@ -53,19 +55,23 @@ class SupportAgent:
         start_time = time.perf_counter()
         req_id = f"req_{uuid.uuid4().hex[:8]}"
 
-        # Step 1: Intent Classification
-        intent = self.classifier.predict_one(customer_message)
+        # Step 0: Brand & Multilingual Language Detection
+        brand_info = BrandRouter.detect_brand(customer_message)
+        normalized_query, lang_label = MultilingualProcessor.normalize_to_semantic_inquiry(customer_message)
+
+        # Step 1: Intent Classification (using normalized semantic query)
+        intent = self.classifier.predict_one(normalized_query)
 
         # Step 2: Risk Assessment
         risk = self.risk_classifier.evaluate_risk(
-            customer_message,
+            normalized_query,
             intent.intent,
             intent.confidence,
         )
 
         # Step 3: Semantic Retrieval from FAISS Knowledge Base
         raw_evidence = self.retriever.retrieve(
-            customer_message,
+            normalized_query,
             top_k=top_k_retrieve,
             exclude_case_id=exclude_case_id,
         )
@@ -108,6 +114,8 @@ class SupportAgent:
         return AgentOutput(
             request_id=req_id,
             customer_message=customer_message,
+            brand=brand_info["name"],
+            language=lang_label,
             intent=intent,
             risk=risk,
             evidence=reranked_evidence,

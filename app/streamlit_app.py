@@ -304,16 +304,23 @@ if page == "Live Support Console":
     # Preset selector
     presets = {
         "Custom Message": "",
-        "Battery Drain (Auto-Handle)": "My iPhone 7 battery has been draining from 80% to 10% in just two hours since morning. Any battery settings to fix this?",
-        "Locked Apple ID (Escalate - Credential Risk)": "My Apple ID was locked for security reasons and I can't log in to access my iCloud photos. Need help resetting password!",
-        "Unauthorized App Store Charge (Escalate - Financial)": "Hey @AppleSupport I noticed a $39.99 charge on my card from iTunes for a subscription I canceled last week. I want a full refund!",
-        "Broken Screen / Repair (Auto/Escalate)": "I dropped my iPhone X and the front display glass completely cracked. How much is screen replacement and can I book an appointment?",
-        "Wi-Fi Connectivity (Auto-Handle)": "My iPhone keeps dropping Wi-Fi connection every few minutes while my laptop works fine. How do I reset network settings?",
+        "Tenglish: Battery Drain (Auto-Handle)": "Naa phone lo battery chaala thondaraga aipothundi, em cheyali?",
+        "Hinglish: Battery Drain after Update (Auto-Handle)": "Mera iPhone update ke baad bohot jaldi drain ho raha hai, kaise fix kare?",
+        "Spanish: Screen Frozen (Auto-Handle)": "Mi pantalla se quedó congelada después de la actualización a iOS. ¿Cómo la reinicio?",
+        "French: Rapid Battery Drain (Auto-Handle)": "Ma batterie d'iPhone se décharge très vite, comment faire?",
+        "Amazon: Package Delivery Delayed": "@AmazonHelp My package order has not arrived and tracking is stuck for 3 days.",
+        "Uber: Unauthorized Cancellation Charge": "@Uber_Support My driver canceled the trip but charged me a $5 cancellation fee.",
+        "Spotify: Premium Offline Downloads Broken": "@SpotifyCares My Spotify Premium offline songs won't download on my phone.",
+        "Xbox: Controller Disconnecting": "@XboxSupport My Xbox Series X controller keeps disconnecting during multiplayer.",
+        "English: Battery Drain (Auto-Handle)": "My iPhone 7 battery has been draining from 80% to 10% in just two hours since morning. Any battery settings to fix this?",
+        "English: Locked Apple ID (Escalate - Credential Risk)": "My Apple ID was locked for security reasons and I can't log in to access my iCloud photos. Need help resetting password!",
+        "English: Unauthorized App Store Charge (Escalate - Financial)": "Hey @AppleSupport I noticed a $39.99 charge on my card from iTunes for a subscription I canceled last week. I want a full refund!",
+        "English: Broken Screen Repair": "I dropped my iPhone X and the front display glass completely cracked. How much is screen replacement and can I book an appointment?",
         "Out-of-Scope Venting": "Hey @AppleSupport do you deliver pizza to my apartment tonight?",
     }
 
-    selected_preset = st.selectbox("Or choose a realistic inquiry scenario:", list(presets.keys()))
-    default_text = presets[selected_preset] if presets[selected_preset] else "My iPhone 6s battery is draining super fast after the update. What can I do?"
+    selected_preset = st.selectbox("Or choose a realistic scenario (Multi-Brand & Multilingual):", list(presets.keys()))
+    default_text = presets[selected_preset] if presets[selected_preset] else "Naa phone lo battery chaala thondaraga aipothundi, em cheyali?"
 
     customer_msg = st.text_area("Customer Tweet Inquiry:", value=default_text, height=100)
 
@@ -322,7 +329,7 @@ if page == "Live Support Console":
         run_button = st.button("🚀 Process Inquiry", type="primary", use_container_width=True)
 
     if run_button or customer_msg:
-        with st.spinner("Analyzing semantics, assessing risk factors, and querying precedent index..."):
+        with st.spinner("Analyzing semantics, language script, risk factors, and querying precedent index..."):
             out = default_agent.process_message(customer_msg)
 
         st.markdown("---")
@@ -335,7 +342,7 @@ if page == "Live Support Console":
                 st.markdown('<div class="decision-badge-esc">⚠️ ESCALATE TO HUMAN</div>', unsafe_allow_html=True)
         with banner_col2:
             st.markdown(f"**Operational Rationale:** {out.decision.reason}")
-            st.caption(f"⚡ Pipeline Latency: **{out.latency_ms:.1f} ms** | Evidence Grounded: **{out.evidence_grounded}**")
+            st.caption(f"🏢 Domain: **{out.brand}** | 🌐 Detected Language: **{out.language}** | ⚡ Latency: **{out.latency_ms:.1f} ms** | Evidence Grounded: **{out.evidence_grounded}**")
 
         st.markdown("")
 
