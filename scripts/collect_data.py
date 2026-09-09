@@ -20,6 +20,9 @@ from typing import List, Dict, Any, Optional
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from src.common.config import DATA_SAMPLE_DIR
 from src.data.clean import clean_tweet_text
 from src.retrieval.index import SupportCaseIndex
@@ -165,7 +168,38 @@ def collect_via_free_sources(count: int = 50) -> List[Dict[str, Any]]:
                     break
 
     except Exception as e:
-        print(f"[Free Collector] Notice: Public network feed temporarily limited ({e}).")
+        print(f"[Free Collector] Public web feed limited ({e}). Falling back to authentic verified cases pool...")
+
+    # Fallback / Augment from the 58,000+ un-indexed authentic cases in data/processed/knowledge_base.jsonl
+    if len(cases) < count:
+        from src.common.config import DATA_PROCESSED_DIR
+        pool_file = DATA_PROCESSED_DIR / "knowledge_base.jsonl"
+
+        if pool_file.exists():
+            print(f"[Free Collector] Pulling fresh cases from verified knowledge base pool (58k+ available)...")
+            # Get existing IDs already in sample to avoid duplicates
+            existing_ids = set()
+            if OUTPUT_FILE.exists():
+                with open(OUTPUT_FILE, "r", encoding="utf-8") as f:
+                    for line in f:
+                        if line.strip():
+                            existing_ids.add(json.loads(line).get("conversation_id"))
+
+            with open(pool_file, "r", encoding="utf-8") as pf:
+                for line in pf:
+                    if not line.strip():
+                        continue
+                    rec = json.loads(line)
+                    cid = rec.get("conversation_id")
+                    if cid and cid not in existing_ids:
+                        prob = rec.get("initial_customer_problem", "")
+                        res = rec.get("resolution", "")
+                        if len(prob) >= 20 and len(res) >= 20:
+                            cases.append(rec)
+                            existing_ids.add(cid)
+                            print(f"  [+] Ingested verified case {cid}: '{prob[:50]}...'")
+                            if len(cases) >= count:
+                                break
 
     return cases
 
