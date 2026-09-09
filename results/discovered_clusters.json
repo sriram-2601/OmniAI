@@ -1,0 +1,252 @@
+[
+  {
+    "cluster_id": 0,
+    "size": 4559,
+    "percentage": 30.39,
+    "top_terms": [
+      "phone",
+      "applesupport",
+      "iphone",
+      "update",
+      "ios11",
+      "fix",
+      "just",
+      "app",
+      "apps",
+      "time",
+      "working",
+      "does"
+    ],
+    "sample_texts": [
+      "Howdy. Today I started getting a \"No Sim Card Installed\" message on my iPhone 6. I'm running 9.2.1 ???",
+      "Awrite av got a problem with my iPhone",
+      "Is family shared iCloud storage a functionality I can't find or is this something that doesn't exist (yet)?",
+      "Anyone else getting the voice control bug on ios10? It's driving me insane! #ios10bugs #voicecontrolbug @applesupport"
+    ]
+  },
+  {
+    "cluster_id": 1,
+    "size": 917,
+    "percentage": 6.11,
+    "top_terms": [
+      "apple",
+      "watch",
+      "apple watch",
+      "sierra",
+      "high sierra",
+      "high",
+      "macbook",
+      "applesupport",
+      "screen",
+      "id",
+      "apple id",
+      "macbook pro"
+    ],
+    "sample_texts": [
+      "My icloud account has been locked for security reasons. Even my Apple ID is locked. I can't receive my confirmation code.",
+      "Hi, is it possible to link my Hive lights/hub to Apple HomeKit?",
+      "- how do I track a weight lifting workout on my Apple Watch Series 2 as an Activity\"?I feel like I'm not getting credit",
+      "unintentionally running High Sierra Public Beta; 10.12.6 update caused blank screen after login and then endless spinner, @AppleSupport?"
+    ]
+  },
+  {
+    "cluster_id": 2,
+    "size": 1029,
+    "percentage": 6.86,
+    "top_terms": [
+      "battery",
+      "life",
+      "battery life",
+      "ios11",
+      "iphone",
+      "update",
+      "draining",
+      "applesupport",
+      "fix",
+      "11",
+      "user",
+      "hey"
+    ],
+    "sample_texts": [
+      "So not only am I locked out of my iTunes, but this update is also killing my battery \ud83d\ude16\ud83d\ude21 #iphoneproblems why [USER] why?!?! \ud83d\udc7a\ud83d\udc7a",
+      "Ever since the last update, my battery has been running down pretty fast! Sometimes within minutes, it's out. Please advise.",
+      "Love my new MacBook Pro... Hate the fact my 6 year old Pro has better battery life than this brand new one\ud83d\ude12 #Applefails [USER] @AppleSupport",
+      "#apple #iphone #ois11 never had my battery drain this bad ever!!! As I\u2019m typing it\u2019s down to 16% [URL]"
+    ]
+  },
+  {
+    "cluster_id": 3,
+    "size": 473,
+    "percentage": 3.15,
+    "top_terms": [
+      "new update",
+      "new",
+      "update",
+      "user",
+      "phone",
+      "applesupport",
+      "applesupport user",
+      "iphone",
+      "battery",
+      "fix",
+      "keeps",
+      "freezing"
+    ],
+    "sample_texts": [
+      "why does your new update require 3 passwords including an iCloud security code that I cannot change even though I know it",
+      "So now #iOS11 #iCloud for #Safari doesn\u2019t work either @AppleSupport? This new update is a joke! Steve Jobs would be disgusted at the company",
+      "terrible new lock screen on up ISO 11 update can\u2019t see it",
+      "This is what my lock screen looks like, [USER] PLEASE address the bugs. I have like 4 other glitches that I can recreate with the new update \ud83d\ude23 [URL]"
+    ]
+  },
+  {
+    "cluster_id": 4,
+    "size": 2024,
+    "percentage": 13.49,
+    "top_terms": [
+      "user",
+      "phone",
+      "ios11",
+      "update",
+      "iphone",
+      "user user",
+      "applesupport",
+      "user applesupport",
+      "fix",
+      "just",
+      "shit",
+      "updated"
+    ],
+    "sample_texts": [
+      "Hei @AppleSupport, I want complain about [USER], why my account when download the app from my iPhone or Macbook very slow?",
+      "I hate [USER] why won't your products cooperate",
+      "Dear [USER] - there should not be an apostrophe in plural items (that's items, not item's) please fix this! #sickofcorrectingautocorrect",
+      "Showstopper defect in Iphone 6s. Phone hangs when we have more than 5 alarms scheduled @AppleSupport [USER]"
+    ]
+  },
+  {
+    "cluster_id": 5,
+    "size": 2461,
+    "percentage": 16.41,
+    "top_terms": [
+      "ios 11",
+      "11",
+      "ios",
+      "iphone",
+      "battery",
+      "phone",
+      "user",
+      "applesupport",
+      "fix",
+      "11 update",
+      "update",
+      "updated"
+    ],
+    "sample_texts": [
+      "My invited HomeKit user can\u2019t access home remotely with iOS 11. Its been a problem during the betas, and now the final release",
+      "Maps Will Not Start on my iPhone 6s After updating iOS 11! Reboot the iPhone and reinstall the App will Not fix the Problem",
+      "Hi. Can the faded grey and white passcode screen be changed to a sharper or darker view in IOS 11.?",
+      "having issues connecting my iPad to my personal hot spot after iOS 11"
+    ]
+  },
+  {
+    "cluster_id": 6,
+    "size": 813,
+    "percentage": 5.42,
+    "top_terms": [
+      "help",
+      "help url",
+      "url",
+      "need",
+      "need help",
+      "phone",
+      "iphone",
+      "applesupport",
+      "help applesupport",
+      "won",
+      "user",
+      "update"
+    ],
+    "sample_texts": [
+      "ugh.. Help! My MacBook Air thinks I have a Bluetooth Keyboard and trackpad are frozen #applehelp [URL]",
+      "-last night my watch went completely dead for the first time. I put it on the charger overnight and I still only see this.#help [URL]",
+      "my phone keeps saying storage almost full I've deleted apps photos and videos and it's still at the same space level help",
+      "I purchased extra storage but it's not reflecting. Can you help"
+    ]
+  },
+  {
+    "cluster_id": 7,
+    "size": 797,
+    "percentage": 5.31,
+    "top_terms": [
+      "new",
+      "update",
+      "ios update",
+      "new ios",
+      "ios",
+      "phone",
+      "update phone",
+      "iphone",
+      "user",
+      "latest",
+      "slow",
+      "latest ios"
+    ],
+    "sample_texts": [
+      "Any update on the wishlist? I had 60+ apps (can't remember them all!) in there and also want to add new ones.",
+      "I'm STILL waiting to hear why your latest update has made my phone unusable @AppleSupport \ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21\ud83d\ude21. \ud83d\ude21 \ud83d\ude21. \ud83d\ude21\ud83d\ude21\ud83d\ude21",
+      "New [USER] iOS update and now Netflix won't load in my iPad! Thanks Apple! \ud83d\ude12",
+      "My phone has lost its pace aftet iOS update. Is there any way to switch back to iOS 10.3.3?"
+    ]
+  },
+  {
+    "cluster_id": 8,
+    "size": 517,
+    "percentage": 3.45,
+    "top_terms": [
+      "music",
+      "apple music",
+      "apple",
+      "music app",
+      "playing",
+      "app",
+      "library",
+      "play",
+      "phone",
+      "user",
+      "applesupport",
+      "songs"
+    ],
+    "sample_texts": [
+      "#iOS11 bug when playing audio with bluetooth (music or spotify app): music sometimes stops for a split second :-(",
+      "Hi! My Apple Music app crashes all the time with iOS 11.0.1 \ud83d\ude22 [URL]",
+      "My phone came back from Apple service centre and now, I can\u2019t find any of my Apple Music songs or playlist even after log in.",
+      "Does anyone know why Apple Music just pops up this window everytime you play a song in the new iOS and won\u2019t let you listen? @AppleSupport [URL]"
+    ]
+  },
+  {
+    "cluster_id": 9,
+    "size": 1410,
+    "percentage": 9.4,
+    "top_terms": [
+      "url",
+      "applesupport",
+      "applesupport url",
+      "user",
+      "app",
+      "ios11",
+      "user url",
+      "bug",
+      "screen",
+      "iphone",
+      "fix",
+      "user applesupport"
+    ],
+    "sample_texts": [
+      "how do I delete apps if this is what shows when I press and hold an app [URL]",
+      "my touch bar isn't working! [URL]",
+      "hi, my MacBook pro always shows: usb accessories disabled, when I just open it without any operation. How to solve it? [URL]",
+      "Thank you, [USER], for this helpful message when trying to open [URL] and it fails: [URL]"
+    ]
+  }
+]

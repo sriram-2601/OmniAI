@@ -1,0 +1,26 @@
+# Operational Decision & Safety Routing Thresholds
+# Tuned on validation data to optimize SAFE AUTOMATION over aggressive automation
+
+thresholds:
+  # Minimum classifier confidence required to accept predicted intent
+  min_intent_confidence: 0.35
+
+  # Semantic similarity thresholds for retrieved historical precedent
+  min_evidence_similarity: 0.45
+  high_evidence_similarity: 0.65
+
+  # Escalation Policy Gates
+  # Only cases meeting ALL criteria below are eligible for AUTO_HANDLE:
+  auto_handle_rules:
+    max_permitted_risk_level: "LOW"
+    min_intent_confidence: 0.40
+    min_evidence_relevance: 0.48
+    require_grounded_resolution: true
+
+  # Reranking weights
+  reranking:
+    weight_semantic: 0.55
+    weight_lexical: 0.25
+    weight_substance: 0.20
+    top_candidates_to_rerank: 15
+    top_candidates_to_return: 3

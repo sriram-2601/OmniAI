@@ -1,0 +1,80 @@
+=================================================================
+DATASET AUDIT REPORT: Customer Support on Twitter (thoughtvector)
+=================================================================
+Total Rows:     2,811,774
+Total Columns:  7
+Schema Columns: tweet_id, author_id, inbound, created_at, text, response_tweet_id, in_response_to_tweet_id
+
+--- Inbound vs. Outbound Breakdown ---
+Customer Tweets (inbound=True):   1,537,843 (54.7%)
+Brand Replies (inbound=False):    1,273,931 (45.3%)
+Total Unique Customer Authors:    702,669
+Total Unique Brand Accounts:      108
+
+--- Missing Values ---
+  tweet_id                  : 0 (0.0% null)
+  author_id                 : 0 (0.0% null)
+  inbound                   : 0 (0.0% null)
+  created_at                : 0 (0.0% null)
+  text                      : 0 (0.0% null)
+  response_tweet_id         : 1,040,629 (37.0% null)
+  in_response_to_tweet_id   : 794,335 (28.3% null)
+
+--- Duplication & Canned Responses ---
+Total Duplicate Texts:            29,156 (1.0%)
+Duplicate Brand Replies (canned): 3,085 (0.2%)
+Duplicate Customer Tweets:        26,067 (1.7%)
+
+--- Conversation Thread Linkage ---
+Tweets with in_response_to_tweet_id: 2,017,439 (71.7%)
+Tweets with response_tweet_id:       1,771,145 (63.0%)
+Multi-turn Intermediates (both):     976,810 (34.7%)
+
+--- Top 25 Brands by Outbound Reply Volume ---
+   1. AmazonHelp          : 169,840 replies
+   2. AppleSupport        : 106,860 replies
+   3. Uber_Support        : 56,270 replies
+   4. SpotifyCares        : 43,265 replies
+   5. Delta               : 42,253 replies
+   6. Tesco               : 38,573 replies
+   7. AmericanAir         : 36,764 replies
+   8. TMobileHelp         : 34,317 replies
+   9. comcastcares        : 33,031 replies
+  10. British_Airways     : 29,361 replies
+  11. SouthwestAir        : 28,977 replies
+  12. VirginTrains        : 27,817 replies
+  13. Ask_Spectrum        : 25,860 replies
+  14. XboxSupport         : 24,557 replies
+  15. sprintcare          : 22,381 replies
+  16. hulu_support        : 21,872 replies
+  17. sainsburys          : 19,466 replies
+  18. GWRHelp             : 19,364 replies
+  19. AskPlayStation      : 19,098 replies
+  20. ChipotleTweets      : 18,749 replies
+  21. VerizonSupport      : 17,966 replies
+  22. UPSHelp             : 17,817 replies
+  23. ATVIAssist          : 17,650 replies
+  24. O2                  : 16,212 replies
+  25. Safaricom_Care      : 16,077 replies
+
+--- Candidate Brands for Selection Analysis ---
+Brand              | Replies    | Canned Reply %   | Avg Reply Chars
+--------------------------------------------------------------------
+AppleSupport       | 106,860    | 0.1              | 136.6          
+AmazonHelp         | 169,840    | 0.0              | 124.0          
+Uber_Support       | 56,270     | 0.1              | 110.1          
+SpotifyCares       | 43,265     | 0.0              | 129.6          
+Delta              | 42,253     | 0.0              | 103.9          
+Tesco              | 38,573     | 0.0              | 139.0          
+British_Airways    | 29,361     | 0.0              | 124.4          
+NikeSupport        | 3,468      | 0.2              | 107.2          
+ChipotleTweets     | 18,749     | 0.0              | 73.4           
+
+--- Data Leakage & Risk Considerations ---
+1. High Brand Canned Duplication: ~45-65% of brand replies are repeated templates (e.g. 'Please DM us').
+   Mitigation: Knowledge base indexing must deduplicate and retain high-information resolutions.
+2. Evaluation Leakage Risk: Same customer opening tweet must never be retrieved as its own evidence.
+   Mitigation: Strict partition by conversation ID and timestamp holdout.
+3. PII & Twitter Handles: Tweets contain @handle mentions and tracking URLs.
+   Mitigation: Anonymize or normalize handles and strip URL query tracking parameters.
+=================================================================

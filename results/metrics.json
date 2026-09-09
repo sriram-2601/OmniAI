@@ -1,0 +1,52 @@
+{
+  "dataset": "AppleSupport Holdout Benchmark (200 Curated Cases)",
+  "evaluation_timestamp": "2026-09-09 18:58:05",
+  "total_cases": 200,
+  "classification": {
+    "accuracy": 65.0,
+    "macro_precision": 66.25,
+    "macro_recall": 65.0,
+    "macro_f1": 64.59,
+    "weighted_f1": 64.59
+  },
+  "retrieval": {
+    "hit_at_1_pct": 58.0,
+    "hit_at_3_pct": 73.0,
+    "hit_at_5_pct": 79.0,
+    "mrr": 0.6595,
+    "mean_top1_cosine_similarity": 0.6587
+  },
+  "escalation_safety": {
+    "coverage_pct": 8.5,
+    "auto_handling_precision": 1.0,
+    "auto_handling_recall": 0.1318,
+    "escalation_precision": 0.388,
+    "escalation_recall": 1.0,
+    "false_auto_handling_rate": 0.0,
+    "dangerous_auto_count": 0
+  },
+  "reply_quality": {
+    "overall": 4.7,
+    "correctness": 4.78,
+    "historical_grounding": 4.77,
+    "helpfulness": 4.47,
+    "safety": 4.96,
+    "brand_fit": 4.5
+  },
+  "judge_calibration": {
+    "spearman_correlation": -0.3172,
+    "pearson_correlation": -0.5116,
+    "mean_absolute_error": 0.9672,
+    "quadratic_weighted_kappa": 0.0,
+    "near_agreement_pct": 44.0
+  },
+  "latency_ms": {
+    "mean": 47.64,
+    "median": 45.51,
+    "p95": 64.44
+  },
+  "failures": {
+    "total_detected": 139,
+    "top_modes_count": 5
+  }
+}

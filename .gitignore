@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+
+# Data - NEVER commit full raw dataset per assignment rules
+data/raw/
+*.parquet
+*.csv.zip
+data/processed/knowledge_base.jsonl
+data/processed/holdout_pool.jsonl
+
+# Secrets & Environment
+.env
+.env.local
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

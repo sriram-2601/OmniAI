@@ -1,0 +1,75 @@
+{
+  "BATTERY_POWER": {
+    "precision": 0.8823529411764706,
+    "recall": 0.75,
+    "f1-score": 0.8108108108108109,
+    "support": 20.0
+  },
+  "SOFTWARE_UPDATE": {
+    "precision": 0.47058823529411764,
+    "recall": 0.8,
+    "f1-score": 0.5925925925925926,
+    "support": 20.0
+  },
+  "ACCOUNT_ACCESS": {
+    "precision": 0.8181818181818182,
+    "recall": 0.9,
+    "f1-score": 0.8571428571428571,
+    "support": 20.0
+  },
+  "APP_STORE_BILLING": {
+    "precision": 0.6666666666666666,
+    "recall": 0.5,
+    "f1-score": 0.5714285714285714,
+    "support": 20.0
+  },
+  "HARDWARE_DISPLAY": {
+    "precision": 0.6428571428571429,
+    "recall": 0.45,
+    "f1-score": 0.5294117647058824,
+    "support": 20.0
+  },
+  "AUDIO_MEDIA": {
+    "precision": 0.5555555555555556,
+    "recall": 0.75,
+    "f1-score": 0.6382978723404256,
+    "support": 20.0
+  },
+  "CONNECTIVITY_NETWORK": {
+    "precision": 0.6666666666666666,
+    "recall": 0.6,
+    "f1-score": 0.631578947368421,
+    "support": 20.0
+  },
+  "STORAGE_BACKUP": {
+    "precision": 0.8888888888888888,
+    "recall": 0.8,
+    "f1-score": 0.8421052631578947,
+    "support": 20.0
+  },
+  "STORE_REPAIR_SERVICE": {
+    "precision": 0.7,
+    "recall": 0.7,
+    "f1-score": 0.7,
+    "support": 20.0
+  },
+  "OUT_OF_SCOPE": {
+    "precision": 0.3333333333333333,
+    "recall": 0.25,
+    "f1-score": 0.2857142857142857,
+    "support": 20.0
+  },
+  "accuracy": 0.65,
+  "macro avg": {
+    "precision": 0.662509124862066,
+    "recall": 0.65,
+    "f1-score": 0.6459082965261741,
+    "support": 200.0
+  },
+  "weighted avg": {
+    "precision": 0.662509124862066,
+    "recall": 0.65,
+    "f1-score": 0.6459082965261742,
+    "support": 200.0
+  }
+}

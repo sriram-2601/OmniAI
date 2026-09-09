@@ -1,0 +1,73 @@
+{
+  "total_failures_detected": 2,
+  "top_failure_modes": [
+    {
+      "category_key": "COMPOUND_MULTI_INTENT",
+      "title": "Compound / Multi-Intent Ambiguity",
+      "count": 1,
+      "description": "Customer inquiry contains multiple distinct issues (e.g., iOS update failure and battery drain). Single-label classification captures only one aspect or strays.",
+      "actionable_mitigation": "Migrate to multi-label intent prediction with priority hierarchy (e.g. safety/power issues triage first), or trigger a clarifying question.",
+      "representative_examples": [
+        {
+          "case_id": "gold_test_01",
+          "customer_message": "My iOS update broke wifi and drained battery",
+          "expected_intent": "BATTERY_POWER",
+          "predicted_intent": "SOFTWARE_UPDATE",
+          "intent_confidence": null,
+          "expected_action": "AUTO_HANDLE",
+          "actual_decision": "ESCALATE",
+          "escalation_reason": null,
+          "draft_reply": null,
+          "judge_overall": 4.5,
+          "judge_reason": null
+        }
+      ]
+    },
+    {
+      "category_key": "SLANG_COLLOQUIALISM",
+      "title": "Informal Slang, Sarcasm, and Sarcastic Venting",
+      "count": 0,
+      "description": "Customer expresses frustration with Twitter slang, idioms, or sarcasm without naming specific technical symptoms, confusing semantic embeddings.",
+      "actionable_mitigation": "Augment intent training embeddings with colloquial Twitter support paraphrases and sentiment-aware intent backoff.",
+      "representative_examples": []
+    },
+    {
+      "category_key": "RARE_HARDWARE_VARIANT",
+      "title": "Rare Hardware Variants & Obsolete Accessories",
+      "count": 0,
+      "description": "Customer inquires about vintage devices (e.g. iPod Classic, iPhone 4s) or specific third-party dongles with low representation in historical knowledge base.",
+      "actionable_mitigation": "Implement device entity extraction; if device is end-of-life or accessory is third-party, escalate immediately with clear vintage device disclosure.",
+      "representative_examples": []
+    },
+    {
+      "category_key": "OVER_CAUTIOUS_FALSE_ESCALATION",
+      "title": "Over-Cautious False Escalations (Keyword False Positives)",
+      "count": 1,
+      "description": "Customer mentions 'account' or 'ID' in an informational/benign context (e.g., 'logged in with Apple ID, how do I change wallpaper?'), falsely tripping credential risk gates.",
+      "actionable_mitigation": "Contextualize risk detection using dependency parsing or LLM-based risk classifier rather than raw keyword triggers.",
+      "representative_examples": [
+        {
+          "case_id": "gold_test_02",
+          "customer_message": "Logged into my account and need to change my wallpaper",
+          "expected_intent": "HARDWARE_DISPLAY",
+          "predicted_intent": "HARDWARE_DISPLAY",
+          "intent_confidence": null,
+          "expected_action": "AUTO_HANDLE",
+          "actual_decision": "ESCALATE",
+          "escalation_reason": null,
+          "draft_reply": null,
+          "judge_overall": 4.5,
+          "judge_reason": null
+        }
+      ]
+    },
+    {
+      "category_key": "PRECEDENT_GENERALIZATION",
+      "title": "Precedent Generalization / Canned Deflection",
+      "count": 0,
+      "description": "Retriever returns generic troubleshooting steps (e.g., restart device) when the customer has an exact error code or obscure bug needing specific documentation.",
+      "actionable_mitigation": "Incorporate sparse BM25 / exact token matching for numerical error codes (e.g., 'Error 3194', '0xE80000A') alongside dense semantic search.",
+      "representative_examples": []
+    }
+  ]
+}

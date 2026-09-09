@@ -1,0 +1,110 @@
+"""Evidence-grounded reply generation module with LLM integration and deterministic synthesis."""
+from __future__ import annotations
+
+import json
+import re
+from typing import List, Tuple, Dict, Any, Optional
+
+from src.common.schemas import EvidenceItem, RiskAssessment, IntentPrediction, RoutingDecision
+from src.generation.prompts import SYSTEM_PROMPT_TEMPLATE, USER_PROMPT_TEMPLATE, format_evidence_context
+from src.common.llm import default_llm_client
+
+
+class ReplyGenerator:
+    """Generates concise, evidence-grounded Twitter support replies."""
+
+    def __init__(self, llm_client=default_llm_client):
+        self.llm_client = llm_client
+
+    def generate_reply(
+        self,
+        customer_message: str,
+        intent: IntentPrediction,
+        risk: RiskAssessment,
+        decision: RoutingDecision,
+        evidence: List[EvidenceItem],
+    ) -> Tuple[str, List[str]]:
+        """Generate a grounded reply and return (reply_text, used_evidence_ids)."""
+        evidence_context = format_evidence_context(evidence)
+        used_case_ids = [e.case_id for e in evidence[:2]]
+
+        # If decision is ESCALATE due to high risk / authentication / billing, synthesize safe handoff
+        if decision.decision == "ESCALATE":
+            if risk.level == "HIGH":
+                if intent.intent == "ACCOUNT_ACCESS":
+                    reply = (
+                        "We'd love to help with your Apple ID security. Because this involves sensitive "
+                        "account verification, please reach out to us via DM or visit https://iforgot.apple.com to begin."
+                    )
+                elif intent.intent == "APP_STORE_BILLING":
+                    reply = (
+                        "We're here to help with your billing inquiry. To securely review transactions and "
+                        "subscriptions without sharing private details, please send us a DM or check https://reportaproblem.apple.com."
+                    )
+                else:
+                    reply = (
+                        "We understand this is critical. Please send us a DM so we can securely look into this "
+                        "and connect you with our specialized support team."
+                    )
+                return reply, used_case_ids
+
+        # Attempt LLM generation if client is available
+        user_prompt = USER_PROMPT_TEMPLATE.format(
+            customer_message=customer_message,
+            intent_name=intent.intent,
+            intent_confidence=intent.confidence,
+            risk_level=risk.level,
+            decision=decision.decision,
+            decision_reason=decision.reason,
+            evidence_context=evidence_context,
+        )
+
+        try:
+            raw_response = self.llm_client.generate(
+                system_prompt=SYSTEM_PROMPT_TEMPLATE,
+                user_prompt=user_prompt,
+                temperature=0.0,
+            )
+            # Parse JSON
+            cleaned_json = raw_response.strip()
+            if "```json" in cleaned_json:
+                cleaned_json = cleaned_json.split("```json")[1].split("```")[0].strip()
+            elif "```" in cleaned_json:
+                cleaned_json = cleaned_json.split("```")[1].split("```")[0].strip()
+
+            parsed = json.loads(cleaned_json)
+            reply_text = parsed.get("reply", "")
+            case_ids = parsed.get("grounded_in_case_ids", used_case_ids)
+
+            # Enforce 280 character length limit
+            if len(reply_text) > 280:
+                reply_text = reply_text[:277] + "..."
+
+            if reply_text:
+                return reply_text, case_ids
+        except Exception:
+            # Fallback to high-fidelity historical template synthesis
+            pass
+
+        # Deterministic Grounded Fallback: Synthesize from top historical precedent
+        if evidence:
+            top_precedent = evidence[0].brand_response.strip()
+            # Clean handle tags if any
+            top_precedent = re.sub(r"^@\w+\s*", "", top_precedent)
+            # Ensure friendly Apple style opening
+            if not any(top_precedent.lower().startswith(g) for g in ["we're here", "thanks", "hello", "hi"]):
+                reply = f"We're here to help. {top_precedent}"
+            else:
+                reply = top_precedent
+
+            if len(reply) > 280:
+                reply = reply[:277] + "..."
+            return reply, used_case_ids
+
+        # Out-of-scope / zero evidence fallback
+        default_reply = "Thanks for reaching out to Apple Support. Could you share your device model and current iOS version so we can assist?"
+        return default_reply, []
+
+
+# Global instance
+default_generator = ReplyGenerator()

@@ -1,0 +1,164 @@
+# AppleSupport Intent Taxonomy (10 Operational Intents)
+# Derived empirically via TF-IDF n-gram and MiniBatchKMeans clustering on twcs.parquet
+
+intents:
+  BATTERY_POWER:
+    name: "Battery & Power Performance"
+    description: "Inquiries or complaints regarding rapid battery drain, device overheating, charging failures, unexpected shutdowns, or battery health degradation."
+    positive_examples:
+      - "My iPhone battery is draining from 100% to 20% in two hours."
+      - "Phone gets extremely hot while charging."
+      - "My phone died at 30% battery and won't turn back on."
+      - "Ever since the update my battery life is terrible."
+    negative_examples:
+      - "My screen is cracked and won't turn on."
+      - "I cannot update to iOS 11."
+    inclusion_rules:
+      - "Must specifically reference battery, charging, power, draining, overheating, or battery percentage drops."
+    exclusion_rules:
+      - "Exclude general software slowness if battery is not mentioned."
+      - "Exclude physical charger cable damage without device power issues."
+
+  SOFTWARE_UPDATE:
+    name: "Software & OS Updates"
+    description: "Issues directly caused by or occurring during iOS/macOS software updates, update installation failures, OS bugs, keyboard/autocorrect glitches, or requests to downgrade."
+    positive_examples:
+      - "Updated to iOS 11 and now my phone freezes constantly."
+      - "The capital 'I' bug is replacing my letters with weird symbols."
+      - "How can I downgrade back to iOS 10.3.3?"
+      - "My update has been stuck on 'Estimating time remaining' for 4 hours."
+    negative_examples:
+      - "My battery is draining after update. (route to BATTERY_POWER if battery is primary complaint)"
+      - "My Apple Music app won't play songs. (route to AUDIO_MEDIA)"
+    inclusion_rules:
+      - "Issues attributed to OS updates, autocorrect/keyboard system glitches, update installation freezes, or downgrade requests."
+    exclusion_rules:
+      - "If inquiry is primarily about battery life, route to BATTERY_POWER."
+      - "If inquiry is primarily about cellular connectivity, route to CONNECTIVITY_NETWORK."
+
+  ACCOUNT_ACCESS:
+    name: "Apple ID, iCloud & Account Security"
+    description: "Problems accessing Apple ID, locked accounts for security reasons, two-factor authentication (2FA) verification code failures, password resets, or suspected account compromise."
+    positive_examples:
+      - "My Apple ID has been locked for security reasons and I can't unlock it."
+      - "I'm not receiving my two-factor verification code on my trusted device."
+      - "Forgot my Apple ID password and security questions."
+      - "Someone in another country tried logging into my iCloud."
+    negative_examples:
+      - "I was charged twice for iCloud storage. (route to APP_STORE_BILLING)"
+      - "iCloud photo sync isn't finishing. (route to STORAGE_BACKUP)"
+    inclusion_rules:
+      - "Authentication credentials, password recovery, 2FA, account lockouts, verification codes, or security warnings."
+    exclusion_rules:
+      - "Exclude billing charges for iCloud subscriptions (route to APP_STORE_BILLING)."
+
+  APP_STORE_BILLING:
+    name: "App Store, Subscriptions & Billing"
+    description: "Questions or disputes involving iTunes/App Store charges, subscription cancellations, refund requests, payment method declines, or purchasing extra storage."
+    positive_examples:
+      - "Why was I charged $9.99 for an app I deleted?"
+      - "How do I cancel my Apple Music subscription and get a refund?"
+      - "My credit card was declined in the App Store."
+      - "I was billed twice for my iCloud 200GB plan."
+    negative_examples:
+      - "I can't log into my Apple ID to buy an app. (route to ACCOUNT_ACCESS)"
+      - "My in-app purchase crashed my phone. (route to SOFTWARE_UPDATE)"
+    inclusion_rules:
+      - "Financial transactions, charges, invoices, refunds, card updates, or active subscription management."
+    exclusion_rules:
+      - "Exclude account password issues without billing context."
+
+  HARDWARE_DISPLAY:
+    name: "Hardware, Screen & Physical Defects"
+    description: "Physical hardware damage or malfunctions including broken touch screens, unresponsive buttons (Home/Power/Volume), Touch Bar failures, camera black screen, or water damage."
+    positive_examples:
+      - "My Home button is completely unresponsive."
+      - "The top half of my touch screen doesn't register touches."
+      - "Camera app opens to a black screen and flash won't turn on."
+      - "MacBook Touch Bar disappeared and won't light up."
+    negative_examples:
+      - "My screen is too dim in the sun. (route to SOFTWARE_UPDATE)"
+      - "Headphone jack has no sound. (route to AUDIO_MEDIA)"
+    inclusion_rules:
+      - "Physical hardware defects, touch screen responsiveness, buttons, camera hardware, or display anomalies."
+    exclusion_rules:
+      - "Purely software cosmetic changes (e.g. lock screen font size)."
+
+  AUDIO_MEDIA:
+    name: "Audio, Media & Apple Music"
+    description: "Issues involving sound output, speaker distortion, microphone failure, Apple Music streaming errors, missing playlists/songs, or Bluetooth audio stuttering."
+    positive_examples:
+      - "No sound comes out of the top speaker during phone calls."
+      - "My Apple Music library deleted all my downloaded offline songs."
+      - "Bluetooth audio stutters every 30 seconds when connected to my car."
+      - "Microphone doesn't pick up my voice in voice memos or Siri."
+    negative_examples:
+      - "Bluetooth won't pair at all with any device. (route to CONNECTIVITY_NETWORK)"
+      - "I was charged for Apple Music. (route to APP_STORE_BILLING)"
+    inclusion_rules:
+      - "Sound quality, speaker/mic issues, Apple Music player crashes, playlist sync, or media playback stuttering."
+    exclusion_rules:
+      - "Overall Bluetooth discovery failure without media playback focus."
+
+  CONNECTIVITY_NETWORK:
+    name: "Wi-Fi, Cellular, Bluetooth & SIM"
+    description: "Network connectivity problems including 'No SIM' errors, Wi-Fi dropping, failure to connect to personal hotspot, cellular signal search loop, or AirDrop failures."
+    positive_examples:
+      - "My iPhone says 'No SIM Card Installed' even though the SIM is inside."
+      - "Wi-Fi toggle is greyed out and won't turn on."
+      - "Cannot connect my laptop to my iPhone Personal Hotspot."
+      - "My phone is stuck on 'Searching...' for cellular network."
+    negative_examples:
+      - "Safari won't load a specific website because of server error. (route to SOFTWARE_UPDATE)"
+      - "Bluetooth headphones crackle when playing music. (route to AUDIO_MEDIA)"
+    inclusion_rules:
+      - "Wi-Fi, cellular signal, SIM card detection, carrier network, Hotspot, AirDrop, or radio connectivity."
+    exclusion_rules:
+      - "Exclude third-party website downtime."
+
+  STORAGE_BACKUP:
+    name: "Device Storage & iCloud Backup"
+    description: "Complaints about 'Storage Almost Full' warnings, inability to free up space despite deleting files, iCloud backup failures, or photo library sync stalls."
+    positive_examples:
+      - "My phone says storage is full but I deleted 500 photos and 10 apps."
+      - "iCloud Backup failed because there is not enough storage space."
+      - "System data / 'Other' storage is taking up 40GB on my phone."
+      - "My photos are stuck syncing to iCloud at 1%."
+    negative_examples:
+      - "I want to purchase more storage. (route to APP_STORE_BILLING)"
+      - "I can't log into iCloud. (route to ACCOUNT_ACCESS)"
+    inclusion_rules:
+      - "Device storage breakdown, 'Other/System' space, iCloud backup completion, or photo library syncing."
+    exclusion_rules:
+      - "Exclude payment or card issues for buying storage (route to APP_STORE_BILLING)."
+
+  STORE_REPAIR_SERVICE:
+    name: "Store Appointments, Orders & Repairs"
+    description: "Inquiries regarding Apple Store Genius Bar appointments, repair service status, warranty / AppleCare coverage checks, or new device delivery tracking."
+    positive_examples:
+      - "How do I book an appointment at the Regent Street Apple Store?"
+      - "My iPhone is at the repair center, how can I track the repair status?"
+      - "My iPhone X pre-order shipping date changed from Nov 3 to Nov 18."
+      - "Is screen repair covered under my AppleCare+ warranty?"
+    negative_examples:
+      - "My screen is cracked, what do I do? (route to HARDWARE_DISPLAY)"
+      - "Why was my card charged for a repair? (route to APP_STORE_BILLING)"
+    inclusion_rules:
+      - "Store visits, appointments, repair tickets, AppleCare coverage status, or hardware order delivery tracking."
+    exclusion_rules:
+      - "Diagnostic technical troubleshooting."
+
+  OUT_OF_SCOPE:
+    name: "Out of Scope / Noise / General Rant"
+    description: "Non-technical messages, general rants with no specific product/issue, customer praise, spam, unsupported third-party products, or unintelligible inquiries."
+    positive_examples:
+      - "Steve Jobs would never have allowed this."
+      - "Thank you so much for the quick help earlier today!"
+      - "Why is Apple so greedy? Worst company ever."
+      - "What time does the stock market open today?"
+    negative_examples:
+      - "Any message with an actionable Apple technical problem."
+    inclusion_rules:
+      - "Queries lacking an actionable technical or customer support problem for Apple products."
+    exclusion_rules:
+      - "Any identifiable technical bug, hardware fault, or account issue."

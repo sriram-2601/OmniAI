@@ -1,0 +1,362 @@
+{
+  "sample_size": 50,
+  "spearman_correlation": -0.3172,
+  "spearman_p_value": 0.024785753446713476,
+  "pearson_correlation": -0.5116,
+  "pearson_p_value": 0.00014643651035531178,
+  "mean_absolute_error": 0.9672,
+  "near_agreement_pct_within_half_point": 44.0,
+  "quadratic_weighted_kappa": 0.0,
+  "detailed_comparisons": [
+    {
+      "case_id": "gold_001",
+      "customer_message": "Totally forgot I clicked schedule instead of decline on the iOS 11.1.1 update wh...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_002",
+      "customer_message": "My iPhone has been lagging all day long... [USER] @AppleSupport what is going on...",
+      "human_score": 4.62,
+      "llm_judge_score": 4.52,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_003",
+      "customer_message": "when I\ufe0f turn my WiFi off, it turns itself back on. Why? I\u2019m trying to save batte...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_004",
+      "customer_message": "I finally updated my new iPhone 8 to 11.1.1 and my battery is draining fast. Any...",
+      "human_score": 4.62,
+      "llm_judge_score": 4.52,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_005",
+      "customer_message": "I\u2019ve downloaded the iOS 11 the day it came out and my battery has been draining ...",
+      "human_score": 4.62,
+      "llm_judge_score": 4.52,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_006",
+      "customer_message": "hey Apple what\u2019s with the rubbish battery life when you run the new ios?? Really...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_007",
+      "customer_message": "Hey @AppleSupport. My iPhone 6 battery crashes dramatically several times a day....",
+      "human_score": 4.72,
+      "llm_judge_score": 4.62,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_008",
+      "customer_message": "iOS 11.1.1 causes my iPhone 5S to restart when listening to songs or watching vi...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_009",
+      "customer_message": "This new iOS is upsetting, stuff doesn\u2019t work, it\u2019s not crisp, apps freezing, dr...",
+      "human_score": 2.8,
+      "llm_judge_score": 4.72,
+      "delta": 1.92
+    },
+    {
+      "case_id": "gold_010",
+      "customer_message": "iOS 11 is so weird. iPhone drained from 20% to 1% in less than 5 minutes. Now it...",
+      "human_score": 2.8,
+      "llm_judge_score": 4.72,
+      "delta": 1.92
+    },
+    {
+      "case_id": "gold_011",
+      "customer_message": "please fix the 6s x ios 11.1.1 battery issue. My phone has dropped from 100% to ...",
+      "human_score": 4.62,
+      "llm_judge_score": 4.52,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_012",
+      "customer_message": "iOS 11.1 it\u2019s draining my battery!...",
+      "human_score": 4.62,
+      "llm_judge_score": 4.52,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_013",
+      "customer_message": "My battery life is shit now thanks to iOS 11...",
+      "human_score": 4.62,
+      "llm_judge_score": 4.52,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_014",
+      "customer_message": "I dropped my iPhone SE in the bath so I put it in rice and 24 hours later it was...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_015",
+      "customer_message": "My iPhone X (iOS 11.1.1) doesn\u2019t run automatic iCloud Backup during wireless cha...",
+      "human_score": 2.8,
+      "llm_judge_score": 4.72,
+      "delta": 1.92
+    },
+    {
+      "case_id": "gold_016",
+      "customer_message": "#ios11.1.1 is probably the worst update for iphone. I have 6s and the battery di...",
+      "human_score": 2.8,
+      "llm_judge_score": 4.72,
+      "delta": 1.92
+    },
+    {
+      "case_id": "gold_017",
+      "customer_message": "Any chance of sorting the battery issue out in the next update? I know you want ...",
+      "human_score": 4.62,
+      "llm_judge_score": 4.52,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_018",
+      "customer_message": "can you fix battery drain on iOS 11...",
+      "human_score": 4.62,
+      "llm_judge_score": 4.52,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_019",
+      "customer_message": "Hello @AppleSupport iPhone X and iPad Pro 10.5 do support 30W charging?...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_020",
+      "customer_message": "Can\u2019t decide what\u2019s worse about the new @AppleSupport software update. The way i...",
+      "human_score": 2.8,
+      "llm_judge_score": 4.72,
+      "delta": 1.92
+    },
+    {
+      "case_id": "gold_021",
+      "customer_message": "ur stupid iphone software update caused me to LOSE ALL MY FUCKING CONTENT FROM T...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_022",
+      "customer_message": "my phone is driving me mad!! \ud83d\ude21 crashing constantly since 11.1.1 update on an iPh...",
+      "human_score": 4.62,
+      "llm_judge_score": 4.52,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_023",
+      "customer_message": "Alright [USER] all these iPhone update are just making phone glitch more and mor...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_024",
+      "customer_message": "The \u201cI\ufe0f\u201d function is still broken and random words are also being capped in text...",
+      "human_score": 4.72,
+      "llm_judge_score": 4.62,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_025",
+      "customer_message": "My phone moves at the pace of a snail (kid you not, 3-4 second delay per swipe o...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_026",
+      "customer_message": "iPad air 2, latest update installed. Some emails in stock app cannot download at...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_027",
+      "customer_message": "Why don\u2019t i have screen recording? [USER] I\u2019m updated and all...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_028",
+      "customer_message": "latest ios update single handedly ruined my phone....",
+      "human_score": 4.82,
+      "llm_judge_score": 4.72,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_029",
+      "customer_message": "More proof that #HighSierra is terrible. The media keys on the keyboard no longe...",
+      "human_score": 2.8,
+      "llm_judge_score": 4.72,
+      "delta": 1.92
+    },
+    {
+      "case_id": "gold_030",
+      "customer_message": "IOS11 or whatever new up date, suddenly crashed my IPhone7 that I've had no long...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_031",
+      "customer_message": "Do we need to do this update \ud83d\udc47\ud83c\udffb\ud83e\udd14 many complaints about it from users \ud83c\udf1a [URL]...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_032",
+      "customer_message": "Why are all Time Machine tick marks now red? Did that change with last year's Si...",
+      "human_score": 2.8,
+      "llm_judge_score": 4.72,
+      "delta": 1.92
+    },
+    {
+      "case_id": "gold_033",
+      "customer_message": "Hola Tim, quisiera saber d\u00f3nde esta el mejor software IOS? volv\u00ed a iPhone despu\u00e9...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_034",
+      "customer_message": "why is my voicemail all funky ever since latest update? Plus I miss the transcri...",
+      "human_score": 2.8,
+      "llm_judge_score": 4.72,
+      "delta": 1.92
+    },
+    {
+      "case_id": "gold_035",
+      "customer_message": "Ever since @AppleSupport did their update my phone is acting stupid. Dictation s...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_036",
+      "customer_message": "So @AppleSupport I really can\u2019t update my phone before I pay for something I CAN...",
+      "human_score": 2.8,
+      "llm_judge_score": 4.72,
+      "delta": 1.92
+    },
+    {
+      "case_id": "gold_037",
+      "customer_message": "ios11 again having problems. Adding attachments to native mail message, systems ...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_038",
+      "customer_message": "If [USER] could fix my iPhone that\u2019d be nice..I updated and I\u2019m still getting th...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_039",
+      "customer_message": "Hi there is bug in latest update phones not booting up after Apple logo restored...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_040",
+      "customer_message": "the latest iOS update is making it that when we FaceTime, both ends have stretch...",
+      "human_score": 3.2,
+      "llm_judge_score": 4.72,
+      "delta": 1.52
+    },
+    {
+      "case_id": "gold_041",
+      "customer_message": "the amount of time I\u2019m being asked to repeatedly sign in to my Apple ID/iCloud o...",
+      "human_score": 4.82,
+      "llm_judge_score": 4.72,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_042",
+      "customer_message": "Yo I tried calling you about two weeks ago to reset my Apple ID. I can\u2019t use acc...",
+      "human_score": 4.82,
+      "llm_judge_score": 4.72,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_043",
+      "customer_message": "I requested a password change for my Apple ID a week ago. Still no instructions ...",
+      "human_score": 4.82,
+      "llm_judge_score": 4.72,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_044",
+      "customer_message": "Just got my 8 and can't even log in with my apple i.d because it's asking for a ...",
+      "human_score": 4.82,
+      "llm_judge_score": 4.72,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_045",
+      "customer_message": "umm can I get some help with my Apple ID guys....",
+      "human_score": 4.82,
+      "llm_judge_score": 4.72,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_046",
+      "customer_message": "how do I revoke access to the default camera app when my iPhone\u2019s screen is lock...",
+      "human_score": 4.82,
+      "llm_judge_score": 4.72,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_047",
+      "customer_message": "Phone just restarted itself, won't let me send iMessages, won't let me sign into...",
+      "human_score": 4.82,
+      "llm_judge_score": 4.72,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_048",
+      "customer_message": "Fucking [USER] have locked me out of my iTunes account and won\u2019t get me details ...",
+      "human_score": 4.82,
+      "llm_judge_score": 4.72,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_049",
+      "customer_message": ". @AppleSupport i recived this email on an account not linked with my apple ID s...",
+      "human_score": 4.82,
+      "llm_judge_score": 4.72,
+      "delta": 0.1
+    },
+    {
+      "case_id": "gold_050",
+      "customer_message": "Hi, can you please help me in unlocking my ipad. I forgot my password and also m...",
+      "human_score": 4.82,
+      "llm_judge_score": 4.72,
+      "delta": 0.1
+    }
+  ]
+}

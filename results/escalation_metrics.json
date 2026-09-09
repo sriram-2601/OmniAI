@@ -1,0 +1,14 @@
+{
+  "total_evaluated": 200,
+  "auto_handled_count": 17,
+  "escalated_count": 183,
+  "coverage_percentage": 8.5,
+  "auto_handling_precision": 1.0,
+  "auto_handling_recall": 0.1318,
+  "escalation_precision": 0.388,
+  "escalation_recall": 1.0,
+  "false_auto_handling_rate": 0.0,
+  "false_escalation_rate": 0.56,
+  "dangerous_auto_count": 0,
+  "safety_summary": "Automated 8.5% of queries with 100.0% auto-handling precision. Critical false auto-handling rate is 0.0%."
+}
