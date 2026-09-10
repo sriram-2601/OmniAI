@@ -120,11 +120,11 @@ pip install -r requirements.txt
 ```
 
 ### 2. Run Automated Test Suite (1 min)
-Run all 34 automated unit and integration tests:
+Run all 43 automated unit and integration tests:
 ```bash
 python -m pytest tests/
 ```
-*Expected output: `34 passed in ~50s`.*
+*Expected output: `43 passed in ~80s`.*
 
 ### 3. Run End-to-End Evaluation Benchmark (1 min)
 Execute the complete evaluation suite across all 200 Golden Set holdout cases:
@@ -172,6 +172,8 @@ new-twitter-pro/
 │   │   └── faiss_metadata.json    # Case text and resolution metadata
 │   ├── sample/
 │   │   └── knowledge_base_sample.jsonl # 5,000 sampled cases for fast local indexing
+│   ├── multilingual/
+│   │   └── american_languages_corpus.json # 22+ American & Mexican language dataset
 │   └── golden/
 │       ├── golden_set.jsonl       # 200 hand-labelled benchmark cases (20 per intent)
 │       └── README.md              # Curation methodology & ambiguity guidelines
@@ -187,6 +189,7 @@ new-twitter-pro/
 ├── scripts/
 │   ├── audit_dataset.py           # Kaggle data profiling (108 brands)
 │   ├── analyze_brands.py          # Brand comparison audit
+│   ├── collect_data.py            # Live Twitter API & zero-cost ingestion CLI
 │   ├── prepare_data.py            # Clean, reconstruct, and temporal split
 │   ├── discover_intents.py        # K-means semantic clustering for taxonomy
 │   ├── build_golden_set.py        # Curates the 200 Golden Set benchmark cases
@@ -201,9 +204,10 @@ new-twitter-pro/
 │   ├── retrieval/                 # FAISS Index, Retriever, Hybrid Reranker, Evidence Validator
 │   ├── routing/                   # Risk Layer, Escalation Gates, Operational Router
 │   ├── generation/                # Prompt templates & grounded Twitter generator
+│   ├── multilingual/              # 22+ languages normalizer & Multi-Brand router
 │   ├── evaluation/                # Escalation metrics, Judge, Calibration, Failure analysis
 │   └── agent.py                   # Master SupportAgent pipeline orchestration
-├── tests/                         # 34 automated pytest tests across all modules
+├── tests/                         # 43 automated pytest tests across 9 test modules
 ├── BRAND_SELECTION.md             # In-depth brand selection audit report
 ├── DECISION_LOG.md                # 14 non-obvious architectural decisions
 ├── REPORT.md                      # Comprehensive 6-page final evaluation report
@@ -257,7 +261,7 @@ Result: **0.00% False Auto-Handling Rate** across all 200 benchmark cases.
 - [x] LLM-as-a-judge rubric and statistical human calibration (Spearman $\rho$, Cohen's $\kappa$).
 - [x] Top 5 real failure modes documented with concrete examples from evaluation.
 - [x] Interactive Streamlit app with live console and failure inspector (`app/streamlit_app.py`).
-- [x] 34 automated unit and integration tests passing (`pytest tests/`).
+- [x] 43 automated unit and integration tests passing (`pytest tests/`).
 - [x] Max 6-page comprehensive report (`REPORT.md`) with mandatory intellectual honesty section.
 - [x] Decision log (`DECISION_LOG.md`) with 14 non-obvious engineering trade-offs.
 - [x] Reproduction under 15 minutes verified on standard CPU environment.
