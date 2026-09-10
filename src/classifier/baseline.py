@@ -1,10 +1,17 @@
 """Baseline intent classifiers: Majority Class and TF-IDF + Logistic Regression."""
 from __future__ import annotations
 
+import sys
 import json
 import re
 from pathlib import Path
 from typing import List, Dict, Any, Tuple, Optional
+
+# Add project root to sys.path if run directly as a script
+PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -139,3 +146,57 @@ def evaluate_classifier_predictions(
         "confusion_matrix": cm,
         "labels": labels,
     }
+
+
+if __name__ == "__main__":
+    print("=" * 75)
+    print("BASELINE INTENT CLASSIFIER RUNNER: MAJORITY CLASS & TF-IDF + LOGISTIC")
+    print("=" * 75)
+
+    sample_queries = [
+        "My iPhone 7 battery is draining from 100% to 10% in just two hours.",
+        "My Apple ID has been locked for security reasons and I can't log in.",
+        "I was charged $14.99 on my credit card for a subscription I canceled.",
+        "Wi-Fi keeps disconnecting and Bluetooth won't pair with my headphones.",
+    ]
+
+    # Model 1: Majority Class Baseline
+    print("\n--- Model 1: Majority Class Baseline ---")
+    majority_clf = MajorityClassBaseline(majority_intent="SOFTWARE_UPDATE")
+    for q in sample_queries:
+        pred = majority_clf.predict_one(q)
+        print(f"  Query: \"{q[:55]}...\"")
+        print(f"  -> Predicted: {pred.intent} (Confidence: {pred.confidence:.2f})\n")
+
+    # Model 2: TF-IDF + Logistic Regression Baseline
+    print("--- Model 2: TF-IDF + Logistic Regression Baseline ---")
+    golden_path = DATA_GOLDEN_DIR / "golden_set.jsonl"
+    if golden_path.exists():
+        with open(golden_path, "r", encoding="utf-8") as f:
+            cases = [json.loads(line) for line in f if line.strip()]
+
+        texts = [c["customer_message"] for c in cases]
+        labels = [c["intent"] for c in cases]
+        print(f"[Baseline] Training on {len(cases)} Golden Set cases across 10 classes...")
+
+        tfidf_clf = TfidfLogisticBaseline()
+        tfidf_clf.fit(texts, labels)
+
+        print("\nPredictions on Sample Queries:")
+        for q in sample_queries:
+            pred = tfidf_clf.predict_one(q)
+            print(f"  Query: \"{q[:55]}...\"")
+            print(f"  -> Predicted: {pred.intent} (Confidence: {pred.confidence:.2f})\n")
+
+        print("Evaluating Model 2 on Ground-Truth Golden Set:")
+        eval_preds = tfidf_clf.predict(texts)
+        metrics = evaluate_classifier_predictions(labels, eval_preds)
+        print(f"  Accuracy:    {metrics['accuracy'] * 100:.2f}%")
+        print(f"  Macro F1:    {metrics['macro_f1'] * 100:.2f}%")
+        print(f"  Weighted F1: {metrics['weighted_f1'] * 100:.2f}%")
+    else:
+        print(f"[Warning] Golden set not found at {golden_path}")
+
+    print("\n" + "=" * 75)
+    print("[Success] Baseline classifier run completed successfully.")
+    print("=" * 75)
