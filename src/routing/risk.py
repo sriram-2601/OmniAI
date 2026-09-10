@@ -6,26 +6,32 @@ from typing import List, Dict, Any, Tuple
 from src.common.schemas import RiskAssessment
 
 
-# Precompiled risk keyword patterns
+# Precompiled risk keyword patterns (Multilingual: EN, ES-MX/ES, PT-BR, FR-CA, HT, Indigenous)
 HIGH_RISK_FINANCIAL = re.compile(
     r"\b(?:unauthorized charge|double charge|charged twice|stolen card|credit card fraud|"
-    r"dispute charge|refund money|bank account|compromised card|fraudulent)\b",
+    r"dispute charge|refund money|bank account|compromised card|fraudulent|"
+    r"cobro no autorizado|me cobraron doble|cobran[çc]a indevida|doble lana|tarjeta de cr[eé]dito|"
+    r"factur[eé] deux fois|yo chaje m|chaje kat mwen|reembolso|debitaron|nechtominqui|guti bidxichi)\b",
     re.IGNORECASE,
 )
 HIGH_RISK_SECURITY = re.compile(
     r"\b(?:hacked|compromised|stolen phone|someone logged in|locked out of apple id|"
-    r"security lock|2fa code not received|two-factor bypass|unrecognized device)\b",
+    r"security lock|2fa code not received|two-factor bypass|unrecognized device|"
+    r"hackearon|hackearam|cuenta bloqueada|conta invadida|perd[ií] mi contrase[ñn]a|"
+    r"esqueci minha senha|mot de passe oubli[eé]|modpas mwen bliye|olvid[eé] mi clave)\b",
     re.IGNORECASE,
 )
 HIGH_RISK_LEGAL_SAFETY = re.compile(
     r"\b(?:lawyer|lawsuit|sue apple|attorney|legal action|court|swollen battery|"
-    r"battery expanded|caught fire|smoke|exploded|sparking)\b",
+    r"battery expanded|caught fire|smoke|exploded|sparking|"
+    r"bater[ií]a inflada|bater[ií]a hinchada|bateria estufou|sale humo|fum[eé]e|fuma[çc]a|pegando fogo)\b",
     re.IGNORECASE,
 )
 
 MEDIUM_RISK_FRUSTRATION = re.compile(
     r"\b(?:third time|still not working|tried everything|useless|ruined my phone|"
-    r"worst update|horrible support|unacceptable|cancel subscription|repair status)\b",
+    r"worst update|horrible support|unacceptable|cancel subscription|repair status|"
+    r"una porquer[ií]a|p[eé]ssimo|horrible servicio|inaceptable|inadmissible|pa bon menm)\b",
     re.IGNORECASE,
 )
 

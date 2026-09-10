@@ -4,7 +4,8 @@
 > An evidence-grounded, safety-first AI support agent built on 106,860 real `@AppleSupport` customer conversations from the Kaggle *Customer Support on Twitter* dataset.
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![Tests Passing](https://img.shields.io/badge/pytest-34%20passed-success.svg)](#run-test-suite)
+[![Tests Passing](https://img.shields.io/badge/pytest-43%20passed-success.svg)](#run-test-suite)
+[![Languages](https://img.shields.io/badge/Multilingual-22%2B%20American%20%26%20Mexican-orange.svg)](#multilingual-architecture)
 [![Macro F1](https://img.shields.io/badge/Intent%20Macro%20F1-64.59%25-brightgreen.svg)](#headline-benchmark-results)
 [![Auto-Handling Precision](https://img.shields.io/badge/Auto%20Precision-100.0%25-success.svg)](#headline-benchmark-results)
 [![False Auto Rate](https://img.shields.io/badge/False%20Auto%20Rate-0.00%25-success.svg)](#headline-benchmark-results)

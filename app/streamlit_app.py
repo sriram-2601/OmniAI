@@ -797,39 +797,77 @@ with tab_console:
     st.markdown(f'<div class="main-title">Live Multi-Brand Support Console</div>', unsafe_allow_html=True)
     st.markdown('<div class="subtitle">Real-time domain routing, intent classification, risk gating, FAISS precedent retrieval, and grounded reply generation.</div>', unsafe_allow_html=True)
 
-    # Preset selector grouped by brand
+    # Preset selector grouped by brand & language
     presets = {
         "Custom Message": "",
-        # Apple Support
-        "🍎 Apple: Tenglish Battery Drain (Auto-Handle)": "Naa phone lo battery chaala thondaraga aipothundi, em cheyali?",
-        "🍎 Apple: Hinglish Battery Drain after Update (Auto-Handle)": "Mera iPhone update ke baad bohot jaldi drain ho raha hai, kaise fix kare?",
-        "🍎 Apple: Spanish Frozen Screen (Auto-Handle)": "Mi pantalla se quedó congelada después de la actualización a iOS. ¿Cómo la reinicio?",
-        "🍎 Apple: French Battery Rapid Drain (Auto-Handle)": "Ma batterie d'iPhone se décharge très vite, comment faire?",
-        "🍎 Apple: Locked Apple ID (Escalate - Credential Risk)": "My Apple ID was locked for security reasons and I can't log in to access my iCloud photos. Need help resetting password!",
-        "🍎 Apple: Unauthorized App Store Charge (Escalate - Financial)": "Hey @AppleSupport I noticed a $39.99 charge on my card from iTunes for a subscription I canceled last week. I want a full refund!",
-        "🍎 Apple: Broken Screen Repair Appointment": "I dropped my iPhone X and the front display glass completely cracked. How much is screen replacement and can I book an appointment?",
-        # Amazon Help
+        # Americas & Mexican Multilingual Showcase
+        "🇲🇽 Mexican Spanish: Overheating & Rapid Battery Drain (Auto-Handle)": "Mi iPhone se calienta un chingo y la pila no dura nada, se baja de volada.",
+        "🇲🇽 Mexican Spanish: Screen Frozen Black (Auto-Handle)": "Oigan @AppleSupport no jala la pantalla de mi cel, se trabó y se quedó negro.",
+        "🇲🇽 Mexican Spanish: Double Charge Refund (Escalate - Financial)": "Me cobraron doble lana en mi tarjeta por una suscripción que cancelé, exijo mi reembolso.",
+        "🇲🇽 Mexican Spanish: Hacked Apple ID Account (Escalate - Security)": "Hackearon mi cuenta de Apple ID y cambiaron mi correo y contraseña.",
+        "🇲🇽🇺🇸 Spanglish (Border): Frozen After Update": "Mi phone se freezeó después de hacer update a iOS 11 y la battery está dying bien rápido.",
+        "🇲🇽 Nahuatl (Central Mexico): Device Overheating & Broken Screen": "Notepoz amo tequiti, chicahualiztli cenca totonqui ihuan tlapantoc.",
+        "🇲🇽 Yucatec Maya: Device Overheating & Frozen": "Le u nu'ukulil ma' táan u meyaj, jach choko' le u k'iini' yéetel pa'ax u yich.",
+        "🇲🇽 Zapotec (Oaxaca): Battery Life Draining Fast": "Guendanabani sti' celular cadi cayaca chaahui, rilaa naxhi.",
+        "🇨🇦 Canadian French (Québécois): Cell Stuck on Apple Logo": "Mon cellulaire est pogné sur la pomme pis la batterie se vide d'une shot.",
+        "🇭🇹 Haitian Creole: Battery Draining Rapidly": "Telefòn mwen an pa vle mache, batri a ap desann twò vit apre mizajou a.",
+        "🇺🇸 Navajo (Diné): Phone Overheating Hot": "Béésh bee haneʼé doo naalnish da, atsʼíís deesdoi chena.",
+        "🇺🇸 Cherokee (Tsalagi): Phone Body Hot": "ᏗᏟᏃᎮᏗ Ꮭ ᏱᏚᎸᏫᏍᏓᏁ, ᎠᏰᎸ ᎤᏗᎴᎩ ᏂᎦᎵᏍᏗᎭ.",
+        "🇨🇦 Inuktitut (Arctic): Phone Overheating": "Uqaalautiga aullaqattangittuq, kiatsartualuk battery nungulertuq.",
+        "🇧🇷 Brazilian Portuguese: Phone Freezing & Battery Ruined": "Meu iPhone tá travando direto depois da atualização e a bateria tá viciada, descarrega voando.",
+        "🇧🇷 Brazilian Portuguese: Unauthorized App Store Billing": "Cobrança indevida no meu cartão de crédito pela App Store de R$ 150,00 que eu não reconheço.",
+        "🇵🇪 Quechua (Andes): Battery Hot & Dying": "Celulary mana allintachu llamk'an, baterian q'uñipakun chaymanta wañukun.",
+        "🇵🇾 Guarani: Battery Overheating Hot": "Che celular ndomomba'apói porã, batería hakueterei ha pya'e opave.",
+        "🇨🇴 Colombian Spanish: Phone Stuck & Battery Discharging": "Parce, mi iPhone se quedó pegado y la batería se descarga de una, qué vaina.",
+        "🇦🇷 Argentine Spanish: Phone Frozen & Battery Dying at 30%": "Che @AppleSupport, el celu se me tildó con iOS 11 y la batería no dura un carajo.",
+        # Indic & Global Code-Mixed
+        "🇮🇳 Apple: Tenglish Battery Drain (Auto-Handle)": "Naa phone lo battery chaala thondaraga aipothundi, em cheyali?",
+        "🇮🇳 Apple: Hinglish Battery Drain after Update (Auto-Handle)": "Mera iPhone update ke baad bohot jaldi drain ho raha hai, kaise fix kare?",
+        # Other Multi-Brand Scenarios
         "📦 Amazon: Prime Package Delivery Delayed 3 Days": "@AmazonHelp My package order #112-882719 has not arrived and tracking has been stuck in transit for 3 days.",
-        "📦 Amazon: Damaged Item Received (Refund Request)": "@AmazonHelp The package I received arrived damaged and broken inside the box. I want an immediate replacement or full refund.",
-        # Uber Support
         "🚗 Uber: Driver Cancellation Fee Dispute": "@Uber_Support My driver canceled the trip without showing up but charged me a $5 cancellation fee. Please refund it.",
-        "🚗 Uber: Left Belongings in Driver's Vehicle": "@Uber_Support I accidentally left my jacket in the back seat of the Honda Civic on my ride home tonight. How can I contact the driver?",
-        # Spotify Cares
-        "🎵 Spotify: Premium Offline Songs Won't Download": "@SpotifyCares My Spotify Premium offline songs won't download or sync on my phone when connected to WiFi.",
         "🎵 Spotify: Family Plan Billing Double Charge": "@SpotifyCares I noticed I was billed twice for my Premium Family subscription this month on the 1st and 3rd.",
-        # Xbox Support
         "🎮 Xbox: Series X Controller Keeps Disconnecting": "@XboxSupport My Xbox Series X wireless controller keeps disconnecting during multiplayer games.",
-        "🎮 Xbox: Game Pass Ultimate Code Invalid Error": "@XboxSupport Bought a 3-month Game Pass Ultimate digital card and it gives an 'invalid code' error.",
-        # Samsung Support
         "📱 Samsung: Galaxy Phone Extremely Hot While Charging": "@SamsungSupport My Galaxy S24 Ultra gets burning hot to the touch while charging with official 45W charger.",
-        # Delta Air Lines
         "✈️ Delta: Flight Delayed & Need Connecting Gate": "@Delta Flight DL1429 is delayed 2 hours, will I miss my connecting flight to Atlanta?",
-        # Out-of-scope Venting
         "💬 Out-of-Scope Venting": "Hey do you deliver pizza to my apartment tonight?",
     }
 
-    selected_preset = st.selectbox("Choose a realistic customer scenario (Multi-Brand & Multilingual):", list(presets.keys()))
-    default_text = presets[selected_preset] if presets[selected_preset] else "Naa phone lo battery chaala thondaraga aipothundi, em cheyali?"
+    selected_preset = st.selectbox("Choose a realistic customer scenario (22+ Languages & Multi-Brand):", list(presets.keys()))
+    default_text = presets[selected_preset] if presets[selected_preset] else "Mi iPhone se calienta un chingo y la pila no dura nada, se baja de volada."
+
+    # Multilingual Showcase Hub Expander
+    with st.expander("🌎 Americas & Mexican Multilingual Hub (22 Languages & Dialects Supported)", expanded=False):
+        st.caption("Click any language chip to inspect regional coverage, dialect nuances, and technical normalization:")
+        ml_col1, ml_col2, ml_col3 = st.columns(3)
+        with ml_col1:
+            st.markdown("**🇲🇽 Mexico & Mesoamerica (10)**")
+            st.markdown("• 🇲🇽 **Mexican Spanish** (Modismos: *no jala, se trabó, lana*)")
+            st.markdown("• 🇲🇽🇺🇸 **Spanglish / Pocho** (*freezeó, dying rápido*)")
+            st.markdown("• 🇲🇽 **Nahuatl** (*amo tequiti, chicahualiztli*)")
+            st.markdown("• 🇲🇽 **Yucatec Maya** (*ma' táan u meyaj, choko'*)")
+            st.markdown("• 🇲🇽 **Zapotec** (*guendanabani, cadi cayaca*)")
+            st.markdown("• 🇲🇽 **Mixtec** (*kóo kánuu, xíña nǐ'no*)")
+            st.markdown("• 🇲🇽 **Otomi** (*hin gi pe̱fi, ntsaya*)")
+            st.markdown("• 🇲🇽 **Totonac** (*tuxá la, lakgastapu*)")
+            st.markdown("• 🇲🇽 **Tarahumara** (*tási gayena, rata*)")
+            st.markdown("• 🇲🇽 **Huasteco** (*yab in t'ojnal, k'ak'al*)")
+        with ml_col2:
+            st.markdown("**🇺🇸🇨🇦 North America & Indigenous (6)**")
+            st.markdown("• 🇺🇸 **American English** (Tech slang: *bricked, bootloop*)")
+            st.markdown("• 🇨🇦 **Canadian French** (Québécois: *cellulaire pogné*)")
+            st.markdown("• 🇭🇹 **Haitian Creole** (*pa vle mache, batri a*)")
+            st.markdown("• 🇺🇸 **Navajo** (*doo naalnish da, atsʼíís deesdoi*)")
+            st.markdown("• 🇺🇸 **Cherokee** (*ᏗᏟᏃᎮᏗ Ꮭ ᏱᏚᎸᏫᏍᏓᏁ*)")
+            st.markdown("• 🇨🇦 **Inuktitut** (*aullaqattangittuq, kiatsartuq*)")
+        with ml_col3:
+            st.markdown("**🇧🇷🇵🇪 South & Central America (6)**")
+            st.markdown("• 🇧🇷 **Brazilian Portuguese** (*travando direto, descarrega*)")
+            st.markdown("• 🇵🇪 **Quechua** (*mana llamk'anchu, q'uñipakun*)")
+            st.markdown("• 🇵🇾 **Guarani** (*ndomomba'apói, hakueterei*)")
+            st.markdown("• 🇧🇴 **Aymara** (*janiw walikiti, junt'utapuniwa*)")
+            st.markdown("• 🇨🇴 **Colombian Spanish** (*se quedó pegado, una plata*)")
+            st.markdown("• 🇦🇷 **Argentine Spanish** (*se tildó, no dura un carajo*)")
 
     customer_msg = st.text_area("Customer Tweet Inquiry:", value=default_text, height=100)
 

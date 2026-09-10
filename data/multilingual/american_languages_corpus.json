@@ -1,0 +1,510 @@
+{
+  "description": "Corpus of 22 American and Mexican languages, dialects, and indigenous varieties for support training and evaluation.",
+  "total_languages": 22,
+  "languages": {
+    "es_mx": {
+      "name": "Mexican Spanish (Español Mexicano)",
+      "region": "Mexico (National)",
+      "flag": "🇲🇽",
+      "family": "Indo-European / Romance",
+      "examples": [
+        {
+          "query": "Mi iPhone se calienta un chingo y la pila no dura nada, se baja de volada.",
+          "english_translation": "My iPhone gets extremely hot and the battery doesn't last at all, it drains super fast.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "iPhone overheating battery drains rapidly fast",
+          "sample_reply": "Estamos para ayudarte con la batería de tu iPhone. Por favor mándanos un DM indicando tu versión de iOS y condición de batería."
+        },
+        {
+          "query": "Oigan @AppleSupport no jala la pantalla de mi cel, se trabó y se quedó negro.",
+          "english_translation": "Hey @AppleSupport, my phone screen is not working, it froze and stayed black.",
+          "ground_truth_intent": "HARDWARE_DISPLAY",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "iPhone display screen not working frozen black",
+          "sample_reply": "Queremos ayudarte con la pantalla. Intenta forzar el reinicio presionando Subir Volumen, Bajar Volumen y mantener presionado el botón lateral."
+        },
+        {
+          "query": "Me cobraron doble lana en mi tarjeta por una suscripción que cancelé, exijo mi reembolso.",
+          "english_translation": "They double charged money on my card for a subscription I cancelled, I demand my refund.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Double charge on credit card unauthorized billing refund",
+          "sample_reply": "Te ayudamos con la facturación. Para revisar cobros de forma segura sin compartir datos privados, envíanos un DM o visita reportaproblem.apple.com."
+        },
+        {
+          "query": "Hackearon mi cuenta de Apple ID y cambiaron mi correo y contraseña.",
+          "english_translation": "They hacked my Apple ID account and changed my email and password.",
+          "ground_truth_intent": "ACCOUNT_ACCESS",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Apple ID hacked compromised account password changed",
+          "sample_reply": "La seguridad de tu Apple ID es prioritaria. Por favor visita https://iforgot.apple.com inmediatamente o contáctanos por DM."
+        }
+      ]
+    },
+    "spanglish": {
+      "name": "Spanglish / Pocho (US-Mexico Border)",
+      "region": "US-Mexico Borderlands / Southwest",
+      "flag": "🇲🇽🇺🇸",
+      "family": "Code-Mixed English-Spanish",
+      "examples": [
+        {
+          "query": "Mi phone se freezeó después de hacer update a iOS 11 y la battery está dying bien rápido.",
+          "english_translation": "My phone froze after updating to iOS 11 and the battery is dying really fast.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "iPhone frozen after iOS update battery draining dying fast",
+          "sample_reply": "Estamos listos para ayudarte. Mándanos un DM con el modelo de tu iPhone para revisar el rendimiento de tu batería."
+        },
+        {
+          "query": "No puedo loguear a mi Apple ID porque me pide el two-factor code en un number que ya no tengo.",
+          "english_translation": "I can't log in to my Apple ID because it asks for the two-factor code on a number I no longer have.",
+          "ground_truth_intent": "ACCOUNT_ACCESS",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Cannot login to Apple ID two factor authentication code phone number lost",
+          "sample_reply": "Te ayudamos a recuperar tu acceso de forma segura. Inicia la recuperación en https://iforgot.apple.com o mándanos un DM."
+        }
+      ]
+    },
+    "nahuatl": {
+      "name": "Nahuatl (Mexicano / Nawatl)",
+      "region": "Central Mexico (Puebla, Hidalgo, Veracruz, Guerrero)",
+      "flag": "🇲🇽",
+      "family": "Uto-Aztecan",
+      "examples": [
+        {
+          "query": "Notepoz amo tequiti, chicahualiztli cenca totonqui ihuan tlapantoc.",
+          "english_translation": "My electronic device does not work, the power/battery is very hot and the screen is cracked.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Device not working battery overheating hot display broken",
+          "sample_reply": "Ti mitzpalehuizqueh. Tla xitechmocuilili ce DM ica motepoz modelo. / Estamos para ayudarte. Envíanos un DM con tu modelo."
+        },
+        {
+          "query": "Nechtominqui tomin amo nictemouh ipan notepoz Apple.",
+          "english_translation": "Money was taken/charged that I did not ask for on my Apple device.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Money charged unauthorized billing transaction",
+          "sample_reply": "Timitzpalehuizqueh ica tomin. Por favor visita reportaproblem.apple.com o envíanos un DM para proteger tu cuenta."
+        }
+      ]
+    },
+    "maya": {
+      "name": "Yucatec Maya (Maaya t'aan)",
+      "region": "Yucatan Peninsula, Mexico / Guatemala / Belize",
+      "flag": "🇲🇽",
+      "family": "Mayan",
+      "examples": [
+        {
+          "query": "Le u nu'ukulil ma' táan u meyaj, jach choko' le u k'iini' yéetel pa'ax u yich.",
+          "english_translation": "The device is not working, the battery is very hot and its screen is broken.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Device not working battery very hot screen broken",
+          "sample_reply": "K-k'áat áantkech. Túuxt to'on junp'éel DM yéetel u modeloil a nu'ukul. / Queremos ayudarte, envíanos un DM."
+        },
+        {
+          "query": "Tu ch'a'aj taak'in ma' in k'áati' ti' Apple Store.",
+          "english_translation": "They took money I didn't want in the Apple Store.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Unauthorized charge money deducted Apple Store billing",
+          "sample_reply": "Te ayudamos a resolver este cobro. Por favor visita reportaproblem.apple.com o contáctanos por DM."
+        }
+      ]
+    },
+    "zapotec": {
+      "name": "Zapotec (Diidxazá)",
+      "region": "Oaxaca, Mexico",
+      "flag": "🇲🇽",
+      "family": "Oto-Manguean",
+      "examples": [
+        {
+          "query": "Guendanabani sti' celular cadi cayaca chaahui, rilaa naxhi.",
+          "english_translation": "The phone's battery life is not working well, it drains quickly.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Phone battery life not working well draining quickly",
+          "sample_reply": "Racanenu lii. Biseenda ti DM ra nuudu. / Te ayudamos con gusto. Envíanos un DM con tu modelo de iPhone."
+        },
+        {
+          "query": "Guti bidxichi lu tarjeta stine sin gabe.",
+          "english_translation": "Money was deducted from my card without me knowing.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Money deducted credit card without authorization",
+          "sample_reply": "Revisamos tu facturación de inmediato. Para proteger tus datos, contáctanos por DM o entra a reportaproblem.apple.com."
+        }
+      ]
+    },
+    "mixtec": {
+      "name": "Mixtec (Tu'un Sávi)",
+      "region": "Oaxaca, Puebla, Guerrero, Mexico",
+      "flag": "🇲🇽",
+      "family": "Oto-Manguean",
+      "examples": [
+        {
+          "query": "Kóo kánuu teléfono yu'u, xíña nǐ'no batería ta nándi'i.",
+          "english_translation": "My phone is not working, the battery is very hot and finished.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Phone not working battery very hot discharged",
+          "sample_reply": "Kúni ndu chintée ndu ro'ó. Chi'i iin DM. / Queremos ayudarte, envíanos un DM para asistirte."
+        }
+      ]
+    },
+    "otomi": {
+      "name": "Otomi (Hñähñu)",
+      "region": "Central Mexico (Hidalgo, Querétaro, Estado de México)",
+      "flag": "🇲🇽",
+      "family": "Oto-Manguean",
+      "examples": [
+        {
+          "query": "Ma teléfono hin gi pe̱fi xá ntsaya, pa ntsaya batería.",
+          "english_translation": "My phone does not work well, the battery gets very hot.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Phone does not work well battery very hot overheating",
+          "sample_reply": "Di ne gä fats'i'i. Penz'ähe n'na DM. / Queremos apoyarte con tu equipo. Escríbenos un DM."
+        }
+      ]
+    },
+    "totonac": {
+      "name": "Totonac (Tachiwin)",
+      "region": "Veracruz & Northern Puebla, Mexico",
+      "flag": "🇲🇽",
+      "family": "Totonacan",
+      "examples": [
+        {
+          "query": "Tuxá la teléfono, lakgastapu tsinki chu batería lhuwa chichi.",
+          "english_translation": "The phone is not working, the screen is frozen and the battery is very hot.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Phone not working screen frozen display battery hot",
+          "sample_reply": "Kinaankán katsiyáaw nalaktáxtuya. Pukskíwan akgtum DM. / Estamos aquí para apoyarte. Mándanos un DM."
+        }
+      ]
+    },
+    "tarahumara": {
+      "name": "Tarahumara (Rarámuri)",
+      "region": "Chihuahua / Sierra Madre Occidental, Mexico",
+      "flag": "🇲🇽",
+      "family": "Uto-Aztecan",
+      "examples": [
+        {
+          "query": "Tási gayena maquina, rata batería simi.",
+          "english_translation": "The machine/phone cannot function, the battery is running hot.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Device cannot function battery hot overheating",
+          "sample_reply": "Kuira ba! Te ayudamos con tu teléfono. Envíanos un DM para darte asistencia técnica."
+        }
+      ]
+    },
+    "huasteco": {
+      "name": "Huasteco (Teenek)",
+      "region": "La Huasteca (San Luis Potosí, Veracruz, Tamaulipas)",
+      "flag": "🇲🇽",
+      "family": "Mayan",
+      "examples": [
+        {
+          "query": "Yab in t'ojnal an celular, k'ak'al an batería.",
+          "english_translation": "The cell phone is not working, the battery is hot.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Cell phone not working battery hot overheating",
+          "sample_reply": "I tólmiyal k'al a celular. Ts'iha' jun i DM. / Te auxiliamos con tu celular. Envíanos un DM."
+        }
+      ]
+    },
+    "en_us": {
+      "name": "American English (US Tech & Slang)",
+      "region": "United States (National)",
+      "flag": "🇺🇸",
+      "family": "Indo-European / Germanic",
+      "examples": [
+        {
+          "query": "My iPhone is bricked in a bootloop after the iOS 11 update and battery is tanking.",
+          "english_translation": "My iPhone is bricked in a bootloop after the iOS 11 update and battery is tanking.",
+          "ground_truth_intent": "SOFTWARE_UPDATE",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "iPhone bricked bootloop after iOS update battery draining",
+          "sample_reply": "We're here to help. Try connecting your iPhone to a computer and entering Recovery Mode to update without losing data."
+        },
+        {
+          "query": "My battery is swollen and literally smoking on my desk!",
+          "english_translation": "My battery is swollen and literally smoking on my desk!",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Battery swollen smoking physical safety hazard",
+          "sample_reply": "Please safely disconnect the device immediately, do not attempt to charge it, and DM us so our safety team can assist."
+        }
+      ]
+    },
+    "fr_ca": {
+      "name": "Canadian French (Français Québécois)",
+      "region": "Quebec / Eastern Canada",
+      "flag": "🇨🇦",
+      "family": "Indo-European / Romance",
+      "examples": [
+        {
+          "query": "Mon cellulaire est pogné sur la pomme pis la batterie se vide d'une shot.",
+          "english_translation": "My phone is stuck on the Apple logo and the battery empties in one shot.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Cell phone stuck Apple logo battery draining instantly",
+          "sample_reply": "Nous sommes là pour vous aider avec votre cellulaire. Envoyez-nous un message direct avec votre modèle d'iPhone."
+        },
+        {
+          "query": "J'ai été facturé deux fois sur ma carte de crédit pour un abonnement App Store.",
+          "english_translation": "I was charged twice on my credit card for an App Store subscription.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Double charge credit card App Store subscription refund",
+          "sample_reply": "Nous sommes là pour vous aider. Pour vérifier cette transaction en toute sécurité, visitez reportaproblem.apple.com ou écrivez-nous en DM."
+        }
+      ]
+    },
+    "ht_creole": {
+      "name": "Haitian Creole (Kreyòl Ayisyen)",
+      "region": "Caribbean / Haiti & US Diaspora (Florida, NY, Boston)",
+      "flag": "🇭🇹",
+      "family": "French-based Creole",
+      "examples": [
+        {
+          "query": "Telefòn mwen an pa vle mache, batri a ap desann twò vit apre mizajou a.",
+          "english_translation": "My phone won't work, the battery is going down too fast after the update.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Phone not working battery draining too fast after update",
+          "sample_reply": "Nou la pou ede w ak batri iPhone ou a. Tanpri voye yon DM ba nou ak modèl telefòn ou an."
+        },
+        {
+          "query": "Yo chaje kat mwen an de fwa pou menm aplikasyon an nan Apple Store.",
+          "english_translation": "They charged my card twice for the same app in the Apple Store.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Card charged twice duplicate App Store purchase billing dispute",
+          "sample_reply": "Nou la pou ede w rezoud pwoblèm sa a san danje. Tanpri vizite reportaproblem.apple.com oswa voye yon DM pou nou."
+        }
+      ]
+    },
+    "navajo": {
+      "name": "Navajo (Diné Bizaad)",
+      "region": "Navajo Nation (Arizona, New Mexico, Utah)",
+      "flag": "🇺🇸",
+      "family": "Na-Dene / Athabaskan",
+      "examples": [
+        {
+          "query": "Béésh bee haneʼé doo naalnish da, atsʼíís deesdoi chena.",
+          "english_translation": "The telephone does not work, its body is very hot.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Phone not working body very hot overheating battery",
+          "sample_reply": "Yá'át'ééh! We're here to help with your device. Please send us a DM with your iPhone model so we can assist."
+        },
+        {
+          "query": "Béeso shaa néitʼą́ą́ʼ doo shił bééhózin da.",
+          "english_translation": "Money was taken from me without my knowledge.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Money taken unauthorized charge transaction billing",
+          "sample_reply": "We will help you resolve this billing issue securely. Please visit reportaproblem.apple.com or DM us directly."
+        }
+      ]
+    },
+    "cherokee": {
+      "name": "Cherokee (ᏣᎳᎩ / Tsalagi)",
+      "region": "Cherokee Nation (Oklahoma, North Carolina)",
+      "flag": "🇺🇸",
+      "family": "Iroquoian",
+      "examples": [
+        {
+          "query": "ᏗᏟᏃᎮᏗ Ꮭ ᏱᏚᎸᏫᏍᏓᏁ, ᎠᏰᎸ ᎤᏗᎴᎩ ᏂᎦᎵᏍᏗᎭ.",
+          "english_translation": "The phone is not working, its body is becoming hot.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Phone not working body overheating battery hot",
+          "sample_reply": "ᎣᏏᏲ! We are here to help. Send us a DM with your phone model and iOS version so we can assist."
+        },
+        {
+          "query": "ᎠᏕᎳ ᏓᏇᎩᏍᏓᏁ ᏂᏥᎦᏔᎲᎾ Apple Store.",
+          "english_translation": "Money was taken from me without my knowing at Apple Store.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Money taken unauthorized purchase App Store billing dispute",
+          "sample_reply": "We will help investigate this charge. Please verify transactions at reportaproblem.apple.com or message us via DM."
+        }
+      ]
+    },
+    "inuktitut": {
+      "name": "Inuktitut (ᐃᓄᒃᑎᑐᑦ)",
+      "region": "Nunavut & Nunavik, Canada",
+      "flag": "🇨🇦",
+      "family": "Eskimo-Aleut",
+      "examples": [
+        {
+          "query": "Uqaalautiga aullaqattangittuq, kiatsartualuk battery nungulertuq.",
+          "english_translation": "My phone is not working, it is overheating and battery is finishing.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Phone not working overheating battery finishing draining",
+          "sample_reply": "Ainngai! We're here to help troubleshoot your phone's battery. Please send us a DM with your device details."
+        },
+        {
+          "query": "Kiinaujaq akiliqtaujara suurlu unatausimangittuq.",
+          "english_translation": "Money was charged that was not requested.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Money charged unauthorized transaction billing",
+          "sample_reply": "We're here to help review this charge safely. Please DM us or check reportaproblem.apple.com."
+        }
+      ]
+    },
+    "pt_br": {
+      "name": "Brazilian Portuguese (Português Brasileiro)",
+      "region": "Brazil / South America",
+      "flag": "🇧🇷",
+      "family": "Indo-European / Romance",
+      "examples": [
+        {
+          "query": "Meu iPhone tá travando direto depois da atualização e a bateria tá viciada, descarrega voando.",
+          "english_translation": "My iPhone keeps freezing after the update and the battery is ruined, drains flying.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "iPhone freezing after update battery degraded draining fast",
+          "sample_reply": "Estamos aqui para ajudar! Por favor nos envie uma DM informando o modelo do seu iPhone e a versão do iOS para verificarmos a bateria."
+        },
+        {
+          "query": "Cobrança indevida no meu cartão de crédito pela App Store de R$ 150,00 que eu não reconheço.",
+          "english_translation": "Unauthorized charge on my credit card from App Store of R$ 150.00 that I don't recognize.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Unauthorized credit card charge App Store transaction dispute refund",
+          "sample_reply": "Queremos te ajudar com essa cobrança com segurança. Acesse reportaproblem.apple.com ou nos chame por DM."
+        },
+        {
+          "query": "Hackearam minha conta do iCloud e trocaram minha senha e número de confiança.",
+          "english_translation": "They hacked my iCloud account and changed my password and trusted number.",
+          "ground_truth_intent": "ACCOUNT_ACCESS",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "iCloud account hacked password changed trusted number modified",
+          "sample_reply": "A segurança da sua conta é prioridade máxima. Acesse https://iforgot.apple.com imediatamente ou nos mande uma DM para suporte seguro."
+        }
+      ]
+    },
+    "quechua": {
+      "name": "Quechua (Runa Simi)",
+      "region": "Andes (Peru, Bolivia, Ecuador, Colombia, Argentina)",
+      "flag": "🇵🇪🇧🇴",
+      "family": "Quechuan",
+      "examples": [
+        {
+          "query": "Celulary mana allintachu llamk'an, baterian q'uñipakun chaymanta wañukun.",
+          "english_translation": "My cell phone doesn't work well, the battery gets hot and dies.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Phone not working battery gets hot dies overheating",
+          "sample_reply": "Allillanchu! Yanapasaykiku celularykimanta. Chiqap DM nisqata apachimuwankiku. / Estamos para ayudarte, envíanos un DM."
+        },
+        {
+          "query": "Qullqiyta urquspan tarjetaymanta mana mañakusqayta.",
+          "english_translation": "My money was taken from my card without me asking.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Money taken from credit card unauthorized billing dispute",
+          "sample_reply": "Te ayudamos a resolver este cobro. Por favor visita reportaproblem.apple.com o contáctanos por DM."
+        }
+      ]
+    },
+    "guarani": {
+      "name": "Guarani (Avañe'ẽ)",
+      "region": "Paraguay, Northern Argentina, Bolivia, Brazil",
+      "flag": "🇵🇾",
+      "family": "Tupian",
+      "examples": [
+        {
+          "query": "Che celular ndomomba'apói porã, batería hakueterei ha pya'e opave.",
+          "english_translation": "My cell phone doesn't work well, the battery is very hot and finishes quickly.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Cell phone not working well battery very hot finishes rapidly",
+          "sample_reply": "Ropeipirũ ropytyvõ hag̃ua. Emondo oréve peteĩ DM. / Te ayudamos con tu celular. Envíanos un DM."
+        },
+        {
+          "query": "Ojeipe'a chehegui pirapire che tarjeta gui Apple Store pe.",
+          "english_translation": "Money was taken from me from my card at Apple Store.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Money taken from credit card unauthorized Apple Store billing",
+          "sample_reply": "Te ayudamos con esta transacción. Ingresa a reportaproblem.apple.com o envíanos un DM para revisarlo de forma segura."
+        }
+      ]
+    },
+    "aymara": {
+      "name": "Aymara (Aymar aru)",
+      "region": "Bolivia, Southern Peru, Northern Chile",
+      "flag": "🇧🇴🇵🇪",
+      "family": "Aymaran",
+      "examples": [
+        {
+          "query": "Celularaxa janiw walikiti, batería junt'utapuniwa ukat jiwi.",
+          "english_translation": "My phone is not well, the battery is always hot and dies.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Phone not working properly battery always hot dies overheating",
+          "sample_reply": "Kamisaraki! Yanapapxämaw celularataki. Mā DM qillqt'apxita. / Te ayudamos con tu equipo. Envíanos un DM."
+        }
+      ]
+    },
+    "es_co": {
+      "name": "Colombian Spanish (Español Colombiano)",
+      "region": "Colombia",
+      "flag": "🇨🇴",
+      "family": "Indo-European / Romance",
+      "examples": [
+        {
+          "query": "Parce, mi iPhone se quedó pegado y la batería se descarga de una, qué vaina.",
+          "english_translation": "Mate, my iPhone got stuck and the battery discharges immediately, what a hassle.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "iPhone stuck frozen battery discharges immediately",
+          "sample_reply": "Hola! Estamos listos para ayudarte con tu iPhone. Escríbenos por DM indicándonos el modelo y la versión de iOS que tienes."
+        },
+        {
+          "query": "Me están cobrando una plata en la tarjeta de crédito por una suscripción que no pedí.",
+          "english_translation": "They are charging me money on my credit card for a subscription I didn't ask for.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Money charged credit card subscription unauthorized billing dispute",
+          "sample_reply": "Te colaboramos con tu cobro de forma segura. Por favor escríbenos por DM o verifica el cobro en reportaproblem.apple.com."
+        }
+      ]
+    },
+    "es_ar": {
+      "name": "Argentine Spanish (Español Rioplatense)",
+      "region": "Argentina / Uruguay",
+      "flag": "🇦🇷🇺🇾",
+      "family": "Indo-European / Romance",
+      "examples": [
+        {
+          "query": "Che @AppleSupport, el celu se me tildó con iOS 11 y la batería no dura un carajo, se muere al 30%.",
+          "english_translation": "Hey @AppleSupport, the phone froze on me with iOS 11 and the battery doesn't last at all, it dies at 30%.",
+          "ground_truth_intent": "BATTERY_POWER",
+          "risk_level": "LOW",
+          "normalized_diagnostic_query": "Phone froze with iOS update battery dies at 30 percent",
+          "sample_reply": "¡Hola! Queremos ayudarte con tu iPhone. Mandanos un DM con el modelo y el porcentaje de salud de tu batería para ayudarte a resolverlo."
+        },
+        {
+          "query": "Me debitaron dos veces la guita de la tarjeta por una app, necesito que me devuelvan la plata.",
+          "english_translation": "They debited the money twice from my card for an app, I need them to refund the money.",
+          "ground_truth_intent": "APP_STORE_BILLING",
+          "risk_level": "HIGH",
+          "normalized_diagnostic_query": "Debited twice credit card unauthorized money charge refund",
+          "sample_reply": "Te ayudamos con la facturación. Para gestionar el reembolso de forma segura, visitá reportaproblem.apple.com o mandanos un DM."
+        }
+      ]
+    }
+  }
+}
