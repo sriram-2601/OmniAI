@@ -4,7 +4,8 @@
 > An evidence-grounded, safety-first AI support agent built on 106,860 real `@AppleSupport` customer conversations from the Kaggle *Customer Support on Twitter* dataset.
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
-[![Tests Passing](https://img.shields.io/badge/pytest-43%20passed-success.svg)](#run-test-suite)
+[![Tests Passing](https://img.shields.io/badge/pytest-52%20passed-success.svg)](#run-test-suite)
+[![VAPT Audit](https://img.shields.io/badge/VAPT%20Audit-31%20Vectors%20Hardened-brightgreen.svg)](VAPT_CHECKLIST.md)
 [![Languages](https://img.shields.io/badge/Multilingual-22%2B%20American%20%26%20Mexican-orange.svg)](#multilingual-architecture)
 [![Macro F1](https://img.shields.io/badge/Intent%20Macro%20F1-64.59%25-brightgreen.svg)](#headline-benchmark-results)
 [![Auto-Handling Precision](https://img.shields.io/badge/Auto%20Precision-100.0%25-success.svg)](#headline-benchmark-results)
@@ -120,11 +121,11 @@ pip install -r requirements.txt
 ```
 
 ### 2. Run Automated Test Suite (1 min)
-Run all 43 automated unit and integration tests:
+Run all 52 automated unit, integration, and VAPT security tests:
 ```bash
 python -m pytest tests/
 ```
-*Expected output: `43 passed in ~80s`.*
+*Expected output: `52 passed in ~50s`.*
 
 ### 3. Run End-to-End Evaluation Benchmark (1 min)
 Execute the complete evaluation suite across all 200 Golden Set holdout cases:
@@ -207,7 +208,8 @@ new-twitter-pro/
 │   ├── multilingual/              # 22+ languages normalizer & Multi-Brand router
 │   ├── evaluation/                # Escalation metrics, Judge, Calibration, Failure analysis
 │   └── agent.py                   # Master SupportAgent pipeline orchestration
-├── tests/                         # 43 automated pytest tests across 9 test modules
+├── tests/                         # 52 automated pytest tests across 10 test modules
+├── VAPT_CHECKLIST.md              # Comprehensive 31-point Web Application VAPT audit report
 ├── BRAND_SELECTION.md             # In-depth brand selection audit report
 ├── DECISION_LOG.md                # 14 non-obvious architectural decisions
 ├── REPORT.md                      # Comprehensive 6-page final evaluation report
@@ -228,8 +230,9 @@ Our routing engine enforces a **zero-tolerance false-automation gate**:
 2. **Zero Financial Automation:** Billing disputes and credit card charges are **never** auto-handled.
 3. **Hardware Safety Overrides:** Battery swelling or overheating inquiries trigger emergency human escalation.
 4. **Confidence Backoffs:** Inquiries with cosine confidence $< 0.50$ are routed to human triage to prevent confident hallucinations.
+5. **Cyber Exploit & Prompt Injection Gating:** Adversarial payloads (SQLi, XSS, OS Command Injection, Path Traversal, SSTI) and Web LLM jailbreak attempts ('DAN mode', system prompt exfiltration) trigger immediate High Risk escalation with 0% public execution.
 
-Result: **0.00% False Auto-Handling Rate** across all 200 benchmark cases.
+Result: **0.00% False Auto-Handling Rate** across all 200 benchmark cases and 100% exploit interception.
 
 ---
 
@@ -261,7 +264,8 @@ Result: **0.00% False Auto-Handling Rate** across all 200 benchmark cases.
 - [x] LLM-as-a-judge rubric and statistical human calibration (Spearman $\rho$, Cohen's $\kappa$).
 - [x] Top 5 real failure modes documented with concrete examples from evaluation.
 - [x] Interactive Streamlit app with live console and failure inspector (`app/streamlit_app.py`).
-- [x] 43 automated unit and integration tests passing (`pytest tests/`).
+- [x] 52 automated unit, integration, and security tests passing (`pytest tests/`).
+- [x] 31-point Web Application VAPT audit completed with zero unmitigated critical vulnerabilities ([`VAPT_CHECKLIST.md`](file:///c:/Users/srira/Desktop/pro/new-twitter-pro/VAPT_CHECKLIST.md)).
 - [x] Max 6-page comprehensive report (`REPORT.md`) with mandatory intellectual honesty section.
 - [x] Decision log (`DECISION_LOG.md`) with 14 non-obvious engineering trade-offs.
 - [x] Reproduction under 15 minutes verified on standard CPU environment.

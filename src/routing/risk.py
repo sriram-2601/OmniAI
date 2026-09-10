@@ -27,6 +27,18 @@ HIGH_RISK_LEGAL_SAFETY = re.compile(
     r"bater[ií]a inflada|bater[ií]a hinchada|bateria estufou|sale humo|fum[eé]e|fuma[çc]a|pegando fogo)\b",
     re.IGNORECASE,
 )
+HIGH_RISK_CYBER_ATTACK = re.compile(
+    r"(?:"
+    r"'\s*or\s*['\"\d]\s*=\s*['\"\d]|union\s+select|drop\s+table|sleep\s*\(|information_schema|"
+    r"<script[\s>]|javascript:|onerror\s*=|onload\s*=|<iframe>|<svg[\s>]|"
+    r";\s*(?:cat|rm|whoami|id|ls|dir|netstat|curl|wget)\b|(?:\.\.[/\\]){1,}|"
+    r"\{\{.*?\}\}|\$\{.*?\}|"
+    r"\b(?:ignore\s+(?:all\s+)?previous\s+instructions|disregard\s+previous|system\s+prompt|"
+    r"jailbreak|dan\s+mode|developer\s+mode|bypass\s+safety|you\s+are\s+now\s+unrestricted|"
+    r"override\s+rules|exfiltrate|prompt\s+injection)\b"
+    r")",
+    re.IGNORECASE,
+)
 
 MEDIUM_RISK_FRUSTRATION = re.compile(
     r"\b(?:third time|still not working|tried everything|useless|ruined my phone|"
@@ -59,6 +71,10 @@ class RiskClassifier:
             score = max(score, 0.85)
 
         # 2. High Risk Keyword Detections
+        if HIGH_RISK_CYBER_ATTACK.search(customer_message):
+            factors.append("Detected cyber security exploit payload or adversarial prompt attack (VAPT Gate). Immediate High Risk escalation.")
+            score = 0.99
+
         if HIGH_RISK_FINANCIAL.search(customer_message):
             factors.append("Detected financial dispute or unauthorized payment keyword.")
             score = max(score, 0.90)

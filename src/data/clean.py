@@ -12,6 +12,7 @@ MENTION_PATTERN = re.compile(r"@[\w_]+")
 LEADING_MENTIONS_PATTERN = re.compile(r"^(?:@[\w_]+\s*)+")
 PHONE_PATTERN = re.compile(r"\b(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b")
 EMAIL_PATTERN = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b")
+CREDIT_CARD_PATTERN = re.compile(r"\b(?:\d{4}[-\s]?){3}\d{4}\b")
 MULTI_SPACE_PATTERN = re.compile(r"\s+")
 
 
@@ -42,6 +43,7 @@ def clean_tweet_text(
     if anonymize_pii:
         cleaned = EMAIL_PATTERN.sub("[EMAIL]", cleaned)
         cleaned = PHONE_PATTERN.sub("[PHONE]", cleaned)
+        cleaned = CREDIT_CARD_PATTERN.sub("[CREDIT_CARD]", cleaned)
 
     # 3. Handle leading mentions
     if strip_leading_mentions:
