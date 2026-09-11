@@ -43,3 +43,4 @@ data/processed/holdout_pool.jsonl
 .idea/
 .DS_Store
 Thumbs.db
+cloudflared.exe
