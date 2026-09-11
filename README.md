@@ -1,3 +1,14 @@
+---
+title: OmniSupport AI — Multi-Brand Customer Support Agent
+emoji: 🌐
+colorFrom: blue
+colorTo: indigo
+sdk: streamlit
+sdk_version: "1.54.0"
+app_file: app/streamlit_app.py
+pinned: false
+---
+
 # 🌐 OmniSupport AI — Enterprise Multi-Brand Customer Support Agent
 
 > **An evidence-grounded, safety-first AI customer support platform built on 106,860+ real Twitter support conversations.**  
@@ -228,6 +239,18 @@ pip install -r requirements.txt
 python -m streamlit run app/streamlit_app.py
 ```
 Open **`http://localhost:8501`** in your browser to start testing!
+
+### 4. Launch High-Throughput REST API (FastAPI)
+```bash
+python -m uvicorn app.api:app --host 0.0.0.0 --port 8000
+```
+Interactive OpenAPI Swagger docs: **`http://localhost:8000/docs`**  
+Features:
+- `POST /api/v1/triage`: Single message classification, risk gating, and grounded reply.
+- `POST /api/v1/batch`: High-throughput batch triage for webhook streams.
+- `GET /api/v1/health`: Container readiness and liveness probes.
+- `GET /api/v1/metrics`: Query cache hit rate, QPS, and memory stats.
+- **Sub-millisecond query cache (<0.5ms)** for repeated social spike inquiries.
 
 ---
 

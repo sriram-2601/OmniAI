@@ -21,6 +21,7 @@ from src.routing.router import default_router, OperationalRouter
 from src.generation.generator import default_generator, ReplyGenerator
 from src.multilingual.normalizer import MultilingualProcessor
 from src.multilingual.multi_brand import BrandRouter
+from src.common.cache import default_cache, QueryCache
 
 
 class SupportAgent:
@@ -35,6 +36,7 @@ class SupportAgent:
         validator: Optional[EvidenceValidator] = None,
         router: Optional[OperationalRouter] = None,
         generator: Optional[ReplyGenerator] = None,
+        cache: Optional[QueryCache] = None,
     ):
         self.classifier = classifier or default_classifier
         self.risk_classifier = risk_classifier or default_risk_classifier
@@ -43,6 +45,7 @@ class SupportAgent:
         self.validator = validator or EvidenceValidator()
         self.router = router or default_router
         self.generator = generator or default_generator
+        self.cache = cache or default_cache
 
     def process_message(
         self,
@@ -51,9 +54,25 @@ class SupportAgent:
         top_k_retrieve: int = 15,
         top_k_rerank: int = 3,
         forced_brand: Optional[str] = None,
+        use_cache: bool = True,
     ) -> AgentOutput:
         """Execute end-to-end support pipeline on an incoming customer message."""
         start_time = time.perf_counter()
+
+        # Step -1: High-Speed Query Cache Check
+        cache_key = None
+        if use_cache and self.cache is not None:
+            cache_key = self.cache.compute_key(
+                customer_message,
+                brand=forced_brand,
+                exclude_case_id=exclude_case_id,
+                top_k_retrieve=top_k_retrieve,
+                top_k_rerank=top_k_rerank,
+            )
+            cached_output = self.cache.get(cache_key)
+            if cached_output is not None:
+                return cached_output
+
         req_id = f"req_{uuid.uuid4().hex[:8]}"
 
         # Step 0: Brand & Multilingual Language Detection
@@ -115,7 +134,7 @@ class SupportAgent:
 
         latency_ms = (time.perf_counter() - start_time) * 1000.0
 
-        return AgentOutput(
+        output = AgentOutput(
             request_id=req_id,
             customer_message=customer_message,
             brand=brand_info["name"],
@@ -129,6 +148,34 @@ class SupportAgent:
             evidence_grounded=evid_ok,
         )
 
+        # Cache valid response for future sub-millisecond repeated queries
+        if use_cache and self.cache is not None and cache_key is not None:
+            self.cache.put(cache_key, output)
+
+        return output
+
+    def process_batch(
+        self,
+        customer_messages: list[str],
+        forced_brand: Optional[str] = None,
+        use_cache: bool = True,
+    ) -> list[AgentOutput]:
+        """High-throughput batch triage for webhook streams and bulk evaluation."""
+        return [
+            self.process_message(msg, forced_brand=forced_brand, use_cache=use_cache)
+            for msg in customer_messages
+        ]
+
+    def get_cache_stats(self) -> Dict[str, Any]:
+        """Expose operational cache performance metrics."""
+        return self.cache.stats() if self.cache is not None else {}
+
+    def clear_cache(self) -> None:
+        """Clear query cache."""
+        if self.cache is not None:
+            self.cache.clear()
+
 
 # Global default agent instance
 default_agent = SupportAgent()
+
