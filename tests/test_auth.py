@@ -92,17 +92,19 @@ def test_create_and_authenticate_new_user(temp_db):
 
 def test_social_logins_provisioning(temp_db):
     """Verify social logins (Google, Twitter/X, Facebook) auto-provision user profiles."""
-    providers = ["google", "twitter", "facebook"]
-    for prov in providers:
+    providers = [("google", "admin"), ("twitter", "agent"), ("facebook", "analyst")]
+    for prov, role in providers:
         social_email = f"user_{prov}@social.com"
         user = temp_db.social_login(
             email=social_email,
             name=f"Social User {prov.capitalize()}",
             provider=prov,
+            role=role,
         )
         assert user is not None
         assert user["email"] == social_email
         assert user["auth_provider"] == prov
+        assert user["role"] == role
 
         # Verify second login updates existing user
         user_repeat = temp_db.social_login(
@@ -111,6 +113,7 @@ def test_social_logins_provisioning(temp_db):
             provider=prov,
         )
         assert user_repeat["id"] == user["id"]
+        assert user_repeat["role"] == role
 
 
 def test_audit_logging_and_summary(temp_db):

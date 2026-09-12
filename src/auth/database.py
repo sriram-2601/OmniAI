@@ -189,7 +189,7 @@ class AuthDatabase:
         user["last_login"] = now_str
         return user
 
-    def social_login(self, email: str, name: str, provider: str, avatar_url: Optional[str] = None) -> Dict[str, Any]:
+    def social_login(self, email: str, name: str, provider: str, avatar_url: Optional[str] = None, role: str = "agent") -> Dict[str, Any]:
         """Authenticate or auto-provision a user via Google, Twitter/X, or Facebook."""
         email_clean = email.strip().lower()
         user = self.get_user_by_email(email_clean)
@@ -205,13 +205,13 @@ class AuthDatabase:
                     INSERT INTO users (email, password_hash, salt, name, role, auth_provider, avatar_url, last_login)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                     """,
-                    (email_clean, pwd_hash, salt, name.strip(), "agent", provider, avatar_url, _now_iso()),
+                    (email_clean, pwd_hash, salt, name.strip(), role, provider, avatar_url, _now_iso()),
                 )
                 conn.commit()
             finally:
                 conn.close()
 
-            self.log_audit(email_clean, "SOCIAL_SIGNUP", provider, f"Auto-provisioned via {provider}")
+            self.log_audit(email_clean, "SOCIAL_SIGNUP", provider, f"Auto-provisioned via {provider} with role {role}")
             user = self.get_user_by_email(email_clean)
         else:
             now_str = _now_iso()

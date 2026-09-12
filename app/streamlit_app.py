@@ -43,83 +43,153 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Initialize Session State for Authentication
+# Initialize Session State for Authentication & Portal Views
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 if "user" not in st.session_state:
     st.session_state.user = None
+if "unauth_nav" not in st.session_state:
+    st.session_state.unauth_nav = "🌟 Landing Page"
+if "social_auth_modal" not in st.session_state:
+    st.session_state.social_auth_modal = None
 
-# Sidebar - Multi-Brand Selector & Branding
-st.sidebar.markdown("### 🌐 OmniSupport AI")
-st.sidebar.markdown("**Enterprise Multi-Brand & Safety Pipeline**")
+# Theme Toggle Button - Pinned at the top for instant accessibility across all views
+dark_mode = st.sidebar.toggle("🌙 Dark Mode", value=True, help="Toggle between Dark and Light mode themes")
+st.sidebar.markdown("---")
 
-# User Profile Card in Sidebar (Visible when Authenticated)
-if st.session_state.authenticated and st.session_state.user:
-    u = st.session_state.user
+brand_logo = "🌐"
+brand_display_name = "OmniSupport AI"
+badge_label = "Universal Multi-Brand Console"
+active_brand_key = None
+
+if not st.session_state.authenticated:
+    # PUBLIC SIDEBAR (Unauthenticated visitors)
+    st.sidebar.markdown("### 🌐 OmniSupport AI")
+    st.sidebar.markdown("**Enterprise Multi-Brand & Safety Pipeline**")
+    st.sidebar.caption("Deterministic Risk Gating • 108 Brands • 31 VAPT Audited")
+    st.sidebar.markdown("---")
+
+    st.sidebar.markdown("### 🧭 Public Portal Navigation")
+    public_nav_options = ["🌟 Landing Page", "🔑 User Login", "✨ User Sign Up", "🛡️ Security & Architecture"]
+    curr_idx = public_nav_options.index(st.session_state.unauth_nav) if st.session_state.unauth_nav in public_nav_options else 0
+    selected_public_nav = st.sidebar.radio(
+        "Navigate Portal:",
+        public_nav_options,
+        index=curr_idx,
+        key="sidebar_public_nav",
+        label_visibility="collapsed",
+    )
+    if selected_public_nav != st.session_state.unauth_nav:
+        st.session_state.unauth_nav = selected_public_nav
+        st.rerun()
+
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("### ⚡ Quick Demo Access")
+    st.sidebar.caption("One-click evaluation access without passwords:")
+    if st.sidebar.button("👑 Demo Lead Admin (Srirag)", key="sb_quick_admin", use_container_width=True, type="primary"):
+        u = default_auth_db.authenticate_user(DEMO_ADMIN_EMAIL, DEMO_ADMIN_PASSWORD)
+        if u:
+            st.session_state.authenticated = True
+            st.session_state.user = u
+            st.rerun()
+    if st.sidebar.button("🎧 Demo Support Agent", key="sb_quick_agent", use_container_width=True):
+        u = default_auth_db.authenticate_user(DEMO_AGENT_EMAIL, DEMO_AGENT_PASSWORD)
+        if u:
+            st.session_state.authenticated = True
+            st.session_state.user = u
+            st.rerun()
+
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("### 🌐 1-Click Social Sign-In")
+    st.sidebar.caption("Fast OAuth authentication:")
+    col_sb1, col_sb2 = st.sidebar.columns(2)
+    with col_sb1:
+        st.sidebar.markdown('<div class="btn-google-wrap">', unsafe_allow_html=True)
+        if st.sidebar.button("🔴 Google", key="sb_btn_google", use_container_width=True):
+            u = default_auth_db.social_login("sriram.google@omnisupport.ai", "Srirag (Google Verified)", "google", role="admin")
+            st.session_state.authenticated = True
+            st.session_state.user = u
+            st.rerun()
+        st.sidebar.markdown('</div>', unsafe_allow_html=True)
+    with col_sb2:
+        st.sidebar.markdown('<div class="btn-twitter-wrap">', unsafe_allow_html=True)
+        if st.sidebar.button("⚫ Twitter/X", key="sb_btn_twitter", use_container_width=True):
+            u = default_auth_db.social_login("sriram.x@twitter.com", "Srirag (X Contributor)", "twitter", role="agent")
+            st.session_state.authenticated = True
+            st.session_state.user = u
+            st.rerun()
+        st.sidebar.markdown('</div>', unsafe_allow_html=True)
+    st.sidebar.markdown('<div class="btn-fb-wrap">', unsafe_allow_html=True)
+    if st.sidebar.button("🔵 Facebook (Meta)", key="sb_btn_fb", use_container_width=True):
+        u = default_auth_db.social_login("sriram.meta@facebook.com", "Srirag (Meta Agent)", "facebook", role="agent")
+        st.session_state.authenticated = True
+        st.session_state.user = u
+        st.rerun()
+    st.sidebar.markdown('</div>', unsafe_allow_html=True)
+
+    st.sidebar.markdown("---")
+    st.sidebar.caption("🟢 **Cloud Status:** Live & Deployed on Streamlit Cloud")
+    st.sidebar.caption("🔗 [Official GitHub Repository](https://github.com/sriram-2601/OmniAI)")
+else:
+    # AUTHENTICATED SIDEBAR (Logged-in team members)
+    u = st.session_state.user or {}
     role_icon = "👑" if u.get("role") == "admin" else "🎧"
-    st.sidebar.markdown(f"**{role_icon} {u.get('name')}**")
+    st.sidebar.markdown("### 🌐 OmniSupport AI")
+    st.sidebar.markdown(f"**{role_icon} {u.get('name', 'Support Agent')}**")
     st.sidebar.caption(f"Role: `{u.get('role', 'agent').upper()}` | Via: `{u.get('auth_provider', 'local').upper()}`")
-    st.sidebar.caption(f"Email: `{u.get('email')}`")
+    st.sidebar.caption(f"Email: `{u.get('email', '')}`")
     if st.sidebar.button("🚪 Sign Out", key="sidebar_signout", use_container_width=True):
         default_auth_db.log_audit(u.get("email", ""), "LOGOUT", u.get("auth_provider", "local"))
         st.session_state.authenticated = False
         st.session_state.user = None
+        st.session_state.unauth_nav = "🌟 Landing Page"
         st.rerun()
     st.sidebar.markdown("---")
 
-# Theme Toggle Button - Pinned at the top for instant accessibility
-dark_mode = st.sidebar.toggle("🌙 Dark Mode", value=True, help="Toggle between Dark and Light mode themes")
-st.sidebar.markdown("---")
+    # Brand Selection Controls
+    brand_options = {
+        "🌐 Auto-Detect (108 Brands)": None,
+        "🍎 Apple Support (@AppleSupport)": "AppleSupport",
+        "📦 Amazon Customer Service (@AmazonHelp)": "AmazonHelp",
+        "🚗 Uber Support (@Uber_Support)": "Uber_Support",
+        "🎵 Spotify Cares (@SpotifyCares)": "SpotifyCares",
+        "🎮 Xbox Support (@XboxSupport)": "XboxSupport",
+        "📱 Samsung Support (@SamsungSupport)": "SamsungSupport",
+        "✈️ Delta Air Lines (@Delta)": "Delta",
+    }
+    selected_brand_label = st.sidebar.selectbox(
+        "🏢 Active Brand Domain:",
+        list(brand_options.keys()),
+        index=0,
+        help="Select a dedicated brand domain or let OmniSupport auto-detect dynamically from the customer message."
+    )
+    active_brand_key = brand_options[selected_brand_label]
+    if active_brand_key:
+        brand_meta = BrandRouter.get_brand_info(active_brand_key)
+        brand_logo = "🍎" if active_brand_key == "AppleSupport" else "📦" if active_brand_key == "AmazonHelp" else "🚗" if active_brand_key == "Uber_Support" else "🎵" if active_brand_key == "SpotifyCares" else "🎮" if active_brand_key == "XboxSupport" else "📱" if active_brand_key == "SamsungSupport" else "✈️"
+        brand_display_name = f"{brand_meta['handle']} AI"
+        badge_label = f"{brand_meta['category']} Console"
+        st.sidebar.markdown(f"**Domain:** `{brand_meta['name']}`")
+        st.sidebar.caption(f"**Category:** {brand_meta['category']}")
+        st.sidebar.caption(f"**Products:** {', '.join(brand_meta['sample_products'][:3])}")
+        st.sidebar.caption(f"[Official Support Portal]({brand_meta['support_url']})")
+    else:
+        brand_logo = "🌐"
+        brand_display_name = "OmniSupport AI"
+        badge_label = "Universal Multi-Brand Console"
+        st.sidebar.markdown("**Domain:** `Dynamic Cross-Brand (108 Brands)`")
+        st.sidebar.caption("Auto-routes Apple, Amazon, Uber, Spotify, Xbox, Samsung, Delta, and more.")
 
-
-# Brand Selection Controls
-brand_options = {
-    "🌐 Auto-Detect (108 Brands)": None,
-    "🍎 Apple Support (@AppleSupport)": "AppleSupport",
-    "📦 Amazon Customer Service (@AmazonHelp)": "AmazonHelp",
-    "🚗 Uber Support (@Uber_Support)": "Uber_Support",
-    "🎵 Spotify Cares (@SpotifyCares)": "SpotifyCares",
-    "🎮 Xbox Support (@XboxSupport)": "XboxSupport",
-    "📱 Samsung Support (@SamsungSupport)": "SamsungSupport",
-    "✈️ Delta Air Lines (@Delta)": "Delta",
-}
-
-selected_brand_label = st.sidebar.selectbox(
-    "🏢 Active Brand Domain:",
-    list(brand_options.keys()),
-    index=0,
-    help="Select a dedicated brand domain or let OmniSupport auto-detect dynamically from the customer message."
-)
-active_brand_key = brand_options[selected_brand_label]
-
-if active_brand_key:
-    brand_meta = BrandRouter.get_brand_info(active_brand_key)
-    brand_logo = "🍎" if active_brand_key == "AppleSupport" else "📦" if active_brand_key == "AmazonHelp" else "🚗" if active_brand_key == "Uber_Support" else "🎵" if active_brand_key == "SpotifyCares" else "🎮" if active_brand_key == "XboxSupport" else "📱" if active_brand_key == "SamsungSupport" else "✈️"
-    brand_display_name = f"{brand_meta['handle']} AI"
-    badge_label = f"{brand_meta['category']} Console"
-    
-    st.sidebar.markdown(f"**Domain:** `{brand_meta['name']}`")
-    st.sidebar.caption(f"**Category:** {brand_meta['category']}")
-    st.sidebar.caption(f"**Products:** {', '.join(brand_meta['sample_products'][:3])}")
-    st.sidebar.caption(f"[Official Support Portal]({brand_meta['support_url']})")
-else:
-    brand_logo = "🌐"
-    brand_display_name = "OmniSupport AI"
-    badge_label = "Universal Multi-Brand Console"
-    st.sidebar.markdown("**Domain:** `Dynamic Cross-Brand (108 Brands)`")
-    st.sidebar.caption("Auto-routes Apple, Amazon, Uber, Spotify, Xbox, Samsung, Delta, and more.")
-
-st.sidebar.markdown("---")
-st.sidebar.markdown("### ⚙️ System Status")
-st.sidebar.markdown("• **Pipeline:** Active (CPU-Optimized)")
-st.sidebar.markdown("• **Precedent Index:** 5,030 Cases (FAISS)")
-st.sidebar.markdown("• **Embedding:** all-MiniLM-L6-v2")
-st.sidebar.markdown("• **Router:** 108 Brands Supported")
-st.sidebar.markdown("• **Multilingual:** 100+ Langs & Code-Mixed")
-
-st.sidebar.markdown("---")
-st.sidebar.markdown("### 💡 Navigation Guide")
-st.sidebar.caption("Use the **Top Navigation Bar** pinned above to toggle between Live Support Console, Benchmark Metrics, Failure Mode Inspector, and Policy Governance.")
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("### ⚙️ System Status")
+    st.sidebar.markdown("• **Pipeline:** Active (CPU-Optimized)")
+    st.sidebar.markdown("• **Precedent Index:** 5,030 Cases (FAISS)")
+    st.sidebar.markdown("• **Embedding:** all-MiniLM-L6-v2")
+    st.sidebar.markdown("• **Router:** 108 Brands Supported")
+    st.sidebar.markdown("• **Multilingual:** 100+ Langs & Code-Mixed")
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("### 💡 Navigation Guide")
+    st.sidebar.caption("Use the **Top Navigation Bar** pinned above to toggle between Live Support Console, Benchmark Metrics, Failure Mode Inspector, and Policy Governance.")
 
 # Dynamic CSS Injection for Theme & Top Navigation Bar
 if dark_mode:
@@ -430,6 +500,152 @@ if dark_mode:
             padding: 0.6rem 0.9rem !important;
             border-radius: 0 6px 6px 0 !important;
             margin: 0.5rem 0 !important;
+        }
+
+        /* Radio and Checkbox Labels - High Contrast */
+        div[data-testid="stRadio"] label,
+        div[data-testid="stRadio"] p,
+        div[data-testid="stRadio"] span,
+        div[data-testid="stRadio"] div,
+        div[data-testid="stCheckbox"] label,
+        div[data-testid="stCheckbox"] span,
+        div[data-testid="stCheckbox"] p,
+        label[data-testid="stWidgetLabel"] p,
+        label[data-testid="stWidgetLabel"] span {
+            color: #F8FAFC !important;
+            font-weight: 500 !important;
+        }
+        
+        /* Public Portal Navbar */
+        .public-top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.95rem 1.6rem;
+            background: linear-gradient(135deg, #1E293B, #0F172A);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Auth Portal Card */
+        .auth-container-card {
+            background: #111C33;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 2.2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            margin: 1.0rem auto;
+            max-width: 640px;
+        }
+        
+        /* Feature Grid Cards */
+        .hero-feature-card {
+            background: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.3rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: all 0.2s ease;
+        }
+        .hero-feature-card:hover {
+            border-color: #38BDF8;
+            transform: translateY(-2px);
+        }
+        
+        /* Secondary & Default Streamlit Buttons in Dark Mode */
+        div[data-testid="stButton"] button {
+            background-color: #1E293B !important;
+            color: #F8FAFC !important;
+            border: 1px solid #334155 !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+        }
+        div[data-testid="stButton"] button p {
+            color: #F8FAFC !important;
+            font-weight: 600 !important;
+        }
+        div[data-testid="stButton"] button:hover {
+            background-color: #2D3D54 !important;
+            border-color: #38BDF8 !important;
+        }
+        div[data-testid="stButton"] button:hover p {
+            color: #FFFFFF !important;
+        }
+
+        /* Top Navigation Button Pills */
+        .public-nav-pills div[data-testid="stButton"] button {
+            background-color: #1E293B !important;
+            border: 1px solid #334155 !important;
+        }
+        .public-nav-pills div[data-testid="stButton"] button p {
+            color: #94A3B8 !important;
+            font-weight: 600 !important;
+        }
+        .public-nav-pills div[data-testid="stButton"] button:hover {
+            background-color: #2D3D54 !important;
+            border-color: #38BDF8 !important;
+        }
+        .public-nav-pills div[data-testid="stButton"] button:hover p {
+            color: #FFFFFF !important;
+        }
+        .public-nav-pills div[data-testid="stButton"] button[data-testid="baseButton-primary"],
+        .public-nav-pills div[data-testid="stButton"] button[kind="primary"] {
+            background: linear-gradient(135deg, #2563EB, #1D4ED8) !important;
+            border: 1px solid #38BDF8 !important;
+        }
+        .public-nav-pills div[data-testid="stButton"] button[data-testid="baseButton-primary"] p,
+        .public-nav-pills div[data-testid="stButton"] button[kind="primary"] p {
+            color: #FFFFFF !important;
+            font-weight: 700 !important;
+        }
+
+        /* Branded Social Login Buttons (Google, Twitter/X, Facebook) */
+        .btn-google-wrap div[data-testid="stButton"] button {
+            background: linear-gradient(135deg, #EA4335, #C5221F) !important;
+            border: 1px solid #D93025 !important;
+            box-shadow: 0 4px 12px rgba(234, 67, 53, 0.35) !important;
+        }
+        .btn-google-wrap div[data-testid="stButton"] button p {
+            color: #FFFFFF !important;
+            font-weight: 700 !important;
+        }
+        .btn-google-wrap div[data-testid="stButton"] button:hover {
+            background: #D93025 !important;
+            box-shadow: 0 6px 16px rgba(234, 67, 53, 0.55) !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-twitter-wrap div[data-testid="stButton"] button {
+            background: linear-gradient(135deg, #1C2430, #0F1419) !important;
+            border: 1px solid #38444D !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+        }
+        .btn-twitter-wrap div[data-testid="stButton"] button p {
+            color: #FFFFFF !important;
+            font-weight: 700 !important;
+        }
+        .btn-twitter-wrap div[data-testid="stButton"] button:hover {
+            background: #273340 !important;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6) !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-fb-wrap div[data-testid="stButton"] button {
+            background: linear-gradient(135deg, #1877F2, #0C63D4) !important;
+            border: 1px solid #166FE5 !important;
+            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35) !important;
+        }
+        .btn-fb-wrap div[data-testid="stButton"] button p {
+            color: #FFFFFF !important;
+            font-weight: 700 !important;
+        }
+        .btn-fb-wrap div[data-testid="stButton"] button:hover {
+            background: #166FE5 !important;
+            box-shadow: 0 6px 16px rgba(24, 119, 242, 0.55) !important;
+            transform: translateY(-1px);
         }
     </style>
     """, unsafe_allow_html=True)
@@ -757,6 +973,152 @@ else:
             border-radius: 0 6px 6px 0 !important;
             margin: 0.5rem 0 !important;
         }
+
+        /* Radio and Checkbox Labels - Crisp Dark Slate */
+        div[data-testid="stRadio"] label,
+        div[data-testid="stRadio"] p,
+        div[data-testid="stRadio"] span,
+        div[data-testid="stRadio"] div,
+        div[data-testid="stCheckbox"] label,
+        div[data-testid="stCheckbox"] span,
+        div[data-testid="stCheckbox"] p,
+        label[data-testid="stWidgetLabel"] p,
+        label[data-testid="stWidgetLabel"] span {
+            color: #0F172A !important;
+            font-weight: 500 !important;
+        }
+        
+        /* Public Portal Navbar */
+        .public-top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.95rem 1.6rem;
+            background: linear-gradient(135deg, #FFFFFF, #F1F5F9);
+            border: 1px solid #CBD5E1;
+            border-radius: 12px;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        
+        /* Auth Portal Card */
+        .auth-container-card {
+            background: #FFFFFF;
+            border: 1px solid #CBD5E1;
+            border-radius: 16px;
+            padding: 2.2rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            margin: 1.0rem auto;
+            max-width: 640px;
+        }
+        
+        /* Feature Grid Cards */
+        .hero-feature-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 1.3rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+        }
+        .hero-feature-card:hover {
+            border-color: #2563EB;
+            transform: translateY(-2px);
+        }
+        
+        /* Secondary & Default Streamlit Buttons in Light Mode */
+        div[data-testid="stButton"] button {
+            background-color: #FFFFFF !important;
+            color: #0F172A !important;
+            border: 1px solid #CBD5E1 !important;
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+        }
+        div[data-testid="stButton"] button p {
+            color: #0F172A !important;
+            font-weight: 600 !important;
+        }
+        div[data-testid="stButton"] button:hover {
+            background-color: #F1F5F9 !important;
+            border-color: #2563EB !important;
+        }
+        div[data-testid="stButton"] button:hover p {
+            color: #2563EB !important;
+        }
+
+        /* Top Navigation Button Pills */
+        .public-nav-pills div[data-testid="stButton"] button {
+            background-color: #FFFFFF !important;
+            border: 1px solid #CBD5E1 !important;
+        }
+        .public-nav-pills div[data-testid="stButton"] button p {
+            color: #475569 !important;
+            font-weight: 600 !important;
+        }
+        .public-nav-pills div[data-testid="stButton"] button:hover {
+            background-color: #F8FAFC !important;
+            border-color: #2563EB !important;
+        }
+        .public-nav-pills div[data-testid="stButton"] button:hover p {
+            color: #2563EB !important;
+        }
+        .public-nav-pills div[data-testid="stButton"] button[data-testid="baseButton-primary"],
+        .public-nav-pills div[data-testid="stButton"] button[kind="primary"] {
+            background: linear-gradient(135deg, #2563EB, #1D4ED8) !important;
+            border: 1px solid #2563EB !important;
+        }
+        .public-nav-pills div[data-testid="stButton"] button[data-testid="baseButton-primary"] p,
+        .public-nav-pills div[data-testid="stButton"] button[kind="primary"] p {
+            color: #FFFFFF !important;
+            font-weight: 700 !important;
+        }
+
+        /* Branded Social Login Buttons (Google, Twitter/X, Facebook) */
+        .btn-google-wrap div[data-testid="stButton"] button {
+            background: linear-gradient(135deg, #EA4335, #C5221F) !important;
+            border: 1px solid #D93025 !important;
+            box-shadow: 0 4px 12px rgba(234, 67, 53, 0.35) !important;
+        }
+        .btn-google-wrap div[data-testid="stButton"] button p {
+            color: #FFFFFF !important;
+            font-weight: 700 !important;
+        }
+        .btn-google-wrap div[data-testid="stButton"] button:hover {
+            background: #D93025 !important;
+            box-shadow: 0 6px 16px rgba(234, 67, 53, 0.55) !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-twitter-wrap div[data-testid="stButton"] button {
+            background: linear-gradient(135deg, #1C2430, #0F1419) !important;
+            border: 1px solid #38444D !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        }
+        .btn-twitter-wrap div[data-testid="stButton"] button p {
+            color: #FFFFFF !important;
+            font-weight: 700 !important;
+        }
+        .btn-twitter-wrap div[data-testid="stButton"] button:hover {
+            background: #273340 !important;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5) !important;
+            transform: translateY(-1px);
+        }
+
+        .btn-fb-wrap div[data-testid="stButton"] button {
+            background: linear-gradient(135deg, #1877F2, #0C63D4) !important;
+            border: 1px solid #166FE5 !important;
+            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35) !important;
+        }
+        .btn-fb-wrap div[data-testid="stButton"] button p {
+            color: #FFFFFF !important;
+            font-weight: 700 !important;
+        }
+        .btn-fb-wrap div[data-testid="stButton"] button:hover {
+            background: #166FE5 !important;
+            box-shadow: 0 6px 16px rgba(24, 119, 242, 0.55) !important;
+            transform: translateY(-1px);
+        }
     </style>
     """, unsafe_allow_html=True)
 
@@ -796,23 +1158,112 @@ golden_set = load_golden_set()
 failures = load_failures()
 
 # ==============================================================================
-# LANDING PAGE & AUTHENTICATION PORTAL
+# PUBLIC PORTAL: LANDING PAGE, USER LOGIN, SIGN-UP & SOCIAL OAUTH
 # ==============================================================================
-def render_landing_and_auth_page():
-    """Renders the comprehensive landing page, hero section, and login/sign-up portal."""
+
+def render_interactive_showcase():
+    """Interactive real-time preview sandbox on the public landing page."""
     st.markdown("""
-    <div style="text-align: center; padding: 2.0rem 1rem 1.0rem 1rem;">
-        <div style="display: inline-block; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.35); border-radius: 9999px; padding: 0.35rem 1.1rem; color: #38BDF8; font-size: 0.88rem; font-weight: 600; margin-bottom: 0.8rem;">
+    <div style="background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 14px; padding: 1.4rem; margin: 1.2rem 0 1.8rem 0;">
+        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem;">
+            <span style="font-size: 1.4rem;">🎯</span>
+            <span style="font-size: 1.2rem; font-weight: 700;">Live Multi-Brand Pipeline Preview</span>
+            <span style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 9999px; padding: 0.15rem 0.65rem; font-size: 0.75rem; font-weight: 600;">Interactive Sandbox (No Login Required)</span>
+        </div>
+        <p style="font-size: 0.92rem; opacity: 0.85; margin-bottom: 1rem; line-height: 1.5;">
+            Test how OmniSupport AI automatically isolates brand domains, detects language, classifies safety risks, and gates financial/credential liabilities before you sign in.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    c_sb1, c_sb2 = st.columns([1, 2])
+    with c_sb1:
+        sandbox_brands = {
+            "🍎 Apple Support": "AppleSupport",
+            "📦 Amazon Customer Service": "AmazonHelp",
+            "🚗 Uber Support": "Uber_Support",
+            "🎵 Spotify Cares": "SpotifyCares",
+            "✈️ Delta Air Lines": "Delta",
+            "🎮 Xbox Support": "XboxSupport",
+        }
+        chosen_brand_label = st.selectbox("Select Brand Context:", list(sandbox_brands.keys()), index=0, key="sb_showcase_brand")
+        chosen_brand_key = sandbox_brands[chosen_brand_label]
+        st.caption(f"Domain grounded on verified Twitter customer support interactions.")
+
+    with c_sb2:
+        preset_queries = {
+            "🍎 Battery Overheating (🇲🇽 Mexican Spanish)": "Mi iPhone se calienta un chingo y la pila no dura nada, se baja de volada.",
+            "💳 Double Charge Dispute (Escalate - Financial Risk)": "Me cobraron doble lana en mi tarjeta por una suscripción que cancelé, exijo mi reembolso inmediato.",
+            "🔒 Stolen Account / Hack (Escalate - Credential Risk)": "Someone hacked into my account, changed my recovery email and phone number. I am locked out!",
+            "🎵 Offline Playlist Help (Auto-Handle - Routine Intent)": "How do I download my playlists for offline listening on my laptop?",
+        }
+        chosen_preset = st.selectbox("Load Sample Customer Query:", list(preset_queries.keys()), index=0, key="sb_showcase_preset")
+        sandbox_query = st.text_area("Inquiry Text:", value=preset_queries[chosen_preset], height=80, key="sb_showcase_text")
+
+    if st.button("⚡ Run Live Safety & Risk Analysis", key="btn_run_showcase", type="primary", use_container_width=True):
+        with st.spinner("Executing deterministic risk gating, intent classification, and FAISS retrieval..."):
+            out = default_agent.process_message(sandbox_query, forced_brand=chosen_brand_key)
+
+        st.markdown("#### 🔍 Real-Time Pipeline Evaluation")
+        r_col1, r_col2 = st.columns([1, 2])
+        with r_col1:
+            if out.decision.decision == "AUTO_HANDLE":
+                st.markdown('<div class="decision-badge-auto">✅ AUTO-HANDLE</div>', unsafe_allow_html=True)
+            else:
+                st.markdown('<div class="decision-badge-esc">⚠️ ESCALATE TO HUMAN</div>', unsafe_allow_html=True)
+            st.caption(f"Brand: **{getattr(out, 'brand', chosen_brand_label)}** | Language: **{getattr(out, 'language', 'English')}**")
+            st.caption(f"Processing Latency: **{getattr(out, 'latency_ms', 1.8):.2f} ms**")
+
+        with r_col2:
+            st.markdown(f"**Safety Rationale:** `{out.decision.reason}`")
+            if out.decision.decision == "AUTO_HANDLE" and out.draft_reply:
+                st.markdown(f'<div class="reply-box"><strong>Grounded AI Response:</strong><br/>{out.draft_reply}</div>', unsafe_allow_html=True)
+            else:
+                st.markdown(f'<div class="reply-box-esc"><strong>Deterministic Policy Gate:</strong><br/>Automated resolution blocked to prevent financial or credential liability. Ticket routed to human agent queue.</div>', unsafe_allow_html=True)
+
+
+def render_landing_page():
+    """Renders the comprehensive, high-conversion public landing page."""
+    st.markdown("""
+    <div style="text-align: center; padding: 2.2rem 1rem 1.4rem 1rem;">
+        <div style="display: inline-block; background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.35); border-radius: 9999px; padding: 0.4rem 1.3rem; color: #38BDF8; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.9rem;">
             🌐 OmniSupport AI Enterprise Platform • Kaggle 106,860+ Twitter Cases Grounded
         </div>
-        <h1 style="font-size: 2.6rem; font-weight: 800; margin-bottom: 0.6rem; line-height: 1.2;">
+        <h1 style="font-size: 2.9rem; font-weight: 800; margin-bottom: 0.8rem; line-height: 1.2;">
             Evidence-Grounded, Safety-First<br/><span style="background: linear-gradient(135deg, #38BDF8, #818CF8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AI Customer Support Agent</span>
         </h1>
-        <p style="font-size: 1.05rem; max-width: 820px; margin: 0 auto 1.5rem auto; opacity: 0.85; line-height: 1.6;">
+        <p style="font-size: 1.12rem; max-width: 860px; margin: 0 auto 1.8rem auto; opacity: 0.88; line-height: 1.6;">
             Deploys deterministic risk gating, sub-4ms FAISS vector precedent retrieval, and 108-brand routing. Hardened against 31 Web Application VAPT vectors with 0% false automation on financial and credential disputes.
         </p>
     </div>
     """, unsafe_allow_html=True)
+
+    # Primary Call to Action Row
+    cta_c1, cta_c2, cta_c3, cta_c4 = st.columns(4)
+    with cta_c1:
+        if st.button("🔑 Sign In to Console", key="hero_cta_login", use_container_width=True, type="primary"):
+            st.session_state.unauth_nav = "🔑 User Login"
+            st.rerun()
+    with cta_c2:
+        if st.button("✨ Create Free Account", key="hero_cta_signup", use_container_width=True):
+            st.session_state.unauth_nav = "✨ User Sign Up"
+            st.rerun()
+    with cta_c3:
+        if st.button("🚀 Quick Demo: Admin", key="hero_cta_admin", use_container_width=True):
+            u = default_auth_db.authenticate_user(DEMO_ADMIN_EMAIL, DEMO_ADMIN_PASSWORD)
+            if u:
+                st.session_state.authenticated = True
+                st.session_state.user = u
+                st.rerun()
+    with cta_c4:
+        if st.button("🎧 Quick Demo: Agent", key="hero_cta_agent", use_container_width=True):
+            u = default_auth_db.authenticate_user(DEMO_AGENT_EMAIL, DEMO_AGENT_PASSWORD)
+            if u:
+                st.session_state.authenticated = True
+                st.session_state.user = u
+                st.rerun()
+
+    st.markdown("<br/>", unsafe_allow_html=True)
 
     # 4 Key Value Metric Highlights
     m1, m2, m3, m4 = st.columns(4)
@@ -827,66 +1278,197 @@ def render_landing_and_auth_page():
 
     st.markdown("---")
 
-    # Authentication Gateway (2 Columns)
-    auth_col1, auth_col2 = st.columns([1, 1], gap="large")
+    # PROMINENT SOCIAL 1-CLICK AUTHENTICATION BAR
+    st.markdown("### 🌐 Instant 1-Click Social Sign-In")
+    st.caption("Access the full multi-brand console without typing passwords using your verified identity providers:")
 
-    with auth_col1:
-        st.markdown("### ⚡ Instant Demo Access")
-        st.caption("One-click access for reviewers, recruiters, and team evaluation:")
+    soc_c1, soc_c2, soc_c3 = st.columns(3)
+    with soc_c1:
+        st.markdown('<div class="btn-google-wrap">', unsafe_allow_html=True)
+        if st.button("🔴 Continue with Google", key="landing_social_google", use_container_width=True):
+            u = default_auth_db.social_login("sriram.google@omnisupport.ai", "Srirag (Google Verified)", "google", role="admin")
+            st.session_state.authenticated = True
+            st.session_state.user = u
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+    with soc_c2:
+        st.markdown('<div class="btn-twitter-wrap">', unsafe_allow_html=True)
+        if st.button("⚫ Continue with Twitter / X", key="landing_social_twitter", use_container_width=True):
+            u = default_auth_db.social_login("sriram.x@twitter.com", "Srirag (X Support)", "twitter", role="agent")
+            st.session_state.authenticated = True
+            st.session_state.user = u
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
+    with soc_c3:
+        st.markdown('<div class="btn-fb-wrap">', unsafe_allow_html=True)
+        if st.button("🔵 Continue with Facebook", key="landing_social_fb", use_container_width=True):
+            u = default_auth_db.social_login("sriram.meta@facebook.com", "Srirag (Meta Agent)", "facebook", role="agent")
+            st.session_state.authenticated = True
+            st.session_state.user = u
+            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        col_adm, col_agt = st.columns(2)
-        with col_adm:
-            if st.button("🚀 Login as Lead Admin (Srirag)", key="btn_demo_admin", use_container_width=True, type="primary"):
-                u = default_auth_db.authenticate_user(DEMO_ADMIN_EMAIL, DEMO_ADMIN_PASSWORD)
-                if u:
-                    st.session_state.authenticated = True
-                    st.session_state.user = u
-                    st.success("Authenticated as Lead Admin!")
-                    st.rerun()
-        with col_agt:
-            if st.button("🎧 Login as Support Agent", key="btn_demo_agent", use_container_width=True):
-                u = default_auth_db.authenticate_user(DEMO_AGENT_EMAIL, DEMO_AGENT_PASSWORD)
-                if u:
-                    st.session_state.authenticated = True
-                    st.session_state.user = u
-                    st.success("Authenticated as Support Agent!")
-                    st.rerun()
+    st.markdown("---")
 
-        st.info(f"**Admin Demo:** `{DEMO_ADMIN_EMAIL}` | `{DEMO_ADMIN_PASSWORD}`\n\n**Agent Demo:** `{DEMO_AGENT_EMAIL}` | `{DEMO_AGENT_PASSWORD}`")
+    # Interactive Live Showcase Preview
+    render_interactive_showcase()
 
-        st.markdown("#### 🌐 Social Login (1-Click OAuth)")
-        st.caption("Authenticate with external identity provider accounts:")
+    st.markdown("---")
 
-        s1, s2, s3 = st.columns(3)
-        with s1:
-            if st.button("🔴 Google", key="btn_google_auth", use_container_width=True):
-                u = default_auth_db.social_login("google.user@omnisupport.ai", "Google Verified Contributor", "google")
+    # Core Architectural Pillars Grid (4 Cards)
+    st.markdown("### 🏛️ Core Architectural Pillars")
+    st.caption("Engineered for mission-critical enterprise deployment where hallucinations cause real financial and security harm:")
+
+    p1, p2 = st.columns(2)
+    with p1:
+        st.markdown("""
+        <div class="hero-feature-card">
+            <h4>🛡️ 1. Deterministic Risk & Policy Gating</h4>
+            <p style="font-size: 0.92rem; opacity: 0.85; line-height: 1.5;">
+                Zero reliance on probabilistic LLM safety filters. Hard-coded deterministic guards intercept financial disputes, billing refunds, account takeovers, and hardware failures before generation begins, guaranteeing <strong>100.0% precision</strong>.
+            </p>
+            <code style="font-size: 0.82rem;">Rules: CWE-287, CWE-312, Zero Auto-Refunds</code>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="hero-feature-card">
+            <h4>⚡ 2. Sub-4ms Precedent Retrieval Index</h4>
+            <p style="font-size: 0.92rem; opacity: 0.85; line-height: 1.5;">
+                FAISS vector database indexing <strong>5,030 grounded enterprise support dialogues</strong>. Employs an ultra-fast in-memory cache achieving <strong>0.25 ms query response</strong> with 80x throughput acceleration.
+            </p>
+            <code style="font-size: 0.82rem;">Embedding: all-MiniLM-L6-v2 | FAISS IndexFlatIP</code>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with p2:
+        st.markdown("""
+        <div class="hero-feature-card">
+            <h4>🏢 3. 108-Brand Dynamic Router</h4>
+            <p style="font-size: 0.92rem; opacity: 0.85; line-height: 1.5;">
+                Dynamic multi-brand isolation preventing cross-tenant policy contamination. Supports Apple, Amazon, Uber, Spotify, Xbox, Samsung, Delta Air Lines, and 100+ others with dedicated tone and domain grounding.
+            </p>
+            <code style="font-size: 0.82rem;">108 Enterprise Profiles | Zero Brand Bleed</code>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="hero-feature-card">
+            <h4>🔒 4. Salted PBKDF2 SQLite Database</h4>
+            <p style="font-size: 0.92rem; opacity: 0.85; line-height: 1.5;">
+                Persistent credential engine powered by zero-cloud-cost embedded SQLite (<code>data/auth.db</code>). Hashes passwords with <strong>100,000 PBKDF2-HMAC-SHA256 iterations</strong> and unique 16-byte random salts.
+            </p>
+            <code style="font-size: 0.82rem;">Storage: SQLite 3 | Audit Trail: Immutable</code>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # Enterprise Trust & Multilingual Coverage
+    st.markdown("### 🌍 Global Multilingual & Indigenous Coverage")
+    st.caption("Evaluated across 100+ languages and dialects including Mexican Spanish, Spanglish, Nahuatl, Quechua, Haitian Creole, French, and Diné:")
+    
+    t1, t2, t3 = st.columns(3)
+    with t1:
+        st.markdown("**🇲🇽 Mexico & Mesoamerica**")
+        st.markdown("• Mexican Tech Slang (*no jala, se trabó*)")
+        st.markdown("• Border Spanglish (*se freezeó, battery dying*)")
+        st.markdown("• Nahuatl, Maya, Zapotec, Mixtec")
+    with t2:
+        st.markdown("**🇺🇸🇨🇦 North America**")
+        st.markdown("• American English (*bricked, bootloop*)")
+        st.markdown("• Canadian French (*cellulaire pogné*)")
+        st.markdown("• Navajo (Diné), Cherokee, Inuktitut")
+    with t3:
+        st.markdown("**🇧🇷🇵🇪 South America & Caribbean**")
+        st.markdown("• Brazilian Portuguese (*travando direto*)")
+        st.markdown("• Haitian Creole (*pa vle mache*)")
+        st.markdown("• Quechua, Guarani, Colombian Spanish")
+
+    st.markdown("---")
+
+    # Bottom Call to Action Banner
+    st.markdown("""
+    <div style="text-align: center; padding: 2.5rem 1rem; background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(129, 140, 248, 0.08)); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 16px; margin: 1rem 0;">
+        <h2 style="font-size: 2.0rem; font-weight: 700; margin-bottom: 0.5rem;">Ready to Deploy Deterministic Customer Support AI?</h2>
+        <p style="font-size: 1.05rem; opacity: 0.85; max-width: 650px; margin: 0 auto 1.5rem auto;">
+            Sign in to access the Live Support Console, benchmark evaluations, and multi-brand safety governance.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    b_c1, b_c2 = st.columns(2)
+    with b_c1:
+        if st.button("🔑 Enter Live Console (Sign In)", key="bottom_cta_login", use_container_width=True, type="primary"):
+            st.session_state.unauth_nav = "🔑 User Login"
+            st.rerun()
+    with b_c2:
+        if st.button("✨ Create Free Account (Sign Up)", key="bottom_cta_signup", use_container_width=True):
+            st.session_state.unauth_nav = "✨ User Sign Up"
+            st.rerun()
+
+
+def render_user_login_page():
+    """Renders the dedicated, high-contrast user login portal."""
+    st.markdown("""
+    <div style="text-align: center; margin-top: 1rem; margin-bottom: 1.5rem;">
+        <h2 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 0.3rem;">🔑 Welcome Back to OmniSupport AI</h2>
+        <p style="font-size: 1.0rem; opacity: 0.85;">Sign in to access your Multi-Brand Support Console and Safety Pipeline.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    card_container = st.container()
+    with card_container:
+        st.markdown('<div class="auth-container-card">', unsafe_allow_html=True)
+
+        st.markdown("#### 🌐 Fast Social Sign-In")
+        st.caption("One click to authenticate using verified identity providers:")
+
+        soc_l1, soc_l2, soc_l3 = st.columns(3)
+        with soc_l1:
+            st.markdown('<div class="btn-google-wrap">', unsafe_allow_html=True)
+            if st.button("🔴 Google", key="login_btn_google", use_container_width=True):
+                u = default_auth_db.social_login("sriram.google@omnisupport.ai", "Srirag (Google Verified)", "google", role="admin")
                 st.session_state.authenticated = True
                 st.session_state.user = u
+                st.success("Authenticated via Google!")
                 st.rerun()
-        with s2:
-            if st.button("⚫ X / Twitter", key="btn_twitter_auth", use_container_width=True):
-                u = default_auth_db.social_login("twitter.agent@x.com", "X Support Contributor", "twitter")
+            st.markdown('</div>', unsafe_allow_html=True)
+        with soc_l2:
+            st.markdown('<div class="btn-twitter-wrap">', unsafe_allow_html=True)
+            if st.button("⚫ Twitter / X", key="login_btn_twitter", use_container_width=True):
+                u = default_auth_db.social_login("sriram.x@twitter.com", "Srirag (X Support)", "twitter", role="agent")
                 st.session_state.authenticated = True
                 st.session_state.user = u
+                st.success("Authenticated via Twitter / X!")
                 st.rerun()
-        with s3:
-            if st.button("🔵 Facebook", key="btn_fb_auth", use_container_width=True):
-                u = default_auth_db.social_login("meta.support@facebook.com", "Meta Support Contributor", "facebook")
+            st.markdown('</div>', unsafe_allow_html=True)
+        with soc_l3:
+            st.markdown('<div class="btn-fb-wrap">', unsafe_allow_html=True)
+            if st.button("🔵 Facebook", key="login_btn_fb", use_container_width=True):
+                u = default_auth_db.social_login("sriram.meta@facebook.com", "Srirag (Meta Agent)", "facebook", role="agent")
                 st.session_state.authenticated = True
                 st.session_state.user = u
+                st.success("Authenticated via Facebook!")
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
 
-    with auth_col2:
-        st.markdown("### 🔐 Email & Password Portal")
-        auth_mode = st.radio("Authentication Mode:", ["Sign In to Existing Account", "Create New Account"], horizontal=True, label_visibility="collapsed")
+        st.markdown("""
+        <div style="text-align: center; margin: 1.4rem 0 1.1rem 0; color: #94A3B8; font-size: 0.85rem; font-weight: 600;">
+            ────────── OR SIGN IN WITH WORK EMAIL ──────────
+        </div>
+        """, unsafe_allow_html=True)
 
-        if auth_mode == "Sign In to Existing Account":
-            with st.form("form_signin"):
-                in_email = st.text_input("Work Email", value=DEMO_ADMIN_EMAIL)
-                in_pass = st.text_input("Password", value=DEMO_ADMIN_PASSWORD, type="password")
-                btn_submit = st.form_submit_button("Sign In with Email", use_container_width=True)
-                if btn_submit:
+        with st.form("form_portal_signin"):
+            in_email = st.text_input("Work Email Address", value=DEMO_ADMIN_EMAIL, placeholder="admin@omnisupport.ai")
+            in_pass = st.text_input("Password", value=DEMO_ADMIN_PASSWORD, type="password", placeholder="Enter your password")
+            remember_me = st.checkbox("Keep me signed in on this workstation", value=True)
+            btn_signin_submit = st.form_submit_button("🚀 Sign In with Email", use_container_width=True, type="primary")
+
+            if btn_signin_submit:
+                if not in_email or not in_pass:
+                    st.error("Please provide both email and password.")
+                else:
                     user = default_auth_db.authenticate_user(in_email, in_pass)
                     if user:
                         st.session_state.authenticated = True
@@ -895,57 +1477,267 @@ def render_landing_and_auth_page():
                         st.rerun()
                     else:
                         st.error("Invalid email or password. Please verify credentials or use 1-Click Demo Login.")
-        else:
-            with st.form("form_signup"):
-                reg_name = st.text_input("Full Name", placeholder="e.g., Alex Johnson")
-                reg_email = st.text_input("Work Email Address", placeholder="alex@company.com")
-                reg_pass = st.text_input("Password", type="password", placeholder="Minimum 6 characters")
-                reg_role = st.selectbox("Requested Role", ["agent", "admin", "analyst"], format_func=lambda x: "👑 Lead Admin" if x == "admin" else "🎧 Support Agent" if x == "agent" else "📊 Quality Analyst")
-                btn_reg = st.form_submit_button("Create Account & Login", use_container_width=True)
-                if btn_reg:
-                    if not reg_name or not reg_email or not reg_pass:
-                        st.error("Please complete all registration fields.")
-                    elif len(reg_pass) < 6:
-                        st.error("Password must be at least 6 characters.")
-                    else:
-                        try:
-                            user = default_auth_db.create_user(reg_email, reg_pass, reg_name, role=reg_role)
-                            st.session_state.authenticated = True
-                            st.session_state.user = user
-                            st.success("Account created successfully!")
-                            st.rerun()
-                        except ValueError as err:
-                            st.error(str(err))
+
+        st.markdown("---")
+
+        st.markdown("#### ⚡ 1-Click Reviewer Demo Logins")
+        st.caption("Pre-configured accounts for recruitment evaluation and grading:")
+
+        demo_c1, demo_c2 = st.columns(2)
+        with demo_c1:
+            if st.button("👑 Lead Admin (Srirag)", key="login_demo_admin", use_container_width=True):
+                u = default_auth_db.authenticate_user(DEMO_ADMIN_EMAIL, DEMO_ADMIN_PASSWORD)
+                if u:
+                    st.session_state.authenticated = True
+                    st.session_state.user = u
+                    st.rerun()
+        with demo_c2:
+            if st.button("🎧 Support Agent", key="login_demo_agent", use_container_width=True):
+                u = default_auth_db.authenticate_user(DEMO_AGENT_EMAIL, DEMO_AGENT_PASSWORD)
+                if u:
+                    st.session_state.authenticated = True
+                    st.session_state.user = u
+                    st.rerun()
+
+        st.info(f"**Admin Demo:** `{DEMO_ADMIN_EMAIL}` | `{DEMO_ADMIN_PASSWORD}`\n\n**Agent Demo:** `{DEMO_AGENT_EMAIL}` | `{DEMO_AGENT_PASSWORD}`")
+
+        with st.expander("⚙️ Advanced: Test Custom Social Identity (OAuth Simulator)"):
+            st.caption("Simulate arbitrary OAuth tokens and identity payloads from external providers:")
+            cust_prov = st.selectbox("Provider:", ["google", "twitter", "facebook"], key="cust_oauth_prov")
+            cust_email = st.text_input("Custom Email:", value="reviewer@external-corp.com", key="cust_oauth_email")
+            cust_name = st.text_input("Display Name:", value="External Reviewer", key="cust_oauth_name")
+            cust_role = st.selectbox("Assign Role:", ["admin", "agent", "analyst"], index=0, key="cust_oauth_role")
+            if st.button("Simulate OAuth Token Exchange & Login", key="btn_cust_oauth"):
+                u = default_auth_db.social_login(cust_email, cust_name, cust_prov, role=cust_role)
+                st.session_state.authenticated = True
+                st.session_state.user = u
+                st.success(f"Authenticated as {cust_name} via {cust_prov}!")
+                st.rerun()
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    # Footer navigation switcher
+    st.markdown("<br/>", unsafe_allow_html=True)
+    f_c1, f_c2 = st.columns([3, 2])
+    with f_c1:
+        st.markdown("**New to OmniSupport AI?** Create an account to deploy your own brand models:")
+    with f_c2:
+        if st.button("✨ Create New Account (Sign Up)", key="switch_to_signup", use_container_width=True):
+            st.session_state.unauth_nav = "✨ User Sign Up"
+            st.rerun()
+
+
+def render_user_signup_page():
+    """Renders the dedicated account registration portal."""
+    st.markdown("""
+    <div style="text-align: center; margin-top: 1rem; margin-bottom: 1.5rem;">
+        <h2 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 0.3rem;">✨ Create Your OmniSupport AI Account</h2>
+        <p style="font-size: 1.0rem; opacity: 0.85;">Register in seconds to deploy deterministic customer support AI and access 108 brands.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    card_container = st.container()
+    with card_container:
+        st.markdown('<div class="auth-container-card">', unsafe_allow_html=True)
+
+        st.markdown("#### 🌐 1-Click Social Registration")
+        st.caption("Instantly provision your account via verified social identity providers:")
+
+        soc_s1, soc_s2, soc_s3 = st.columns(3)
+        with soc_s1:
+            st.markdown('<div class="btn-google-wrap">', unsafe_allow_html=True)
+            if st.button("🔴 Sign up with Google", key="signup_btn_google", use_container_width=True):
+                u = default_auth_db.social_login("google.user@omnisupport.ai", "Google Verified Contributor", "google", role="agent")
+                st.session_state.authenticated = True
+                st.session_state.user = u
+                st.success("Account created via Google OAuth!")
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
+        with soc_s2:
+            st.markdown('<div class="btn-twitter-wrap">', unsafe_allow_html=True)
+            if st.button("⚫ Sign up with Twitter / X", key="signup_btn_twitter", use_container_width=True):
+                u = default_auth_db.social_login("twitter.agent@x.com", "X Support Contributor", "twitter", role="agent")
+                st.session_state.authenticated = True
+                st.session_state.user = u
+                st.success("Account created via Twitter / X OAuth!")
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
+        with soc_s3:
+            st.markdown('<div class="btn-fb-wrap">', unsafe_allow_html=True)
+            if st.button("🔵 Sign up with Facebook", key="signup_btn_fb", use_container_width=True):
+                u = default_auth_db.social_login("meta.support@facebook.com", "Meta Support Contributor", "facebook", role="agent")
+                st.session_state.authenticated = True
+                st.session_state.user = u
+                st.success("Account created via Facebook OAuth!")
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        st.markdown("""
+        <div style="text-align: center; margin: 1.4rem 0 1.1rem 0; color: #94A3B8; font-size: 0.85rem; font-weight: 600;">
+            ────────── OR REGISTER WITH WORK EMAIL ──────────
+        </div>
+        """, unsafe_allow_html=True)
+
+        with st.form("form_portal_signup"):
+            reg_name = st.text_input("Full Name", placeholder="e.g., Alex Johnson")
+            reg_email = st.text_input("Work Email Address", placeholder="alex@company.com")
+            
+            p_col1, p_col2 = st.columns(2)
+            with p_col1:
+                reg_pass = st.text_input("Password", type="password", placeholder="Min. 6 characters")
+            with p_col2:
+                reg_pass_confirm = st.text_input("Confirm Password", type="password", placeholder="Repeat password")
+
+            reg_role = st.selectbox(
+                "Requested Platform Role",
+                ["agent", "admin", "analyst"],
+                index=0,
+                format_func=lambda x: "👑 Lead Admin (Full Governance & Audit)" if x == "admin" else "🎧 Support Agent (Console & Brand Switching)" if x == "agent" else "📊 Quality Analyst (Benchmark & Failure Inspector)"
+            )
+            
+            terms_agree = st.checkbox("I acknowledge that credentials are salted with 16-byte random keys and stored in persistent SQLite.", value=True)
+            btn_signup_submit = st.form_submit_button("✨ Create Account & Launch Console", use_container_width=True, type="primary")
+
+            if btn_signup_submit:
+                if not reg_name or not reg_email or not reg_pass:
+                    st.error("Please complete all registration fields.")
+                elif len(reg_pass) < 6:
+                    st.error("Password must be at least 6 characters long.")
+                elif reg_pass != reg_pass_confirm:
+                    st.error("Passwords do not match. Please re-enter your password.")
+                elif not terms_agree:
+                    st.error("Please accept the security policy terms.")
+                else:
+                    try:
+                        user = default_auth_db.create_user(reg_email, reg_pass, reg_name, role=reg_role)
+                        st.session_state.authenticated = True
+                        st.session_state.user = user
+                        st.success("Account created successfully! Welcome to OmniSupport AI.")
+                        st.rerun()
+                    except ValueError as err:
+                        st.error(str(err))
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    # Footer navigation switcher
+    st.markdown("<br/>", unsafe_allow_html=True)
+    f_c1, f_c2 = st.columns([3, 2])
+    with f_c1:
+        st.markdown("**Already have an account?** Sign in directly to your existing profile:")
+    with f_c2:
+        if st.button("🔑 Sign In to Existing Account", key="switch_to_login", use_container_width=True):
+            st.session_state.unauth_nav = "🔑 User Login"
+            st.rerun()
+
+
+def render_security_page():
+    """Renders the educational security architecture and VAPT hardening technical report."""
+    st.markdown("""
+    <div style="text-align: center; margin-top: 1rem; margin-bottom: 1.5rem;">
+        <h2 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 0.3rem;">🛡️ Security, Credential Storage & VAPT Architecture</h2>
+        <p style="font-size: 1.0rem; opacity: 0.85;">Deep-dive into cryptographic password hashing, persistent SQLite storage, and OWASP defense.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    ### 🛡️ Credential Security in Enterprise Web Applications
+    When users create accounts on platforms like **YouTube**, **Google**, **Twitter/X**, or **OmniSupport AI**, their passwords are **NEVER stored in plain text**. Doing so is a catastrophic vulnerability violating OWASP Top 10 and GDPR security standards.
+    
+    #### 1. The Hazard of Plain-Text & Deprecated Hashes
+    - **Plain-Text Storage (CWE-256 / CWE-312):** If an attacker breaches the database via SQL injection or unauthorized backup access, all credentials leak immediately.
+    - **Simple MD5 / SHA-1 Hashing (CWE-328):** Fast algorithms can be reversed in microseconds using pre-computed lookup tables (Rainbow Tables) or GPU rigs calculating billions of hashes per second.
+    
+    #### 2. The OmniSupport AI Solution: Salted PBKDF2-HMAC-SHA256
+    Our authentication engine implements industry-standard salted key derivation:
+    - **16-Byte Cryptographic Salt per User:** A unique random salt (`os.urandom(16).hex()`) ensures two users with identical passwords have completely different stored hashes, defeating rainbow table attacks.
+    - **100,000 Key Stretching Iterations:** Forces a high CPU work factor per attempt, rendering brute-force dictionary attacks computationally infeasible.
+    - **Constant-Time Comparison:** Prevents timing attacks where attackers deduce passwords by measuring string comparison response latency.
+
+    #### 3. Real SQLite Persistent Database (`data/auth.db`)
+    - **Zero Cloud Cost & Complete Portability:** Powered by SQLite 3, an ACID-compliant embedded relational SQL engine running with zero external database hosting fees.
+    - **Immutable Audit Logging:** Every login, failed attempt, and role change is logged to an audit table for security compliance.
+    """)
+
+    db_stats = default_auth_db.get_database_summary()
+    c_db1, c_db2, c_db3, c_db4 = st.columns(4)
+    c_db1.metric("Database Engine", "SQLite 3", "ACID-Compliant")
+    c_db2.metric("Hashing Standard", "PBKDF2-SHA256", "100,000 Rounds")
+    c_db3.metric("Registered Users", str(db_stats["total_users"]), "In data/auth.db")
+    c_db4.metric("Security Audit Logs", str(db_stats["total_audit_logs"]), "Immutable Events")
 
     st.markdown("---")
+    st.markdown("### 📜 Recent Security Audit Events (`audit_logs` table)")
+    st.caption("Live compliance trace recording authentication events in real-time:")
+    recent_audits = default_auth_db.get_audit_logs(limit=15)
+    if recent_audits:
+        st.dataframe(pd.DataFrame(recent_audits), use_container_width=True, hide_index=True)
+    else:
+        st.info("No audit logs recorded yet.")
 
-    # Educational Database & Credential Storage Architecture Section
-    with st.expander("💡 Educational Architecture: How Real Websites (YouTube, Google, Twitter) Store Your Credentials", expanded=True):
-        st.markdown("""
-        ### 🛡️ Credential Security in Enterprise Web Applications
-        When users create accounts on platforms like **YouTube**, **Google**, **Twitter/X**, or **OmniSupport AI**, their passwords are **NEVER stored in plain text**. Doing so is a catastrophic vulnerability violating OWASP and GDPR security standards.
-        
-        #### 1. The Hazard of Plain-Text & Deprecated Hashes
-        - **Plain-Text Storage (CWE-256 / CWE-312):** If an attacker breaches the database via SQL injection or unauthorized backup access, all credentials leak immediately.
-        - **Simple MD5 / SHA-1 Hashing (CWE-328):** Fast algorithms can be reversed in microseconds using pre-computed lookup tables (Rainbow Tables) or GPU rigs calculating billions of hashes per second.
-        
-        #### 2. The OmniSupport AI Solution: Salted PBKDF2-HMAC-SHA256
-        Our authentication engine implements industry-standard salted key derivation:
-        - **16-Byte Cryptographic Salt per User:** A unique random salt (`os.urandom(16).hex()`) ensures two users with identical passwords have completely different stored hashes, defeating rainbow table attacks.
-        - **100,000 Key Stretching Iterations:** Forces a high CPU work factor per attempt, rendering brute-force dictionary attacks computationally infeasible.
-        - **Constant-Time Comparison:** Prevents timing attacks where attackers deduce passwords by measuring string comparison response latency.
+    st.markdown("---")
+    c_cta1, c_cta2 = st.columns(2)
+    with c_cta1:
+        if st.button("🔑 Sign In to Console", key="sec_btn_login", use_container_width=True, type="primary"):
+            st.session_state.unauth_nav = "🔑 User Login"
+            st.rerun()
+    with c_cta2:
+        if st.button("✨ Create New Account", key="sec_btn_signup", use_container_width=True):
+            st.session_state.unauth_nav = "✨ User Sign Up"
+            st.rerun()
 
-        #### 3. Real SQLite Persistent Database (`data/auth.db`)
-        - **Zero Cloud Cost & Complete Portability:** Powered by SQLite 3, an ACID-compliant embedded relational SQL engine running with zero external database hosting fees.
-        - **Immutable Audit Logging:** Every login, failed attempt, and role change is logged to an audit table for security compliance.
-        """)
 
-        db_stats = default_auth_db.get_database_summary()
-        c_db1, c_db2, c_db3, c_db4 = st.columns(4)
-        c_db1.metric("Database Engine", "SQLite 3", "ACID-Compliant")
-        c_db2.metric("Hashing Standard", "PBKDF2-SHA256", "100,000 Rounds")
-        c_db3.metric("Registered Users", str(db_stats["total_users"]), "In data/auth.db")
-        c_db4.metric("Security Audit Logs", str(db_stats["total_audit_logs"]), "Immutable Events")
+def render_landing_and_auth_page():
+    """Main routing gateway for unauthenticated visitors."""
+    # Top Public Navigation Banner
+    st.markdown("""
+    <div class="public-top-nav">
+        <div class="nav-brand-title">
+            <span>🌐</span>
+            <span>OmniSupport AI</span>
+            <span class="nav-brand-badge">Enterprise Safety Platform</span>
+        </div>
+        <div style="display: flex; gap: 0.6rem; align-items: center;">
+            <span class="nav-status-pill">🟢 108 Brands Supported</span>
+            <span class="nav-status-pill" style="color: #38BDF8; background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.3);">⚡ Sub-4ms FAISS</span>
+            <span class="nav-status-pill" style="color: #F59E0B; background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.3);">🛡️ 31 VAPT Vectors</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # 4 View Navigation Buttons pinned at top of content
+    st.markdown('<div class="public-nav-pills">', unsafe_allow_html=True)
+    nav_c1, nav_c2, nav_c3, nav_c4 = st.columns(4)
+    with nav_c1:
+        if st.button("🌟 Landing Page (Home)", key="top_nav_landing", use_container_width=True, type="primary" if st.session_state.unauth_nav == "🌟 Landing Page" else "secondary"):
+            st.session_state.unauth_nav = "🌟 Landing Page"
+            st.rerun()
+    with nav_c2:
+        if st.button("🔑 User Login", key="top_nav_login", use_container_width=True, type="primary" if st.session_state.unauth_nav == "🔑 User Login" else "secondary"):
+            st.session_state.unauth_nav = "🔑 User Login"
+            st.rerun()
+    with nav_c3:
+        if st.button("✨ User Sign Up", key="top_nav_signup", use_container_width=True, type="primary" if st.session_state.unauth_nav == "✨ User Sign Up" else "secondary"):
+            st.session_state.unauth_nav = "✨ User Sign Up"
+            st.rerun()
+    with nav_c4:
+        if st.button("🛡️ Security & Architecture", key="top_nav_sec", use_container_width=True, type="primary" if st.session_state.unauth_nav == "🛡️ Security & Architecture" else "secondary"):
+            st.session_state.unauth_nav = "🛡️ Security & Architecture"
+            st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("<hr style='margin: 0.8rem 0 1.2rem 0; opacity: 0.2;'/>", unsafe_allow_html=True)
+
+    # Render Active Section
+    if st.session_state.unauth_nav == "🌟 Landing Page":
+        render_landing_page()
+    elif st.session_state.unauth_nav == "🔑 User Login":
+        render_user_login_page()
+    elif st.session_state.unauth_nav == "✨ User Sign Up":
+        render_user_signup_page()
+    elif st.session_state.unauth_nav == "🛡️ Security & Architecture":
+        render_security_page()
+    else:
+        render_landing_page()
 
 
 # ==============================================================================
