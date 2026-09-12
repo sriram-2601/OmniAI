@@ -17,7 +17,7 @@ pinned: false
 <div align="center">
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![Tests Passing](https://img.shields.io/badge/pytest-52%20passed-success.svg?logo=pytest&logoColor=white)](#-automated-testing--verification)
+[![Tests Passing](https://img.shields.io/badge/pytest-63%20passed-success.svg?logo=pytest&logoColor=white)](#-automated-testing--verification)
 [![VAPT Hardened](https://img.shields.io/badge/VAPT%20Audit-31%20Vectors%20Hardened-brightgreen.svg?logo=security&logoColor=white)](VAPT_CHECKLIST.md)
 [![Brands Supported](https://img.shields.io/badge/Brands-108%20Supported-purple.svg)](#-108-supported-enterprise-brands)
 [![Languages](https://img.shields.io/badge/Multilingual-22%2B%20Languages%20%26%20Dialects-orange.svg)](#-multilingual--slang-intelligence-22-languages)
@@ -256,7 +256,7 @@ Features:
 
 ## 🧪 Automated Testing & Verification
 
-Run the comprehensive 52-test automated suite covering intent classification, FAISS vector retrieval, risk gating, multilingual translation, and VAPT security:
+Run the comprehensive 63-test automated suite covering intent classification, FAISS vector retrieval, risk gating, multilingual translation, and VAPT security:
 
 ```bash
 python -m pytest tests/ -v
@@ -264,7 +264,7 @@ python -m pytest tests/ -v
 
 Expected output:
 ```text
-============================= 52 passed in ~50s =============================
+============================= 63 passed in ~50s =============================
 ```
 
 ### 1-Command Benchmark Reproduction
@@ -308,7 +308,7 @@ OmniAI/
 │   ├── multilingual/              # 22+ language normalizer & 108-brand router
 │   ├── evaluation/                # Escalation metrics, LLM Judge, Human Calibration
 │   └── agent.py                   # Master SupportAgent pipeline orchestration
-├── tests/                         # 52 automated pytest tests across 10 modules
+├── tests/                         # 63 automated pytest tests across 12 modules
 ├── VAPT_CHECKLIST.md              # Comprehensive 31-point Web Application VAPT audit report
 ├── BRAND_SELECTION.md             # Data audit & brand selection report
 ├── DECISION_LOG.md                # 14 non-obvious architectural decisions & trade-offs
