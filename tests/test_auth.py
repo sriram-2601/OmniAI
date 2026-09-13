@@ -125,3 +125,22 @@ def test_audit_logging_and_summary(temp_db):
     assert summary["db_type"].startswith("SQLite")
     assert summary["total_users"] >= 2
     assert "PBKDF2" in summary["hashing_algorithm"]
+
+
+def test_gateway_lifecycle_and_session_gating(temp_db):
+    """Verify end-to-end user lifecycle and audit events for gateway gating."""
+    # 1. New user registration
+    user = temp_db.create_user("reviewer@recruiting.org", "HireSrirag2026!", "Talent Reviewer", role="admin")
+    assert user["id"] is not None
+    assert user["role"] == "admin"
+
+    # 2. Authentication check
+    auth_user = temp_db.authenticate_user("reviewer@recruiting.org", "HireSrirag2026!")
+    assert auth_user is not None
+    assert auth_user["email"] == "reviewer@recruiting.org"
+
+    # 3. Audit trail for logout
+    temp_db.log_audit("reviewer@recruiting.org", "LOGOUT", "local")
+    recent_logs = temp_db.get_audit_logs(limit=5)
+    action_types = [log["action"] for log in recent_logs]
+    assert "LOGOUT" in action_types
